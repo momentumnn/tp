@@ -92,7 +92,7 @@ Here's a (partial) class diagram of the `Logic` component:
 
 The sequence diagram below illustrates the interactions within the `Logic` component, taking `execute("delete 1")` API call as an example.
 
-<puml src="diagrams/DeleteSequenceDiagram.puml" alt="Interactions Inside the Logic Component for the `delete 1` Command" />
+<puml src="diagrams/DeleteSequenceDiagrama.puml" alt="Interactions Inside the Logic Component for the `delete 1` Command" />
 
 <box type="info" seamless>
 
@@ -274,15 +274,12 @@ _{Explain here how the data archiving feature will be implemented}_
 
 **Target user profile**:
 
-* has a need to manage a significant number of contacts
-* prefer desktop apps over other types
-* can type fast
-* prefers typing to mouse interactions
-* is reasonably comfortable using CLI apps
+* Personal Trainers who manage a large client base and track client progress.
+* Has a need to quickly access their contact details.
+* Prefers a desktop app with an easy-to-use interface.
+* Manages clients and their injuries efficiently.
 
-**Value proposition**: manage contacts faster than a typical mouse/GUI driven app
-
-
+**Value proposition**: Provides a centralized system for personal trainers to efficiently manage client contact details, track injury histories, and monitor training goals and skill progress, optimized for users who prefer a fast, keyboard-driven interface.
 ### User stories
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
