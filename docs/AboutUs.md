@@ -17,7 +17,8 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 [[github](https://github.com/choppyback)]
 
-* Role: Project Advisor
+* Role: Testing
+* Responsibilities: Ensure all code is tested
 
 ### Jane Doe
 
