@@ -45,8 +45,8 @@ You can reach us at the email `seer[at]comp.nus.edu.sg`
 
 [[github](http://github.com/jolyntmj)]
 
-* Role: Developer
-* Responsibilities: Dev Ops + Threading
+* Role: Team lead
+* Responsibilities: Coordinate project milestones, manage team progress, and ensure smooth collaboration and code quality across the team.
 
 ### Lim Zi Yang
 
