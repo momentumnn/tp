@@ -1,4 +1,4 @@
-    <head-bottom>
+<head-bottom>
   <link rel="stylesheet" href="{{baseUrl}}/stylesheets/main.css">
 </head-bottom>
 
