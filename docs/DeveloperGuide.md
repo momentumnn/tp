@@ -284,16 +284,28 @@ _{Explain here how the data archiving feature will be implemented}_
 
 Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unlikely to have) - `*`
 
-| Priority | As a …​                                    | I want to …​                 | So that I can…​                                                        |
-|----------|--------------------------------------------|------------------------------|------------------------------------------------------------------------|
-| `* * *`  | new user                                   | see usage instructions       | refer to instructions when I forget how to use the App                 |
-| `* * *`  | user                                       | add a new person             |                                                                        |
-| `* * *`  | user                                       | delete a person              | remove entries that I no longer need                                   |
-| `* * *`  | user                                       | find a person by name        | locate details of persons without having to go through the entire list |
-| `* *`    | user                                       | hide private contact details | minimize chance of someone else seeing them by accident                |
-| `*`      | user with many persons in the address book | sort persons by name         | locate a person easily                                                 |
-
-*{More to be added}*
+| Priority | As a …​    | I want to …​                              | So that I can…​                                              |
+|------|------------|-------------------------------------------|---------------------------------------------------------------|
+| `* * *` | trainer    | add a client with their personal particulars | create a basic contact record for a new client             |
+| `* * *` | trainer    | find a client by searching for their name | quickly access a specific person's profile                    |
+| `* * *` | trainer    | delete a specific client record           | remove clients who are no longer training with me             |
+| `* * *` | trainer    | list all clients currently in the system  | see an overview of my entire client base                      |
+| `* * *` | trainer    | view a client's injury history            | plan a safe workout before the session starts                 |
+| `* *` | trainer    | record a trainee's weekly availability    | efficiently plan my training schedule in advance              |
+| `* * *` | trainer    | save my client data                       | never lose my client data                                     |
+| `* * *` | trainer    | update a client's contact details         | maintain accurate contact information                         |
+| `* * *` | new user   | launch the app via the command line       | start managing my data quickly                                |
+| `* * *` | trainer    | record a new injury for a client          | keep their health profile up to date                          |
+| `* * *` | trainer    | set an initial training level (e.g., Beginner) | know where to start a new client's training workout      |
+| `* * *` | trainer    | filter the list by training level         | plan group sessions for similar abilities                     |
+| `*`  | impatient user | get search results in under 200ms     | not feel held up while on the gym floor                       |
+| `* * *` | trainer    | undo the last command executed            | quickly fix accidental deletions or edits                     |
+| `*`  | trainer    | list all clients who have no recorded injuries | identify clients who can handle high-intensity workouts  |
+| `*`  | expert user | use short aliases (e.g., `a` for add)    | enter data faster during back-to-back sessions                |
+| `*`  | trainer    | edit an existing progress note            | correct typos or add more detail later                        |
+| `*`  | trainer    | clear the screen with a command           | keep my terminal interface tidy and focused                   |
+| `*`  | expert user | perform multi-parameter searches         | find beginners with back injuries more specifically           |
+| `*`  | expert user | export a summary report of all clients   | review my monthly coaching impact offline                     |
 
 ### Use cases
 
