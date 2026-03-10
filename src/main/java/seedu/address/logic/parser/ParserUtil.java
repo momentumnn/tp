@@ -127,8 +127,9 @@ public class ParserUtil {
     /**
      * Parses an {@code Optional<String> skill} into a {@code Skill}.
      * Leading and trailing whitespaces will be trimmed.
-     * Returns {@code null} if no skill value is provided.
      *
+     * @return parsed {@code Skill}, or novice if the
+     *         skill value is not present.
      * @throws ParseException if the given {@code skill} is invalid.
      */
     public static Skill parseSkill(Optional<String> skill) throws ParseException {
