@@ -13,6 +13,7 @@ import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
+import seedu.address.model.person.ProgressRecord;
 import seedu.address.model.tag.Tag;
 
 /**
@@ -121,4 +122,22 @@ public class ParserUtil {
         }
         return tagSet;
     }
+    /**
+     * Parses a {@code String Progress Record} into an {@code ProgressRecord}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code Progress Record} is invalid.
+     */
+    public static ProgressRecord parseProgressRecord(String progressRecord) throws ParseException {
+        if (progressRecord == null) {
+            return new ProgressRecord();
+        }
+        requireNonNull(progressRecord);
+        String trimmedProgressRecord = progressRecord.trim();
+        if (!ProgressRecord.isValidProgress(trimmedProgressRecord)) {
+            throw new ParseException(ProgressRecord.MESSAGE_CONSTRAINTS);
+        }
+        return new ProgressRecord(trimmedProgressRecord);
+    }
+
 }

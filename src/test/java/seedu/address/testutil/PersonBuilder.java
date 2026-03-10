@@ -27,6 +27,7 @@ public class PersonBuilder {
     private Email email;
     private Address address;
     private Set<Tag> tags;
+    private ProgressRecord progressRecord;
 
     /**
      * Creates a {@code PersonBuilder} with the default details.
@@ -37,6 +38,7 @@ public class PersonBuilder {
         email = new Email(DEFAULT_EMAIL);
         address = new Address(DEFAULT_ADDRESS);
         tags = new HashSet<>();
+        progressRecord = new ProgressRecord();
     }
 
     /**
@@ -48,6 +50,7 @@ public class PersonBuilder {
         email = personToCopy.getEmail();
         address = personToCopy.getAddress();
         tags = new HashSet<>(personToCopy.getTags());
+        progressRecord = personToCopy.getProgressRecord();
     }
 
     /**
@@ -91,7 +94,7 @@ public class PersonBuilder {
     }
 
     public Person build() {
-        return new Person(name, phone, email, address, tags, new ProgressRecord("100%"));
+        return new Person(name, phone, email, address, tags, progressRecord);
     }
 
 }

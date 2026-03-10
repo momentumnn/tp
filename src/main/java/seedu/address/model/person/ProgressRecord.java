@@ -4,8 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.commons.util.AppUtil.checkArgument;
 
 /**
- * Represents a Person's address in the address book.
- * Guarantees: immutable; is valid as declared in {@link #isValidProgress(String)}
+ * Represents a Person's progress record in the address book.
  */
 public class ProgressRecord {
 
@@ -18,6 +17,14 @@ public class ProgressRecord {
     public static final String VALIDATION_REGEX = "^(?:(?:\\d|[1-9]\\d)(?:\\.\\d+)?|100(?:\\.0+)?)\\s?%$";
 
     public final String value;
+
+    /**
+     * Constructs an empty {@code ProgressRecord}.
+     *
+     */
+    public ProgressRecord() {
+        value = "0%";
+    }
 
     /**
      * Constructs a {@code ProgressRecord}.
