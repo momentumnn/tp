@@ -3,6 +3,7 @@ package seedu.address.testutil;
 import java.util.HashSet;
 import java.util.Set;
 
+import main.java.seedu.address.model.person.InjuryStatus;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Email;
 import seedu.address.model.person.Name;
@@ -20,11 +21,13 @@ public class PersonBuilder {
     public static final String DEFAULT_PHONE = "85355255";
     public static final String DEFAULT_EMAIL = "amy@gmail.com";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
+    private static final String DEFAULT_INJURY_STATUS = "Unknown";
 
     private Name name;
     private Phone phone;
     private Email email;
     private Address address;
+    private InjuryStatus injuryStatus;
     private Set<Tag> tags;
 
     /**
@@ -35,6 +38,7 @@ public class PersonBuilder {
         phone = new Phone(DEFAULT_PHONE);
         email = new Email(DEFAULT_EMAIL);
         address = new Address(DEFAULT_ADDRESS);
+        injuryStatus = new InjuryStatus(DEFAULT_INJURY_STATUS);
         tags = new HashSet<>();
     }
 
@@ -46,6 +50,7 @@ public class PersonBuilder {
         phone = personToCopy.getPhone();
         email = personToCopy.getEmail();
         address = personToCopy.getAddress();
+        injuryStatus = personToCopy.getInjuryStatus();
         tags = new HashSet<>(personToCopy.getTags());
     }
 
@@ -89,8 +94,13 @@ public class PersonBuilder {
         return this;
     }
 
+    public PersonBuilder withInjuryStatus(String injuryStatus) {
+        this.injuryStatus = new InjuryStatus(injuryStatus);
+        return this;
+    }
+
     public Person build() {
-        return new Person(name, phone, email, address, tags);
+        return new Person(name, phone, email, address, injuryStatus, tags);
     }
 
 }

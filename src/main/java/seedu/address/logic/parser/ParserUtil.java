@@ -6,6 +6,7 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+import seedu.address.model.person.InjuryStatus;
 import seedu.address.commons.core.index.Index;
 import seedu.address.commons.util.StringUtil;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -93,6 +94,15 @@ public class ParserUtil {
             throw new ParseException(Email.MESSAGE_CONSTRAINTS);
         }
         return new Email(trimmedEmail);
+    }
+
+    public static InjuryStatus parseInjuryStatus(String injuryStatus) throws ParseException {
+    requireNonNull(injuryStatus);
+    String trimmedInjuryStatus = injuryStatus.trim();
+    if (!InjuryStatus.isValidInjuryStatus(trimmedInjuryStatus)) {
+        throw new ParseException(InjuryStatus.MESSAGE_CONSTRAINTS);
+    }
+    return new InjuryStatus(trimmedInjuryStatus);
     }
 
     /**
