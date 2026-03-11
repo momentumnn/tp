@@ -20,7 +20,7 @@ public class TrainingGoal {
     public final String value;
 
     /**
-     * Constructs an {@code Address}.
+     * Constructs an {@code training goal}.
      *
      * @param trainingGoal A valid trainingGoal.
      */
@@ -31,7 +31,7 @@ public class TrainingGoal {
     }
 
     /**
-     * Returns true if a given string is a valid email.
+     * Returns true if a given string is a valid training goal.
      */
     public static boolean isValidTrainingGoal(String test) {
         return test.matches(VALIDATION_REGEX);
