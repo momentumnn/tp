@@ -1,7 +1,5 @@
 package seedu.address.storage;
 
-import java.util.HashSet;
-import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
