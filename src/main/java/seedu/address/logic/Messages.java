@@ -43,6 +43,8 @@ public class Messages {
                 .append(person.getEmail())
                 .append("; Address: ")
                 .append(person.getAddress())
+                .append("; Injury Status: ")
+                .append(person.getInjuryStatus())
                 .append("; Training Goal: ")
                 .append(person.getTrainingGoal())
                 .append("; Availability: ")

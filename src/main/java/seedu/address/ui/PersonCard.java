@@ -38,6 +38,8 @@ public class PersonCard extends UiPart<Region> {
     @FXML
     private Label email;
     @FXML
+    private Label injuryStatus;
+    @FXML
     private Label skill;
     @FXML
     private Label progressRecord;
@@ -54,6 +56,7 @@ public class PersonCard extends UiPart<Region> {
         address.setText(person.getAddress().value);
         availability.setText(person.getAvailability().value);
         email.setText(person.getEmail().value);
+        injuryStatus.setText(person.getInjuryStatus().value);
         skill.setText("Skill: " + person.getSkill().value);
         progressRecord.setText(person.getProgressRecord().value);
     }

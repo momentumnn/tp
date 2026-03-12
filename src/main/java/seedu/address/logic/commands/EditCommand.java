@@ -4,6 +4,7 @@ import static java.util.Objects.requireNonNull;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_AVAILABILITY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_INJURY_STATUS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TRAINING_GOAL;
@@ -22,6 +23,7 @@ import seedu.address.model.Model;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Availability;
 import seedu.address.model.person.Email;
+import seedu.address.model.person.InjuryStatus;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Person;
 import seedu.address.model.person.Phone;
@@ -43,6 +45,7 @@ public class EditCommand extends Command {
             + "[" + PREFIX_PHONE + "PHONE] "
             + "[" + PREFIX_EMAIL + "EMAIL] "
             + "[" + PREFIX_ADDRESS + "ADDRESS] "
+            + "[" + PREFIX_INJURY_STATUS + "INJURY_STATUS] "
             + "[" + PREFIX_TRAINING_GOAL + "TRAINING GOAL] "
             + "[" + PREFIX_AVAILABILITY + "AVAILABILITY]\n"
             + "Example: " + COMMAND_WORD + " 1 "
@@ -100,6 +103,8 @@ public class EditCommand extends Command {
         Phone updatedPhone = editPersonDescriptor.getPhone().orElse(personToEdit.getPhone());
         Email updatedEmail = editPersonDescriptor.getEmail().orElse(personToEdit.getEmail());
         Address updatedAddress = editPersonDescriptor.getAddress().orElse(personToEdit.getAddress());
+        InjuryStatus updatedInjuryStatus = editPersonDescriptor.getInjuryStatus()
+            .orElse(personToEdit.getInjuryStatus());
         TrainingGoal updatedTrainingGoal = editPersonDescriptor.getTrainingGoal()
                                             .orElse(personToEdit.getTrainingGoal());
         Availability updatedAvailability = editPersonDescriptor.getAvailability()
@@ -107,7 +112,7 @@ public class EditCommand extends Command {
         ProgressRecord updatedProgressRecord = editPersonDescriptor.getProgressRecord()
                 .orElse(personToEdit.getProgressRecord());
         return new Person(updatedName, updatedPhone, updatedEmail,
-                updatedAddress, updatedTrainingGoal, updatedAvailability, updatedProgressRecord);
+                updatedAddress, updatedInjuryStatus, updatedTrainingGoal, updatedAvailability, updatedProgressRecord);
     }
 
     @Override
@@ -143,6 +148,7 @@ public class EditCommand extends Command {
         private Phone phone;
         private Email email;
         private Address address;
+        private InjuryStatus injuryStatus;
         private TrainingGoal trainingGoal;
         private Availability availability;
         private ProgressRecord progressRecord;
@@ -158,6 +164,7 @@ public class EditCommand extends Command {
             setPhone(toCopy.phone);
             setEmail(toCopy.email);
             setAddress(toCopy.address);
+            setInjuryStatus(toCopy.injuryStatus);
             setTrainingGoal(toCopy.trainingGoal);
             setAvailability(toCopy.availability);
             setProgressRecord(toCopy.progressRecord);
@@ -167,7 +174,7 @@ public class EditCommand extends Command {
          * Returns true if at least one field is edited.
          */
         public boolean isAnyFieldEdited() {
-            return CollectionUtil.isAnyNonNull(name, phone, email, address, trainingGoal, availability);
+            return CollectionUtil.isAnyNonNull(name, phone, email, address, injuryStatus, trainingGoal, availability);
         }
 
         public void setName(Name name) {
@@ -196,6 +203,14 @@ public class EditCommand extends Command {
 
         public void setAddress(Address address) {
             this.address = address;
+        }
+
+        public void setInjuryStatus(InjuryStatus injuryStatus) {
+            this.injuryStatus = injuryStatus;
+        }
+
+        public Optional<InjuryStatus> getInjuryStatus() {
+            return Optional.ofNullable(injuryStatus);
         }
 
         public Optional<Address> getAddress() {
@@ -242,6 +257,7 @@ public class EditCommand extends Command {
                     && Objects.equals(phone, otherEditPersonDescriptor.phone)
                     && Objects.equals(email, otherEditPersonDescriptor.email)
                     && Objects.equals(address, otherEditPersonDescriptor.address)
+                    && Objects.equals(injuryStatus, otherEditPersonDescriptor.injuryStatus)
                     && Objects.equals(trainingGoal, otherEditPersonDescriptor.trainingGoal)
                     && Objects.equals(availability, otherEditPersonDescriptor.availability)
                     && Objects.equals(progressRecord, otherEditPersonDescriptor.progressRecord);
@@ -254,6 +270,7 @@ public class EditCommand extends Command {
                     .add("phone", phone)
                     .add("email", email)
                     .add("address", address)
+                    .add("injuryStatus", injuryStatus)
                     .add("trainingGoal", trainingGoal)
                     .add("availability", availability)
                     .toString();

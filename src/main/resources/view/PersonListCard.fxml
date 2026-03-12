@@ -34,6 +34,7 @@
       <Label fx:id="email" styleClass="cell_small_label" text="\$email" />
       <Label fx:id="skill" styleClass="cell_small_label" text="\$skill" />
       <Label fx:id="progressRecord" styleClass="cell_small_label" text="\$progressRecord" />
+      <Label fx:id="injuryStatus" styleClass="cell_small_label" text="\$injuryStatus" />
     </VBox>
   </GridPane>
 </HBox>

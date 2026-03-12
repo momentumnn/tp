@@ -10,6 +10,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Availability;
 import seedu.address.model.person.Email;
+import seedu.address.model.person.InjuryStatus;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
 import seedu.address.model.person.ProgressRecord;
@@ -109,6 +110,21 @@ public class ParserUtil {
             throw new ParseException(Email.MESSAGE_CONSTRAINTS);
         }
         return new Email(trimmedEmail);
+    }
+
+    /**
+     * Parses a {@code String injuryStatus} into an {@code InjuryStatus}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @throws ParseException if the given {@code injuryStatus} is invalid.
+     */
+    public static InjuryStatus parseInjuryStatus(String injuryStatus) throws ParseException {
+        requireNonNull(injuryStatus);
+        String trimmedInjuryStatus = injuryStatus.trim();
+        if (!InjuryStatus.isValidInjuryStatus(trimmedInjuryStatus)) {
+            throw new ParseException(InjuryStatus.MESSAGE_CONSTRAINTS);
+        }
+        return new InjuryStatus(trimmedInjuryStatus);
     }
 
     /**

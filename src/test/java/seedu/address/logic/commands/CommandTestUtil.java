@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_ADDRESS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_AVAILABILITY;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_EMAIL;
+import static seedu.address.logic.parser.CliSyntax.PREFIX_INJURY_STATUS;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_NAME;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_PHONE;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_SKILL;
@@ -36,6 +37,8 @@ public class CommandTestUtil {
     public static final String VALID_EMAIL_BOB = "bob@example.com";
     public static final String VALID_ADDRESS_AMY = "Block 312, Amy Street 1";
     public static final String VALID_ADDRESS_BOB = "Block 123, Bobby Street 3";
+    public static final String VALID_INJURY_STATUS_AMY = "Injured";
+    public static final String VALID_INJURY_STATUS_BOB = "Recovered";
     public static final String VALID_SKILL_AMY = "novice";
     public static final String VALID_SKILL_BOB = "pro";
     public static final String VALID_TRAINING_GOAL_AMY = "1 million push ups";
@@ -64,6 +67,9 @@ public class CommandTestUtil {
     public static final String INVALID_EMAIL_DESC = " " + PREFIX_EMAIL + "bob!yahoo"; // missing '@' symbol
     public static final String INVALID_ADDRESS_DESC = " " + PREFIX_ADDRESS; // empty string not allowed for addresses
     public static final String INVALID_SKILL_DESC = " " + PREFIX_SKILL + "master"; // not an allowed skill level
+    public static final String INJURY_STATUS_DESC_AMY = " " + PREFIX_INJURY_STATUS + VALID_INJURY_STATUS_AMY;
+    public static final String INJURY_STATUS_DESC_BOB = " " + PREFIX_INJURY_STATUS + VALID_INJURY_STATUS_BOB;
+    public static final String INVALID_INJURY_STATUS_DESC = " " + PREFIX_INJURY_STATUS + " ";
     public static final String INVALID_TRAINING_GOAL_DESC = " "
             + PREFIX_TRAINING_GOAL; // empty string not allowed for trainingGoals
     public static final String INVALID_AVAILABILITY_DESC = " " + PREFIX_AVAILABILITY + "mon: 0900"; // space not allowed
