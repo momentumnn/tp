@@ -16,6 +16,7 @@ public class Availability {
             + "day:start-end separated by commas with no spaces.\n"
             + "Example: mon:0900-1000,tue:1000-1100,wed:1100-1200\n"
             + "- Days must be a 3-letter abbreviation (mon, tue, wed, thu, fri, sat, sun).\n"
+            + "- Days should not repeat.\n"
             + "- Times must be in valid 24-hour format (0000-2359).\n"
             + "- Start time must be strictly before the end time.\n"
             + "- It cannot be left completely empty.";
