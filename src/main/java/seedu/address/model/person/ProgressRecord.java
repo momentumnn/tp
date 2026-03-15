@@ -47,7 +47,7 @@ public class ProgressRecord implements Comparable<ProgressRecord> {
         try {
             double numericValue = parseToPercentage(test);
             return numericValue >= 0 && numericValue <= 100;
-        } catch (NumberFormatException | ArithmeticException e) {
+        } catch (ArithmeticException e) {
             return false;
         }
     }

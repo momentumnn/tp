@@ -23,15 +23,22 @@ public class ProgressRecordTest {
     public void isValidProgressRecord() {
         // null ProgressRecord
         assertThrows(NullPointerException.class, () -> ProgressRecord.isValidProgress(null));
+        assertThrows(ArithmeticException.class, () -> ProgressRecord.parseToPercentage("10/0"));
 
-        // invalid addresses
+        // invalid progress record
         assertFalse(ProgressRecord.isValidProgress("")); // empty string
         assertFalse(ProgressRecord.isValidProgress(" ")); // spaces only
+        assertFalse(ProgressRecord.isValidProgress("101%"));
+        assertFalse(ProgressRecord.isValidProgress("-1%"));
+        assertFalse(ProgressRecord.isValidProgress("-1%"));
 
-        // valid addresses
+        // valid progress record
         assertTrue(ProgressRecord.isValidProgress("100%"));
         assertTrue(ProgressRecord.isValidProgress("0%")); // one character
         assertTrue(ProgressRecord.isValidProgress("50%"));
+        assertTrue(ProgressRecord.isValidProgress("1/2"));
+        assertTrue(ProgressRecord.isValidProgress("20/50"));
+
     }
 
     @Test
