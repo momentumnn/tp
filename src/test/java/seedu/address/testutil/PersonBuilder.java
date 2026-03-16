@@ -21,7 +21,7 @@ public class PersonBuilder {
     public static final String DEFAULT_EMAIL = "amy@gmail.com";
     public static final String DEFAULT_ADDRESS = "123, Jurong West Ave 6, #08-111";
     public static final String DEFAULT_TRAINING_GOAL = "get a 6 pack";
-    public static final String DEFAULT_AVAILABILITY = "mon:0900-1000,tue:0000-2359,wed:0100-0300";
+    public static final String DEFAULT_AVAILABILITY = "mon:0900-1000;tue:0000-2359;wed:0100-0300";
     public static final String DEFAULT_SKILL = Skill.SKILL_NOVICE;
     private static final String DEFAULT_INJURY_STATUS = "Unknown";
 

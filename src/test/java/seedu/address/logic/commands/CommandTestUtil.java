@@ -43,8 +43,8 @@ public class CommandTestUtil {
     public static final String VALID_SKILL_BOB = "pro";
     public static final String VALID_TRAINING_GOAL_AMY = "1 million push ups";
     public static final String VALID_TRAINING_GOAL_BOB = "stay fit";
-    public static final String VALID_AVAILABILITY_AMY = "mon:0900-1000,tue:0000-2359,wed:0100-0300";
-    public static final String VALID_AVAILABILITY_BOB = "mon:0900-1000,tue:0000-2359,wed:0100-0300";
+    public static final String VALID_AVAILABILITY_AMY = "mon:0900-1000;tue:0000-2359;wed:0100-0300";
+    public static final String VALID_AVAILABILITY_BOB = "mon:0900-1000;tue:0000-2359;wed:0100-0300";
     public static final String VALID_PROGRESS_RECORD = "50%";
 
     public static final String NAME_DESC_AMY = " " + PREFIX_NAME + VALID_NAME_AMY;

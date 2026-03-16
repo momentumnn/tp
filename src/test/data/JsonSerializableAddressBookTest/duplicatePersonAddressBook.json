@@ -5,7 +5,7 @@
     "email": "alice@example.com",
     "address": "123, Jurong West Ave 6, #08-111",
     "trainingGoal": "67 pushups in 67 seconds",
-    "availability": "mon:0900-1000,tue:0000-2359,wed:0100-0300",
+    "availability": "mon:0900-1000;tue:0000-2359;wed:0100-0300",
     "progressRecord": "100%"
   }, {
     "name": "Alice Pauline",
@@ -13,7 +13,7 @@
     "email": "pauline@example.com",
     "address": "4th street",
     "trainingGoal": "24 pushups in 3 hours",
-    "availability": "mon:0900-1000,tue:0000-2359,wed:0100-0300",
+    "availability": "mon:0900-1000;tue:0000-2359;wed:0100-0300",
     "address": "4th street",
     "progressRecord": "100%"
   } ]

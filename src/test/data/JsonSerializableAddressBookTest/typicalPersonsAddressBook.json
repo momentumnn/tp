@@ -6,7 +6,7 @@
     "email" : "alice@example.com",
     "address" : "123, Jurong West Ave 6, #08-111",
     "trainingGoal" : "6 pack",
-    "availability" : "mon:0900-1000,tue:0000-2359,wed:0100-0300",
+    "availability" : "mon:0900-1000;tue:0000-2359;wed:0100-0300",
     "progressRecord" : "0%"
   }, {
     "name" : "Benson Meier",
@@ -14,7 +14,7 @@
     "email" : "johnd@example.com",
     "address" : "311, Clementi Ave 2, #02-25",
     "trainingGoal" : "beach bod",
-    "availability" : "mon:0900-1000,tue:0000-2359,wed:0100-0300",
+    "availability" : "mon:0900-1000;tue:0000-2359;wed:0100-0300",
     "progressRecord" : "0%"
   }, {
     "name" : "Carl Kurz",
@@ -22,7 +22,7 @@
     "email" : "heinz@example.com",
     "address" : "wall street",
     "trainingGoal" : "get the huzz",
-    "availability" : "mon:0900-1000,tue:0000-2359,wed:0100-0300",
+    "availability" : "mon:0900-1000;tue:0000-2359;wed:0100-0300",
     "progressRecord" : "0%"
   }, {
     "name" : "Daniel Meier",
@@ -30,7 +30,7 @@
     "email" : "cornelia@example.com",
     "address" : "10th street",
     "trainingGoal" : "win world heavy weight championship",
-    "availability" : "mon:0900-1000,tue:0000-2359,wed:0100-0300",
+    "availability" : "mon:0900-1000;tue:0000-2359;wed:0100-0300",
     "progressRecord" : "0%"
   }, {
     "name" : "Elle Meyer",
@@ -38,7 +38,7 @@
     "email" : "werner@example.com",
     "address" : "michegan ave",
     "trainingGoal" : "stay fit",
-    "availability" : "mon:0900-1000,tue:0000-2359,wed:0100-0300",
+    "availability" : "mon:0900-1000;tue:0000-2359;wed:0100-0300",
     "progressRecord" : "0%"
   }, {
     "name" : "Fiona Kunz",
@@ -46,7 +46,7 @@
     "email" : "lydia@example.com",
     "address" : "little tokyo",
     "trainingGoal" : "reach 50 kg",
-    "availability" : "mon:0900-1000,tue:0000-2359,wed:0100-0300",
+    "availability" : "mon:0900-1000;tue:0000-2359;wed:0100-0300",
     "progressRecord" : "0%"
   }, {
     "name" : "George Best",
@@ -54,6 +54,6 @@
     "email" : "anna@example.com",
     "address" : "4th street",
     "trainingGoal" : "be number 1 pro wrestler",
-    "availability" : "mon:0900-1000,tue:0000-2359,wed:0100-0300"
+    "availability" : "mon:0900-1000;tue:0000-2359;wed:0100-0300"
   } ]
 }

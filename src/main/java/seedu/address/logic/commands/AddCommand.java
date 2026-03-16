@@ -41,7 +41,7 @@ public class AddCommand extends Command {
             + PREFIX_EMAIL + "johnd@example.com "
             + PREFIX_ADDRESS + "311, Clementi Ave 2, #02-25 "
             + PREFIX_TRAINING_GOAL + "Get a 6 pack in 2 minutes "
-            + PREFIX_AVAILABILITY + "mon:0900-1000,tue:1000-1100,wed:1100-1200 "
+            + PREFIX_AVAILABILITY + "mon:0900-1000;tue:1000-1100;wed:1100-1200 "
             + PREFIX_INJURY_STATUS + "Injured "
             + PREFIX_SKILL + "pro "
             + PREFIX_PROGRESS_RECORD + "100%";
