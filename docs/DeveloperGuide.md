@@ -309,104 +309,87 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 ### Use cases
 
-(For all use cases below, the **Actor** is the `Trainer`, unless specified otherwise)
-
+(For all use cases below, the **Actor** is the `Trainer` and the **System** is the `PTCoach`, unless specified otherwise)
 
 **Use case: UC1 - Add a client**
 
 **MSS**
 
-1. User enters the add command with all mandatory parameters (n/ p/ e/ a/ av/ t/) and optional parameters if any.
-2. PTCoach validates all parameters.
-3. PTCoach checks if the phone number duplicates an existing client.
-4. PTCoach creates a new client record.
-5. PTCoach adds the client to the client list.
-6. PTCoach displays the message: “New person added: [CLIENT_NAME]”.
-7. PTCoach clears the input field.
-8. PTCoach automatically saves the updated data.
+1. Trainer requests to add a client.
+2. PTCoach shows a success message.
 
     Use case ends.
 
 **Extensions**
-
-* 1a. The list is empty.
+* 1a. The given details are invalid.
   * 1a1. PTCoach shows an error message.
-
-    Use case ends.
-  
-* 2a. Invalid parameter format 
-  * 2a1. PTCoach shows the corresponding validation error message.
-  
-    Use case ends.
-
-* 2b. Unknown flag provided 
-  * 2b1. PTCoach shows an error message.
-
-    Use case ends.
-* 2c. Redundant flag detected (multiple values for same flag)
-  * 2c1. PTCoach shows an error message.
     
     Use case ends.
-
-* 3a. Duplicate phone number detected
-  * 3a1. PTCoach prompts user for confirmation to replace existing record.
-  * 3a2. User confirms replacement.
-  * 3a3. PTCoach replaces the existing client record.
-  * 3a4. PTCoach displays success message.
   
-    Use case ends.
-  
-  * 3a5. User confirms replacement.
-  * 3a6. PTCoach cancels the add operation.
+* 1b. The given client exists.
+  * 1b1. PTCoach shows an error message.
 
     Use case ends.
 
+* 1c. The given command has an incorrect format.
+  * 1c1. PTCoach shows an error message.
+  
+    Use case ends.
 
 **Use case: UC2 - Find a specific client**
 
 **MSS**
 
-1. User requests to find a specific clients
-2. PTCoach shows list of all clients that match the person(s)
+1. User requests to find a specific clients.
+2. PTCoach shows list of all clients that match the person(s).
 
    Use case ends.
 
 **Extensions**
 
-* 2a. The find argument is empty
-  * 2a1. PTCoach shows, “Error: Invalid command format. Parameter: find [KEYWORD]. Eg. find alice”
+* 1a. Trainer searches for an invalid name.
+  * 1a1. PTCoach shows an error message.
     
     Use case ends.
-* 2b. Find a non-name
-  * 2b1. PTCoach shows, “Error: Invalid name search. Parameter: find [KEYWORD]. Eg. find alice”
-     
-    Use case ends.
 
-**Use case: UC3 - Update a client**
+* 1b. The given command has an incorrect format.
+  * 1b1. PTCoach shows an error message.
+  
+    Use case ends.
+        
+* 2a. The list is empty.
+  
+  Use case ends.
+
+**Use case: UC3 - Edit a client**
 
 **MSS**
 
-1. User requests to update a specific client by index and provides new details by specifying the parameter to update (any valid parameter specified in add command).
-2. PTCoach validates the index and the new details.
-3. PTCoach updates the client and displays the updated details.
+1. Trainer requests to edit a specific client.
+2. PTCoach shows a success message.
 
-   Use case ends.
+    Use case ends.
 
 **Extensions**
 
-* 2a. The list is empty or the provided index is out of bounds.
-  * 2a1. PTCoach shows an error message: “Invalid index provided.”
+* 1a. Invalid index
+  * 1a1. PTCoach shows an error message.
   
     Use case ends.
-
-* 2b. The new details provided are in an invalid format.
-  * 2b1. PTCoach shows an error message: “Invalid field format: [field name].”
   
+* 1b. Has missing parameters
+  * 1b1. PTCoach shows an error message.
+        
     Use case ends.
 
-* 2c. The update would create a duplicate of an existing person.
-  * 2c1. PTCoach shows an error message: “This person already exists in the records.”
-  
+* 1c. No changes found
+  * 1c1. PTCoach shows a success message.
+
+    Use case ends.
+
+* 1d. Incorrect format.
+  * 1d1. PTCoach shows an error message.
+
     Use case ends.
 
 **Use case: UC4 - Delete a client**
@@ -414,98 +397,103 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 **MSS**
 
 1. User requests to delete a specific client by index.
-2. PTCoach deletes the client and removes it from storage.
+2. PTCoach deletes the client.
 3. PTCoach shows a success message confirming the deletion.
 
    Use case ends
 
 **Extensions**
 
-* 1a. The list is empty or the provided index is out of bounds.
-  * 1a1. PTCoach shows an error message: “Invalid index provided.”
-  
+* 1a. The list is empty.
+  * 1a1. PTCoach shows an error message.
+
+    Use case ends.
+
+* 1b. The client does not exist.
+  * 1b1. PTCoach shows an error message.
+
+    Use case ends.
+
+* 1c. The given command is in an incorrect format.
+  * 1c1. PTCoach shows an error message.
+   
     Use case ends.
 
 **Use case: UC5 - Launch the app via command line**
 
 **MSS**
 
-1. User requests to launch the app via command line (java -jar PTCoach.jar)
-2. PTCoach launches
+1. User requests to launch the app via command line.
+2. PTCoach launches.
 
-   Use case ends
+   Use case ends.
 
 **Extensions**
 
-* 1a. App can’t launch due to wrong input (java -jar PTCoach.jarn)
-  * 1a1. PTCoach shows “Error: Unable to access jarfile PTCoach.jarn”
-  * 1a2. User changes input to “java -jar PTCoach.jar”
-  * 1a3. PTCoach launches
+* 1a. The given command is in an incorrect format.
   
-    Use case ends.
-* 1b. App can’t launch due to wrong directory (java -jar PTCoach.jar)
-  * 1b1. PTCoach shows  “Error: Unable to access jarfile PTCoach.jar”
-  * 1b2. User changes to the directory containing PTCoach.jar using cd command
-  * 1b3. User enters “java -jar PTCoach.jar”
-  * PTCoach launches
-  
-    Use case ends
+  Use case ends.
 
 **Use case: UC6 - List all clients**
 
 **MSS**
 
-1. User requests to view clients
-2. PTCoach shows list of all clients
-3. Use case ends
+1. User requests to view clients.
+2. PTCoach shows a list of all clients.
+
+   Use case ends.
 
 **Extensions**
-* 2a. The list is empty
-  * 2a1. PTCoach shows “No clients, try adding a client using /add” message.
-  
+
+* 1a. The given command is in an incorrect format.
+  * 1a1. PTCoach shows an error message.
+   
+    Use case ends.
+
+* 2a. The list is empty.
+  * 2a1. PTCoach shows a message indicating that the list is empty.
+   
     Use case ends.
 
 **Use case: UC7 - Read client details**
 
 **MSS**
 
-1. The user enters a read command with one keyword and option flags in the command line.
-2. PTCoach validates the command format.
-3. PTCoach searches the client database using the provided keywords.
-4. PTCoach selects the first matching client record.
-5. PTCoach retrieves the requested particulars based on the specified options.
-6. PTCoach displays the requested client data in the command-line interface.
+1. Trainer requests to view a client’s details.
+2. PTCoach displays the requested client data.
 
    Use case ends
 
 **Extensions**
-* 2a. Invalid parameter format
-  * 2a1. PTCoach shows the corresponding validation error message.
-  
+
+* 1a. The given details are invalid.
+  * 1a1. PTCoach shows an error message.
+   
     Use case ends.
 
-* 2b. Unknown flag provided
-  * 2b1. PTCoach shows the corresponding validation error message.
+* 1b. Client does not exist
+  * 1b1. PTCoach shows an error message.
+
+    Use case ends
   
+* 1c. Trainer enters incorrect command format.
+  * 1c1. PTCoach shows an error message.
+     
     Use case ends.
 
-* 2c. Redundant flag detected (multiple values for same flag)
-  * 2c1. PTCoach shows the corresponding validation error message.
-  
-    Use case ends.
-
-* 3a. Client record not found
-  * 3a1. PTCoach shows the corresponding validation error message.
-  
-    Use case ends.
+*{More to be added}*
 
 ### Non-Functional Requirements
 
-1.  Should work on any _mainstream OS_ as long as it has Java `17` or above installed.
+1.  Should work on any mainstream OS (Windows, macOS and Linux) as long as it has Java 17 installed.
 2.  Should be able to hold up to 1000 persons without a noticeable sluggishness in performance for typical usage.
 3.  A user with above average typing speed for regular English text (i.e. not code, not system admin commands) should be able to accomplish most of the tasks faster using commands than using the mouse.
 4.  Should be usable by a novice who has never created a client address book before.
-5.  Should be able to return search results in under 200ms.
+5.  Should be able to return search results in under 3s.
+6.  Should store data locally only.
+7.  Should only be closed using the “exit” command or window close button or by killing the process.
+8.  Command input should not exceed 500 words.
+9.  Should only be opened through the command line.
 
 *{More to be added}*
 
@@ -522,6 +510,17 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
   - Injury Status*  
 
   \* Optional particulars
+
+* **Field**: A property of a person stored in the system
+
+* **Client**: The person being added into the address book
+
+* **Trainer**: The user of the program
+
+* **Duplicate clients**: 2 Clients with the same phone number
+
+*{More to be added}*
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## **Appendix: Instructions for manual testing**
