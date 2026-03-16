@@ -393,7 +393,7 @@
 .list-cell .injury_label {
     -fx-font-family: "Segoe UI Semibold";
     -fx-font-size: 13px;
-    -fx-text-fill: red;
+    -fx-text-fill: indianred;
 }
 
 .list-cell .progress_label {
