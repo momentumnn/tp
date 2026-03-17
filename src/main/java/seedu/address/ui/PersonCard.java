@@ -67,13 +67,13 @@ public class PersonCard extends UiPart<Region> {
         String skillLevel = person.getSkill().value;
         skill.setText(skillLevel);
         switch (skillLevel.toLowerCase()) {
-        case Skill.SKILL_NOVICE:
+        case Skill.SKILL_BEGINNER:
             skill.getStyleClass().add("skill-beginner");
             break;
         case Skill.SKILL_INTERMEDIATE:
             skill.getStyleClass().add("skill-intermediate");
             break;
-        case Skill.SKILL_PRO:
+        case Skill.SKILL_EXPERT:
             skill.getStyleClass().add("skill-advanced");
             break;
         default:

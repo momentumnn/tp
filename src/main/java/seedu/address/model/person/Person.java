@@ -60,7 +60,7 @@ public class Person {
         this.injuryStatus = injuryStatus;
         this.trainingGoal = trainingGoal;
         this.availability = availability;
-        this.skill = new Skill(Skill.SKILL_NOVICE);
+        this.skill = new Skill(Skill.SKILL_BEGINNER);
         this.progressRecord = progressRecord;
     }
 

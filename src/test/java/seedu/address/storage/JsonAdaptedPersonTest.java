@@ -198,7 +198,7 @@ public class JsonAdaptedPersonTest {
                     VALID_ADDRESS, VALID_INJURY_STATUS, VALID_TRAINING_GOAL,
                     VALID_AVAILABILITY, null, VALID_PROGRESS_RECORD);
         Person modelPerson = person.toModelType();
-        assertEquals(new Skill(Skill.SKILL_NOVICE), modelPerson.getSkill());
+        assertEquals(new Skill(Skill.SKILL_BEGINNER), modelPerson.getSkill());
     }
 
     @Test

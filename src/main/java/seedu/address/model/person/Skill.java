@@ -10,11 +10,11 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class Skill {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Skill level must be one of these values: novice, intermediate, pro";
+            "Skill level must be one of these values: beginner, intermediate, expert";
 
-    public static final String SKILL_NOVICE = "novice";
+    public static final String SKILL_BEGINNER = "beginner";
     public static final String SKILL_INTERMEDIATE = "intermediate";
-    public static final String SKILL_PRO = "pro";
+    public static final String SKILL_EXPERT = "expert";
 
     public final String value;
 
@@ -27,7 +27,23 @@ public class Skill {
         requireNonNull(skill);
         String normalizedSkill = skill.trim().toLowerCase();
         checkArgument(isValidSkill(normalizedSkill), MESSAGE_CONSTRAINTS);
-        value = normalizedSkill;
+        value = capitalFirstLetter(normalizedSkill);
+    }
+
+    /**
+     * Capitalizes the first letter of the given skill level string.
+     *
+     * <p>The input is trimmed of leading/trailing whitespace and converted to
+     * lowercase before capitalization is applied.
+     *
+     * @param skillLevel the skill level string to capitalize; must not be null
+     * @return the normalized string with its first letter capitalized
+     * @throws NullPointerException if {@code skillLevel} is null
+     */
+    public static String capitalFirstLetter(String skillLevel) {
+        requireNonNull(skillLevel);
+        String normalizedSkill = skillLevel.trim().toLowerCase();
+        return Character.toUpperCase(normalizedSkill.charAt(0)) + normalizedSkill.substring(1);
     }
 
     /**
@@ -36,9 +52,9 @@ public class Skill {
     public static boolean isValidSkill(String test) {
         requireNonNull(test);
         String normalizedSkill = test.trim().toLowerCase();
-        return normalizedSkill.equals(SKILL_NOVICE)
+        return normalizedSkill.equals(SKILL_BEGINNER)
                 || normalizedSkill.equals(SKILL_INTERMEDIATE)
-                || normalizedSkill.equals(SKILL_PRO);
+                || normalizedSkill.equals(SKILL_EXPERT);
     }
 
     @Override

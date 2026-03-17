@@ -153,7 +153,7 @@ public class ParserUtil {
     public static Skill parseSkill(Optional<String> skill) throws ParseException {
         requireNonNull(skill);
         if (skill.isEmpty()) {
-            return new Skill(Skill.SKILL_NOVICE);
+            return new Skill(Skill.SKILL_BEGINNER);
         }
 
         String trimmedSkill = skill.get().trim();

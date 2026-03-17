@@ -135,7 +135,7 @@ class JsonAdaptedPerson {
 
         final Skill modelSkill;
         if (skill == null) {
-            modelSkill = new Skill(Skill.SKILL_NOVICE);
+            modelSkill = new Skill(Skill.SKILL_BEGINNER);
         } else if (!Skill.isValidSkill(skill)) {
             throw new IllegalValueException(Skill.MESSAGE_CONSTRAINTS);
         } else {
