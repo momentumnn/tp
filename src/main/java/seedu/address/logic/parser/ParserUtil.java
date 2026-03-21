@@ -10,6 +10,7 @@ import seedu.address.logic.parser.exceptions.ParseException;
 import seedu.address.model.person.Address;
 import seedu.address.model.person.Availability;
 import seedu.address.model.person.Email;
+import seedu.address.model.person.FilteredSkill;
 import seedu.address.model.person.InjuryStatus;
 import seedu.address.model.person.Name;
 import seedu.address.model.person.Phone;
@@ -162,6 +163,27 @@ public class ParserUtil {
         }
         return new Skill(trimmedSkill);
     }
+
+    /**
+     * Parses a {@code String skill} into a {@code FilteredSkill}.
+     * Leading and trailing whitespaces will be trimmed.
+     *
+     * @param skill the skill string to parse; must not be null
+     * @return a {@code FilteredSkill} representing the parsed skill
+     * @throws NullPointerException if {@code skill} is null
+     * @throws ParseException if the given {@code skill} does not satisfy
+     *         {@link FilteredSkill#isValidFilteredSkill(String)}
+     */
+    public static FilteredSkill parseFilteredSkill(String skill) throws ParseException {
+        requireNonNull(skill);
+
+        String trimmedSkill = skill.trim();
+        if (!FilteredSkill.isValidFilteredSkill(trimmedSkill)) {
+            throw new ParseException(FilteredSkill.MESSAGE_CONSTRAINTS);
+        }
+        return new FilteredSkill(trimmedSkill);
+    }
+
     /**
      * Parses a {@code String Progress Record} into an {@code ProgressRecord}.
      * Leading and trailing whitespaces will be trimmed.
