@@ -14,9 +14,6 @@ public final class StartupErrorMessage {
             "WARNING: Data file at %s could not be loaded. Starting with an empty AddressBook.\n"
                     + "Reason: %s";
 
-    private StartupErrorMessage() {
-    }
-
     /**
      * Builds the startup error message that explains which data file failed to load
      * and shows the human-readable cause.
