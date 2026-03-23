@@ -10,6 +10,9 @@ import seedu.address.commons.exceptions.DataLoadingException;
 public final class StartupErrorMessage {
 
     static final String FALLBACK_REASON = "An unknown error occurred while loading the data file.";
+    static final String WARNING_MESSAGE_FORMAT =
+            "WARNING: Data file at %s could not be loaded. Starting with an empty AddressBook.\n"
+                    + "Reason: %s";
 
     private StartupErrorMessage() {
     }
@@ -20,8 +23,7 @@ public final class StartupErrorMessage {
      */
     public static String build(Path dataFilePath, DataLoadingException exception) {
         String reason = getUserFacingErrorMessage(exception);
-        return "WARNING: Data file at " + dataFilePath + " could not be loaded. Starting with an empty AddressBook.\n"
-                + "Reason: " + reason;
+        return String.format(WARNING_MESSAGE_FORMAT, dataFilePath, reason);
     }
 
     /**
