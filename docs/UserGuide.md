@@ -31,7 +31,7 @@ PTcoach is a **desktop app for managing client contacts, optimized for use via a
 
    * `list` : Lists all contacts.
 
-   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 t/run 100km av/MON:1000-1100,0800-0900` : Adds a contact named `John Doe` to the Address Book.
+   * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 av/MON:1000-1100,0800-0900 t/run 100km` : Adds a contact named `John Doe` to the Address Book.
 
    * `delete 3` : Deletes the 3rd contact shown in the current list.
 
@@ -55,9 +55,6 @@ PTcoach is a **desktop app for managing client contacts, optimized for use via a
 * Items in square brackets are optional.<br>
   e.g `n/NAME [s/SKILL]` can be used as `n/John Doe s/intermediate` or as `n/John Doe`.
 
-  [//]: # (* Items with `…`​ after them can be used multiple times including zero times.<br>)
-  [//]: # (  e.g. `[t/TAG]…​` can be used as ` ` &#40;i.e. 0 times&#41;, `t/friend`, `t/friend t/family` etc.)
-
 * Parameters can be in any order.<br>
   e.g. if the command specifies `n/NAME p/PHONE_NUMBER`, `p/PHONE_NUMBER n/NAME` is also acceptable.
 
@@ -80,12 +77,37 @@ Format: `help`
 
 Adds a person to the address book.
 
-Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS av/AVAILABILITY t/TRAINING_GOAL [pr/PROGRESS_RECORD] [i/INJURY_STATUS] [s/SKILL]`
+Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS av/AVAILABILITY t/TRAINING_GOAL [s/SKILL] [pr/PROGRESS_RECORD] [i/INJURY_STATUS]`
 
-[//]: # (<box type="tip" seamless>)
+**Name (`n/`):**
+* Represents the full name of the client (e.g. `John Doe`)
+* Accepts alphabetical characters and spaces only — no numbers or symbols
+* Cannot be blank
+* This field is mandatory
 
-[//]: # (**Tip:** A person can have any number of tags &#40;including 0&#41;)
-[//]: # (</box>)
+**Phone Number (`p/`):**
+* Represents the contact number of the client (e.g. `98765432`)
+* Accepts numerals only — no spaces, dashes, or other characters
+* Must be at least 3 digits long
+* This field is mandatory
+
+**Email (`e/`):**
+* Represents the email address of the client (e.g. `johnd@example.com`)
+* Must follow the format `local-part@domain` (e.g. `john@example.com`)
+* Both the local-part and domain cannot be blank
+* This field is mandatory
+
+**Address (`a/`):**
+* Represents the home or mailing address of the client (e.g. `John street, block 123, #01-01`)
+* Accepts any non-blank characters
+* Cannot be blank
+* This field is mandatory
+
+**Training Goal (`t/`):**
+* Represents the fitness or performance goal of the client (e.g. `run 50km`, `lift 100kg`)
+* Accepts any alphanumeric characters and spaces
+* Cannot be blank
+* This field is mandatory — every client must have a training goal specified
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 t/run 50km av/mon:0800-0900 i/shoulder dislocate`
@@ -93,23 +115,56 @@ Examples:
 
 ### Listing all persons : `list`
 
-Shows a list of all persons in the address book.
+Shows a list of all persons in the address book, with an optional skill filter.
 
-Format: `list`
+Format: `list [s/SKILL]`
+
+**Skill Filter (`s/`):**
+* Filters the list to show only clients with a matching skill level (e.g. `beginner`, `intermediate`, `expert`)
+* Accepts any non-blank alphanumeric value — not restricted to predefined skill levels
+* Multiple skill filters can be provided to match clients with any of the specified skill levels
+* If no skill filter is provided, all persons are listed
+* Note: Typos in the skill filter (e.g. `list s/begniner`) will not result in an error, but will return an empty list if no clients match the misspelled value
+
+Examples:
+* `list` — lists all persons
+* `list s/beginner` — lists all persons with beginner skill level
+* `list s/beginner s/expert` — lists all persons with beginner or expert skill level
 
 ### Editing a person : `edit`
 
 Edits an existing person in the address book.
 
-Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [av/AVAILABILITY] [t/TRAINING GOAL] [pr/PROGRESS_RECORD] [i/INJURY_STATUS] [s/SKILL]`
+Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [av/AVAILABILITY] [t/TRAINING GOAL] [s/SKILL] [pr/PROGRESS_RECORD] [i/INJURY_STATUS]`
 
 * Edits the person at the specified `INDEX`. The index refers to the index number shown in the displayed person list. The index **must be a positive integer** 1, 2, 3, …​
 * At least one of the optional fields must be provided.
 * Existing values will be updated to the input values.
 
-[//]: # (* When editing tags, the existing tags of the person will be removed i.e adding of tags is not cumulative.)
-[//]: # (* You can remove all the person’s tags by typing `t/` without)
-[//]: # (    specifying any tags after it.)
+**Name (`n/`):**
+* Represents the full name of the client (e.g. `John Doe`)
+* Accepts alphabetical characters and spaces only — no numbers or symbols
+* Cannot be blank
+
+**Phone Number (`p/`):**
+* Represents the contact number of the client (e.g. `98765432`)
+* Accepts numerals only — no spaces, dashes, or other characters
+* Must be at least 3 digits long
+
+**Email (`e/`):**
+* Represents the email address of the client (e.g. `johnd@example.com`)
+* Must follow the format `local-part@domain` (e.g. `john@example.com`)
+* Both the local-part and domain cannot be blank
+
+**Address (`a/`):**
+* Represents the home or mailing address of the client (e.g. `John street, block 123, #01-01`)
+* Accepts any non-blank characters
+* Cannot be blank
+
+**Training Goal (`t/`):**
+* Represents the fitness or performance goal of the client (e.g. `run 50km`, `lift 100kg`)
+* Accepts any alphanumeric characters and spaces
+* Cannot be blank
 
 Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
@@ -198,10 +253,10 @@ _Details coming soon ..._
 
 Action     | Format, Examples
 -----------|----------------------------------------------------------------------------------------------------------------------------------------------------------------------
-**Add**    | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS t/TRAINING_GOAL av/AVAILABILITY [i/INJURY_STATUS] [s/SKILL] [pr/PROGRESS_RECORD]` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 t/run 100km av/sat:1000-1100`
+**Add**    | `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS av/AVAILABILITY t/TRAINING_GOAL [s/SKILL] [pr/PROGRESS_RECORD] [i/INJURY_STATUS]` <br> e.g., `add n/James Ho p/22224444 e/jamesho@example.com a/123, Clementi Rd, 1234665 av/sat:1000-1100 t/run 100km `
 **Clear**  | `clear`
 **Delete** | `delete INDEX`<br> e.g., `delete 3`
-**Edit**   | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [av/AVAILABILITY] [t/TRAINING GOAL] [pr/PROGRESS_RECORD] [i/INJURY_STATUS] [s/SKILL]`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
+**Edit**   | `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [av/AVAILABILITY] [t/TRAINING GOAL] [s/SKILL] [pr/PROGRESS_RECORD] [i/INJURY_STATUS]`<br> e.g.,`edit 2 n/James Lee e/jameslee@example.com`
 **Find**   | `find KEYWORD [MORE_KEYWORDS]`<br> e.g., `find James Jake`
-**List**   | `list`
+**List**   | `list [s/SKILL]`<br> e.g., `list s/intermediate`
 **Help**   | `help`
