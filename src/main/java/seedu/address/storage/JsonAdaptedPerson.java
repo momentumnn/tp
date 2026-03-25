@@ -26,11 +26,11 @@ class JsonAdaptedPerson {
     private final String phone;
     private final String email;
     private final String address;
+    private final String availability;
+    private final String trainingGoal;
+    private String progressRecord;
     private final String injuryStatus;
     private final String skill;
-    private final String trainingGoal;
-    private final String availability;
-    private String progressRecord;
 
     /**
      * Constructs a {@code JsonAdaptedPerson} with the given person details.
@@ -38,18 +38,18 @@ class JsonAdaptedPerson {
     @JsonCreator
     public JsonAdaptedPerson(@JsonProperty("name") String name, @JsonProperty("phone") String phone,
             @JsonProperty("email") String email, @JsonProperty("address") String address,
-            @JsonProperty("injuryStatus") String injuryStatus,
-            @JsonProperty("trainingGoal") String trainingGoal, @JsonProperty("availability") String availability,
-            @JsonProperty("skill") String skill, @JsonProperty("progressRecord") String progressRecord) {
+            @JsonProperty("availability") String availability, @JsonProperty("trainingGoal") String trainingGoal,
+            @JsonProperty("progressRecord") String progressRecord, @JsonProperty("injuryStatus") String injuryStatus,
+            @JsonProperty("skill") String skill) {
         this.name = name;
         this.phone = phone;
         this.email = email;
         this.address = address;
-        this.injuryStatus = injuryStatus;
-        this.trainingGoal = trainingGoal;
         this.availability = availability;
-        this.skill = skill;
+        this.trainingGoal = trainingGoal;
         this.progressRecord = progressRecord;
+        this.injuryStatus = injuryStatus;
+        this.skill = skill;
     }
 
     /**
@@ -60,11 +60,11 @@ class JsonAdaptedPerson {
         phone = source.getPhone().value;
         email = source.getEmail().value;
         address = source.getAddress().value;
-        injuryStatus = source.getInjuryStatus().value;
-        trainingGoal = source.getTrainingGoal().value;
         availability = source.getAvailability().value;
-        skill = source.getSkill().value;
+        trainingGoal = source.getTrainingGoal().value;
         progressRecord = source.getProgressRecord().value;
+        injuryStatus = source.getInjuryStatus().value;
+        skill = source.getSkill().value;
     }
 
     /**
@@ -73,84 +73,120 @@ class JsonAdaptedPerson {
      * @throws IllegalValueException if there were any data constraints violated in the adapted person.
      */
     public Person toModelType() throws IllegalValueException {
+        Name modelName = toModelName();
+        Phone modelPhone = toModelPhone();
+        Email modelEmail = toModelEmail();
+        Address modelAddress = toModelAddress();
+        Availability modelAvailability = toModelAvailability();
+        TrainingGoal modelTrainingGoal = toModelTrainingGoal();
+        ProgressRecord modelProgressRecord = toModelProgressRecord();
+        InjuryStatus modelInjuryStatus = toModelInjuryStatus();
+        Skill modelSkill = toModelSkill();
+
+        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelInjuryStatus, modelTrainingGoal,
+                modelAvailability, modelProgressRecord, modelSkill);
+    }
+
+    private Name toModelName() throws IllegalValueException {
         if (name == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
         }
         if (!Name.isValidName(name)) {
-            throw new IllegalValueException(Name.MESSAGE_CONSTRAINTS);
+            throw new IllegalValueException(formatInvalidFieldMessage(Name.class.getSimpleName(),
+                    Name.MESSAGE_CONSTRAINTS, name));
         }
-        final Name modelName = new Name(name);
+        return new Name(name);
+    }
 
+    private Phone toModelPhone() throws IllegalValueException {
         if (phone == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Phone.class.getSimpleName()));
         }
         if (!Phone.isValidPhone(phone)) {
-            throw new IllegalValueException(Phone.MESSAGE_CONSTRAINTS);
+            throw new IllegalValueException(formatInvalidFieldMessage(Phone.class.getSimpleName(),
+                    Phone.MESSAGE_CONSTRAINTS, phone));
         }
-        final Phone modelPhone = new Phone(phone);
+        return new Phone(phone);
+    }
 
+    private Email toModelEmail() throws IllegalValueException {
         if (email == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Email.class.getSimpleName()));
         }
         if (!Email.isValidEmail(email)) {
-            throw new IllegalValueException(Email.MESSAGE_CONSTRAINTS);
+            throw new IllegalValueException(formatInvalidFieldMessage(Email.class.getSimpleName(),
+                    Email.MESSAGE_CONSTRAINTS, email));
         }
-        final Email modelEmail = new Email(email);
+        return new Email(email);
+    }
 
+    private Address toModelAddress() throws IllegalValueException {
         if (address == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName()));
         }
         if (!Address.isValidAddress(address)) {
-            throw new IllegalValueException(Address.MESSAGE_CONSTRAINTS);
+            throw new IllegalValueException(formatInvalidFieldMessage(Address.class.getSimpleName(),
+                    Address.MESSAGE_CONSTRAINTS, address));
         }
-        final Address modelAddress = new Address(address);
+        return new Address(address);
+    }
 
-        final InjuryStatus modelInjuryStatus;
-
-        if (injuryStatus == null) {
-            modelInjuryStatus = new InjuryStatus(InjuryStatus.DEFAULT_INJURY_STATUS);
-        } else if (!InjuryStatus.isValidInjuryStatus(injuryStatus)) {
-            throw new IllegalValueException(InjuryStatus.MESSAGE_CONSTRAINTS);
-        } else {
-            modelInjuryStatus = new InjuryStatus(injuryStatus);
-        }
-
-        final TrainingGoal modelTrainingGoal;
-        if (trainingGoal == null) {
-            modelTrainingGoal = new TrainingGoal(TrainingGoal.DEFAULT_TRAINING_GOAL);
-        } else if (!TrainingGoal.isValidTrainingGoal(trainingGoal)) {
-            throw new IllegalValueException(TrainingGoal.MESSAGE_CONSTRAINTS);
-        } else {
-            modelTrainingGoal = new TrainingGoal(trainingGoal);
-        }
-
-        final Availability modelAvailability;
+    private Availability toModelAvailability() throws IllegalValueException {
         if (availability == null) {
-            modelAvailability = new Availability(Availability.DEFAULT_AVAILABILITY);
-        } else if (!Availability.isValidAvailability(availability)) {
-            throw new IllegalValueException(Availability.MESSAGE_CONSTRAINTS);
-        } else {
-            modelAvailability = new Availability(availability);
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Availability.class.getSimpleName()));
         }
+        if (!Availability.isValidAvailability(availability)) {
+            throw new IllegalValueException(formatInvalidFieldMessage(Availability.class.getSimpleName(),
+                    Availability.MESSAGE_CONSTRAINTS, availability));
+        }
+        return new Availability(availability);
+    }
 
-        final Skill modelSkill;
+    private TrainingGoal toModelTrainingGoal() throws IllegalValueException {
+        if (trainingGoal == null) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                    TrainingGoal.class.getSimpleName()));
+        }
+        if (!TrainingGoal.isValidTrainingGoal(trainingGoal)) {
+            throw new IllegalValueException(formatInvalidFieldMessage(TrainingGoal.class.getSimpleName(),
+                    TrainingGoal.MESSAGE_CONSTRAINTS, trainingGoal));
+        }
+        return new TrainingGoal(trainingGoal);
+    }
+
+    private ProgressRecord toModelProgressRecord() throws IllegalValueException {
+        String record = progressRecord == null ? ProgressRecord.DEFAULT_PROGRESS : progressRecord;
+        if (!ProgressRecord.isValidProgress(record)) {
+            throw new IllegalValueException(formatInvalidFieldMessage(ProgressRecord.class.getSimpleName(),
+                    ProgressRecord.MESSAGE_CONSTRAINTS, record));
+        }
+        return new ProgressRecord(record);
+    }
+
+    private InjuryStatus toModelInjuryStatus() throws IllegalValueException {
+        if (injuryStatus == null) {
+            return new InjuryStatus(InjuryStatus.DEFAULT_INJURY_STATUS);
+        }
+        if (!InjuryStatus.isValidInjuryStatus(injuryStatus)) {
+            throw new IllegalValueException(formatInvalidFieldMessage(InjuryStatus.class.getSimpleName(),
+                    InjuryStatus.MESSAGE_CONSTRAINTS, injuryStatus));
+        }
+        return new InjuryStatus(injuryStatus);
+    }
+
+    private Skill toModelSkill() throws IllegalValueException {
         if (skill == null) {
-            modelSkill = new Skill(Skill.SKILL_BEGINNER);
-        } else if (!Skill.isValidSkill(skill)) {
-            throw new IllegalValueException(Skill.MESSAGE_CONSTRAINTS);
-        } else {
-            modelSkill = new Skill(skill);
+            return new Skill(Skill.SKILL_BEGINNER);
         }
+        if (!Skill.isValidSkill(skill)) {
+            throw new IllegalValueException(formatInvalidFieldMessage(Skill.class.getSimpleName(),
+                    Skill.MESSAGE_CONSTRAINTS, skill));
+        }
+        return new Skill(skill);
+    }
 
-        if (progressRecord == null) {
-            progressRecord = "0%";
-        }
-        if (!ProgressRecord.isValidProgress(progressRecord)) {
-            throw new IllegalValueException(ProgressRecord.MESSAGE_CONSTRAINTS);
-        }
-        final ProgressRecord modelProgressRecord = new ProgressRecord(progressRecord);
-        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelInjuryStatus, modelTrainingGoal,
-                modelAvailability, modelProgressRecord, modelSkill);
+    private static String formatInvalidFieldMessage(String fieldName, String expected, String actualValue) {
+        return String.format("Invalid value for %s: \"%s\". Expected: %s", fieldName, actualValue, expected);
     }
 
 }

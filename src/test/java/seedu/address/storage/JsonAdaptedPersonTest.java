@@ -51,9 +51,10 @@ public class JsonAdaptedPersonTest {
     public void toModelType_invalidName_throwsIllegalValueException() {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(INVALID_NAME, VALID_PHONE, VALID_EMAIL,
-                    VALID_ADDRESS, VALID_INJURY_STATUS, VALID_TRAINING_GOAL,
-                        VALID_AVAILABILITY, VALID_SKILL, VALID_PROGRESS_RECORD);
-        String expectedMessage = Name.MESSAGE_CONSTRAINTS;
+                    VALID_ADDRESS, VALID_AVAILABILITY, VALID_TRAINING_GOAL,
+                        VALID_PROGRESS_RECORD, VALID_INJURY_STATUS, VALID_SKILL);
+        String expectedMessage = "Invalid value for Name: \"" + INVALID_NAME
+                + "\". Expected: " + Name.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
 
@@ -61,8 +62,8 @@ public class JsonAdaptedPersonTest {
     public void toModelType_nullName_throwsIllegalValueException() {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(null, VALID_PHONE, VALID_EMAIL,
-            VALID_ADDRESS, VALID_INJURY_STATUS, VALID_TRAINING_GOAL,
-                        VALID_AVAILABILITY, VALID_SKILL, VALID_PROGRESS_RECORD);
+            VALID_ADDRESS, VALID_AVAILABILITY, VALID_TRAINING_GOAL,
+                        VALID_PROGRESS_RECORD, VALID_INJURY_STATUS, VALID_SKILL);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -71,9 +72,10 @@ public class JsonAdaptedPersonTest {
     public void toModelType_invalidPhone_throwsIllegalValueException() {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(VALID_NAME, INVALID_PHONE, VALID_EMAIL,
-                    VALID_ADDRESS, VALID_INJURY_STATUS, VALID_TRAINING_GOAL,
-                        VALID_AVAILABILITY, VALID_SKILL, VALID_PROGRESS_RECORD);
-        String expectedMessage = Phone.MESSAGE_CONSTRAINTS;
+                    VALID_ADDRESS, VALID_AVAILABILITY, VALID_TRAINING_GOAL,
+                        VALID_PROGRESS_RECORD, VALID_INJURY_STATUS, VALID_SKILL);
+        String expectedMessage = "Invalid value for Phone: \"" + INVALID_PHONE
+                + "\". Expected: " + Phone.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
 
@@ -81,8 +83,8 @@ public class JsonAdaptedPersonTest {
     public void toModelType_nullPhone_throwsIllegalValueException() {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(VALID_NAME, null, VALID_EMAIL,
-            VALID_ADDRESS, VALID_INJURY_STATUS, VALID_TRAINING_GOAL,
-                    VALID_AVAILABILITY, VALID_SKILL, VALID_PROGRESS_RECORD);
+            VALID_ADDRESS, VALID_AVAILABILITY, VALID_TRAINING_GOAL,
+                    VALID_PROGRESS_RECORD, VALID_INJURY_STATUS, VALID_SKILL);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Phone.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
@@ -91,9 +93,10 @@ public class JsonAdaptedPersonTest {
     public void toModelType_invalidEmail_throwsIllegalValueException() {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, INVALID_EMAIL,
-                    VALID_ADDRESS, VALID_INJURY_STATUS, VALID_TRAINING_GOAL,
-                        VALID_AVAILABILITY, VALID_SKILL, VALID_PROGRESS_RECORD);
-        String expectedMessage = Email.MESSAGE_CONSTRAINTS;
+                    VALID_ADDRESS, VALID_AVAILABILITY, VALID_TRAINING_GOAL,
+                        VALID_PROGRESS_RECORD, VALID_INJURY_STATUS, VALID_SKILL);
+        String expectedMessage = "Invalid value for Email: \"" + INVALID_EMAIL
+                + "\". Expected: " + Email.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
 
@@ -101,8 +104,8 @@ public class JsonAdaptedPersonTest {
     public void toModelType_nullEmail_throwsIllegalValueException() {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, null,
-            VALID_ADDRESS, VALID_INJURY_STATUS, VALID_TRAINING_GOAL,
-                        VALID_AVAILABILITY, VALID_SKILL, VALID_PROGRESS_RECORD);
+            VALID_ADDRESS, VALID_AVAILABILITY, VALID_TRAINING_GOAL,
+                        VALID_PROGRESS_RECORD, VALID_INJURY_STATUS, VALID_SKILL);
 
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Email.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
@@ -112,73 +115,107 @@ public class JsonAdaptedPersonTest {
     public void toModelType_invalidAddress_throwsIllegalValueException() {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL,
-                    INVALID_ADDRESS, VALID_INJURY_STATUS, VALID_TRAINING_GOAL,
-                        VALID_AVAILABILITY, VALID_SKILL, VALID_PROGRESS_RECORD);
-        String expectedMessage = Address.MESSAGE_CONSTRAINTS;
+                    INVALID_ADDRESS, VALID_AVAILABILITY, VALID_TRAINING_GOAL,
+                        VALID_PROGRESS_RECORD, VALID_INJURY_STATUS, VALID_SKILL);
+        String expectedMessage = "Invalid value for Address: \"" + INVALID_ADDRESS
+                + "\". Expected: " + Address.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
 
     @Test
     public void toModelType_nullAddress_throwsIllegalValueException() {
-        JsonAdaptedPerson person =
+            JsonAdaptedPerson person =
             new JsonAdaptedPerson(VALID_NAME, VALID_PHONE,
-                VALID_EMAIL, null, VALID_INJURY_STATUS, VALID_TRAINING_GOAL,
-                        VALID_AVAILABILITY, VALID_SKILL, VALID_PROGRESS_RECORD);
+                VALID_EMAIL, null, VALID_AVAILABILITY, VALID_TRAINING_GOAL,
+                        VALID_PROGRESS_RECORD, VALID_INJURY_STATUS, VALID_SKILL);
         String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName());
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
 
     @Test
-    public void toModelType_invalidInjuryStatus_throwsIllegalValueException() {
+    public void toModelType_invalidAvailability_throwsIllegalValueException() {
         JsonAdaptedPerson person =
-            new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS,
-                INVALID_INJURY_STATUS, VALID_TRAINING_GOAL,
-                VALID_AVAILABILITY, VALID_SKILL, VALID_PROGRESS_RECORD);
-        String expectedMessage = InjuryStatus.MESSAGE_CONSTRAINTS;
+            new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL,
+                    VALID_ADDRESS, INVALID_AVAILABILITY, VALID_TRAINING_GOAL,
+                    VALID_PROGRESS_RECORD, VALID_INJURY_STATUS, VALID_SKILL);
+        String expectedMessage = "Invalid value for Availability: \"" + INVALID_AVAILABILITY
+                + "\". Expected: " + Availability.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
 
     @Test
-    public void toModelType_nullInjuryStatus_returnsPersonWithDefaultInjuryStatus() throws Exception {
+    public void toModelType_nullAvailability_throwsIllegalValueException() {
         JsonAdaptedPerson person =
-            new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL,
-                VALID_ADDRESS, null, VALID_TRAINING_GOAL,
-                VALID_AVAILABILITY, VALID_SKILL, VALID_PROGRESS_RECORD);
-
-        Person expectedPerson = new PersonBuilder(BENSON)
-                .withInjuryStatus(InjuryStatus.DEFAULT_INJURY_STATUS)
-                .build();
-
-        assertEquals(expectedPerson, person.toModelType());
+                new JsonAdaptedPerson(VALID_NAME, VALID_PHONE,
+                        VALID_EMAIL, VALID_ADDRESS, null, VALID_TRAINING_GOAL,
+                        VALID_PROGRESS_RECORD, VALID_INJURY_STATUS, VALID_SKILL);
+        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Availability.class.getSimpleName());
+        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
 
     @Test
     public void toModelType_invalidTrainingGoal_throwsIllegalValueException() {
         JsonAdaptedPerson person =
             new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL,
-                VALID_ADDRESS, VALID_INJURY_STATUS, INVALID_TRAINING_GOAL,
-                VALID_AVAILABILITY, VALID_SKILL, VALID_PROGRESS_RECORD);
-        String expectedMessage = TrainingGoal.MESSAGE_CONSTRAINTS;
-        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
-    }
-
-
-    @Test
-    public void toModelType_invalidAvailability_throwsIllegalValueException() {
-        JsonAdaptedPerson person =
-            new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL,
-                    VALID_ADDRESS, VALID_INJURY_STATUS, VALID_TRAINING_GOAL,
-                    INVALID_AVAILABILITY, VALID_SKILL, VALID_PROGRESS_RECORD);
-        String expectedMessage = Availability.MESSAGE_CONSTRAINTS;
+                VALID_ADDRESS, VALID_AVAILABILITY, INVALID_TRAINING_GOAL,
+                VALID_PROGRESS_RECORD, VALID_INJURY_STATUS, VALID_SKILL);
+        String expectedMessage = "Invalid value for TrainingGoal: \"" + INVALID_TRAINING_GOAL
+                + "\". Expected: " + TrainingGoal.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
 
     @Test
-    public void toModelType_missingSkill_defaultsToNovice() throws Exception {
+    public void toModelType_invalidProgress_throwsIllegalValueException() {
         JsonAdaptedPerson person =
             new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL,
-                    VALID_ADDRESS, VALID_INJURY_STATUS, VALID_TRAINING_GOAL,
-                    VALID_AVAILABILITY, null, VALID_PROGRESS_RECORD);
+                    VALID_ADDRESS, VALID_AVAILABILITY, VALID_TRAINING_GOAL,
+                    INVALID_PROGRESS_RECORD, VALID_INJURY_STATUS, VALID_SKILL);
+        String expectedMessage = "Invalid value for ProgressRecord: \"" + INVALID_PROGRESS_RECORD
+                + "\". Expected: " + ProgressRecord.MESSAGE_CONSTRAINTS;
+        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+    }
+
+    @Test
+    public void toModelType_nullProgress_setsDefaultProgress() throws Exception {
+        JsonAdaptedPerson person =
+            new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL,
+                    VALID_ADDRESS, VALID_AVAILABILITY, VALID_TRAINING_GOAL,
+                    null, VALID_INJURY_STATUS, VALID_SKILL);
+        Person expectedPerson = new PersonBuilder(BENSON)
+                .withProgressRecord(ProgressRecord.DEFAULT_PROGRESS)
+                .build();
+        assertEquals(expectedPerson, person.toModelType());
+    }
+
+    @Test
+    public void toModelType_invalidInjuryStatus_throwsIllegalValueException() {
+        JsonAdaptedPerson person =
+            new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS,
+                VALID_AVAILABILITY, VALID_TRAINING_GOAL,
+                VALID_PROGRESS_RECORD, INVALID_INJURY_STATUS, VALID_SKILL);
+        String expectedMessage = "Invalid value for InjuryStatus: \"" + INVALID_INJURY_STATUS
+                + "\". Expected: " + InjuryStatus.MESSAGE_CONSTRAINTS;
+        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+    }
+
+    @Test
+    public void toModelType_nullInjuryStatus_setsDefaultInjuryStatus() throws Exception {
+        JsonAdaptedPerson person =
+            new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL,
+                VALID_ADDRESS, VALID_AVAILABILITY, VALID_TRAINING_GOAL,
+                VALID_PROGRESS_RECORD, null, VALID_SKILL);
+        Person expectedPerson = new PersonBuilder(BENSON)
+                .withInjuryStatus(InjuryStatus.DEFAULT_INJURY_STATUS)
+                .build();
+        assertEquals(expectedPerson, person.toModelType());
+    }
+
+    @Test
+    public void toModelType_nullSkill_setsDefaultSkill() throws Exception {
+        JsonAdaptedPerson person =
+            new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL,
+                    VALID_ADDRESS, VALID_AVAILABILITY, VALID_TRAINING_GOAL,
+                    VALID_PROGRESS_RECORD, VALID_INJURY_STATUS, null);
         Person modelPerson = person.toModelType();
         assertEquals(new Skill(Skill.SKILL_BEGINNER), modelPerson.getSkill());
     }
@@ -187,19 +224,10 @@ public class JsonAdaptedPersonTest {
     public void toModelType_invalidSkill_throwsIllegalValueException() {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL,
-                    VALID_ADDRESS, VALID_INJURY_STATUS, VALID_TRAINING_GOAL,
-                        VALID_AVAILABILITY, INVALID_SKILL, VALID_PROGRESS_RECORD);
-        String expectedMessage = Skill.MESSAGE_CONSTRAINTS;
-        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
-    }
-
-    @Test
-    public void toModelType_invalidProgress_throwsIllegalValueException() {
-        JsonAdaptedPerson person =
-            new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL,
-                    VALID_ADDRESS, VALID_INJURY_STATUS, VALID_TRAINING_GOAL,
-                    VALID_AVAILABILITY, VALID_SKILL, INVALID_PROGRESS_RECORD);
-        String expectedMessage = ProgressRecord.MESSAGE_CONSTRAINTS;
+                    VALID_ADDRESS, VALID_AVAILABILITY, VALID_TRAINING_GOAL,
+                        VALID_PROGRESS_RECORD, VALID_INJURY_STATUS, INVALID_SKILL);
+        String expectedMessage = "Invalid value for Skill: \"" + INVALID_SKILL
+                + "\". Expected: " + Skill.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
 
