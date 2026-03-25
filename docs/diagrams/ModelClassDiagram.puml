@@ -19,6 +19,10 @@ Class Email
 Class Name
 Class Phone
 Class Tag
+Class Skill
+Class Timeslot
+Class TrainingGoal
+Class FilteredSkill
 
 Class I #FFFFFF
 }
@@ -42,6 +46,10 @@ Person *--> Phone
 Person *--> Email
 Person *--> Address
 Person *--> "*" Tag
+Person *--> Skill
+Person *--> "*" Timeslot
+Person *--> TrainingGoal
+Person *--> "0..1" FilteredSkill
 
 Person -[hidden]up--> I
 UniquePersonList -[hidden]right-> I
