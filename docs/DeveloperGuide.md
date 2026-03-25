@@ -438,8 +438,9 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1. User requests to view clients.
+1. Trainer requests to view clients (optionally filtered by skill).
 2. PTCoach shows a list of all clients.
+3. PTCoach shows a list of clients matching the request.
 
    Use case ends.
 
@@ -454,6 +455,17 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
   * 2a1. PTCoach shows a message indicating that the list is empty.
    
     Use case ends.
+
+* 3a. No clients match the filter. 
+  * 3a1. PTCoach shows an empty list. 
+  
+    Use case ends.
+  
+* 3b. Missing filter parameter
+  * 3b1. PTCoach shows a message indicating that the parameter is empty.
+  
+    Use case ends.
+
 
 **Use case: UC7 - Read client details**
 
@@ -481,6 +493,33 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
      
     Use case ends.
 
+**Use case: UC8 - Navigate command history**
+
+**MSS**
+
+1. Trainer presses the Up or Down arrow key.
+2. PTCoach displays the corresponding command from the command history.
+
+    Use case ends.
+
+**Extensions**
+
+* 1a. There are no previously entered commands.  
+  * 1a1. PTCoach does not display any command.
+  
+  Use case ends.  
+
+* 1b. Trainer presses Up when already at the oldest command.
+  * 1b1. PTCoach keeps displaying the oldest command. 
+  
+  Use case ends. 
+
+* 1c. Trainer presses Down when already at the most recent command.
+  * 1c1. PTCoach displays an empty input field.
+  
+  Use case ends.
+
+
 *{More to be added}*
 
 ### Non-Functional Requirements
@@ -504,7 +543,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
   - Contact Number  
   - Address  
   - Availability  
-  - Timeslot
+  - Training slot
   - Training Goals  
   - Skill Level*  
   - Progress Record*  
@@ -543,16 +582,135 @@ testers are expected to do more *exploratory* testing.
 
    1. Download the jar file and copy into an empty folder
 
-   1. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
+   2. Double-click the jar file Expected: Shows the GUI with a set of sample contacts. The window size may not be optimum.
 
-1. Saving window preferences
+2. Saving window preferences
 
    1. Resize the window to an optimum size. Move the window to a different location. Close the window.
 
-   1. Re-launch the app by double-clicking the jar file.<br>
+   2. Re-launch the app by double-clicking the jar file.<br>
        Expected: The most recent window size and location is retained.
 
-1. _{ more test cases …​ }_
+3. Exiting the application
+
+    1. Test Case: `exit`<br>
+       Expected: The application closes.
+   
+   2. Click on the exit icon of the application
+      Expected: The application closes.
+
+### Adding a person
+
+1. Adding a person with all compulsory fields
+   1. Prerequisites: The application is running normally.
+   
+   2. Test case: `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 t/Run 50km ts/mon:1,2`<br>
+   Expected: A new person is added to the list. A success message is shown.
+
+2. Adding a person with all fields
+
+   1. Test case: `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 t/Run 50km ts/mon:1,2 i/Shoulder dislocation s/beginner pr/50`<br>
+      Expected: A new person is added to the list with all provided details. A success message is shown.
+
+3. Adding a duplicate person
+
+   1. Prerequisites: A person with phone number `98765432` already exists.
+
+   2. Test case: `add n/Jane Doe p/98765432 e/janed@example.com a/Jane street t/Lift 100kg ts/tue:3`<br>
+      Expected: No person is added. An error message is shown.
+
+4. Adding a person with invalid fields
+
+   1. Test case: `add n/John Doe p/abc123 e/johnd@example.com a/John street t/Run 50km ts/mon:1,2`<br>
+      Expected: No person is added. An error message is shown because the phone number is invalid
+
+   2. Test case: `add n/John Doe p/98765432 e/invalidEmail a/John street t/Run 50km ts/mon:1,2`<br>
+      Expected: No person is added. An error message is shown because the email is invalid
+   
+   3. Test case: `add n/John Doe p/98765432 e/johnd@example.com a/John street t/Run 50km ts/mon:13`<br>
+      Expected: No person is added. An error message is shown because the training slot is invalid
+
+5. Adding a person with missing compulsory fields
+
+   1. Test case: `add n/John Doe p/98765432 e/johnd@example.com a/John street t/Run 50km`<br>
+          Expected: No person is added. An error message is shown because the timeslot is missing.
+
+   2. Test case: `add n/John Doe p/98765432 e/johnd@example.com a/John street ts/mon:1,2`<br>
+      Expected: No person is added. An error message is shown because the training goal is missing.
+
+### Listing persons
+
+1. Listing all persons
+
+   1. Test case: `list`<br>
+      Expected: All persons in the address book are shown.
+
+2. Listing persons by skill filter 
+
+   1. Prerequisites: There are persons with different skill levels in the list.
+
+   2. Test case: `list s/beginner`<br>
+      Expected: Only persons with skill level `Beginner` are shown.
+
+   3. Test case: `list s/expert`<br>
+      Expected: Only persons with skill level `Expert` are shown.
+
+3. Listing persons with no matching filter
+
+   1. Test case: `list s/beginner` when there are no beginner clients<br>
+      Expected: An empty list is shown.
+
+4. Listing persons with invalid filter
+
+   1. Test case: `list s/advanced`
+      Expected: The command is accepted. If no client has the skill level `Advanced`, an empty list is shown.
+
+5. Listing persons with missing filter parameter
+
+   1. Test case: `list s/`
+      Expected: An error message is shown because the skill filter is blank.
+
+### Editing a person
+
+1. Editing a person with one field
+
+   1. Prerequisites: List all persons using the `list` command. At least one person exists.
+
+   2. Test case: `edit 1 p/91234567`<br>
+      Expected: The phone number of the 1st person is updated. A success message is shown.
+
+2. Editing a person with multiple fields
+
+   1. Test case: `edit 1 e/johndoe@example.com t/Lift 100kg ts/fri:2,3 pr/70 s/intermediate`<br>
+      Expected: The specified fields of the 1st person are updated. A success message is shown.
+
+3. Editing a person with invalid index
+   
+   1. Prerequisites: List all persons using the `list` command. There is at least one person in the list and fewer than 999 persons in the list.
+      Note: The index refers to the position shown in the displayed list and starts from 1.
+
+   2. Test case: `edit 0 p/91234567`<br>
+      Expected: No person is edited. An error message is shown because index starts with 1 not 0. 
+   
+   3. Test case: `edit 999 p/91234567`<br>
+      Expected: No person is edited. An error message is shown because index is out of range.
+
+4. Editing a person with invalid values
+
+   1. Test case: `edit 1 p/abc123`<br>
+      Expected: No person is edited. An error message is shown because phone number is invalid.
+
+   2. Test case: `edit 1 ts/mon:13`<br>
+      Expected: No person is edited. An error message is shown because training slot is invalid.
+
+   3. Test case: `edit 1 s/advanced`<br>
+      Expected: No person is edited. An error message is shown because skill is invalid.
+
+5. Editing a person without providing fields
+
+    1. Test case: `edit 1`<br>
+       Expected: No person is edited. An error message is shown.
+
 
 ### Deleting a person
 
@@ -560,21 +718,109 @@ testers are expected to do more *exploratory* testing.
 
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
-   1. Test case: `delete 1`<br>
+   2. Test case: `delete 1`<br>
       Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
 
-   1. Test case: `delete 0`<br>
+   3. Test case: `delete 0`<br>
       Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
 
-   1. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
+   4. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.
 
-1. _{ more test cases …​ }_
+### Clearing all persons
+
+1. Clearing the address book
+
+   1. Prerequisites: List all persons using the `list` command. There are multiple persons in the address book.
+
+   2. Test case: `clear`<br>
+      Expected: All persons are removed from the list. A success message is shown.
+
+2. Clearing an already empty address book
+
+   1. Prerequisites: The address book is empty.
+
+   2. Test case: `clear`<br>
+      Expected: The list remains empty. A success message is shown.
+
+### Help command
+
+1. Opening the help window
+
+    1. Test case: `help`<br>
+       Expected: The help message appears.
+
+2. Help with extra parameters
+
+    1. Test case: `help abc`<br>
+       Expected: The help message appears.
+
+### Command history navigation
+
+1. Navigating to previous commands
+
+   1. Prerequisites: Enter several commands such as `list`, `find John`, and `help`.
+
+   2. Press the Up arrow key once.<br>
+      Expected: The most recently entered command is shown in the command box.
+
+   3. Press the Up arrow key again.<br>
+      Expected: The next earlier command is shown in the command box.
+
+2. Navigating to newer commands
+
+   1. Prerequisites: Use the Up arrow key at least once to move into command history.
+
+   2. Press the Down arrow key once.<br>
+      Expected: A more recent command is shown in the command box.
+
+3. Navigating when there is no command history
+
+   1. Prerequisites: Fresh launch of the app without entering any command.
+
+   2. Press the Up arrow key.<br>
+      Expected: No command is shown. The command box remains empty.
+
+4. Navigating beyond the oldest command
+
+   1. Prerequisites: There are previously entered commands.
+
+   2. Repeatedly press the Up arrow key until the oldest command is shown.
+
+   3. Press the Up arrow key again.<br>
+      Expected: The oldest command remains shown.
+
+5. Navigating beyond the most recent command
+
+   1. Prerequisites: Use the Up arrow key to navigate through command history.
+
+   2. Repeatedly press the Down arrow key until the most recent position is reached.
+
+   3. Press the Down arrow key again.<br>
+      Expected: The command box becomes empty.
 
 ### Saving data
 
-1. Dealing with missing/corrupted data files
+1. Saving data after add/edit/delete/clear
 
-   1. _{explain how to simulate a missing/corrupted file, and the expected behavior}_
+   1. Perform an `add`, `edit`, `delete`, or `clear` command.
 
-1. _{ more test cases …​ }_
+   2. Close the application.
+
+   3. Re-launch the application.<br>
+      Expected: The changes made previously are still present.
+
+2. Dealing with missing data file
+
+   1. Prerequisites: The data file `[JAR file location]/data/addressbook.json` does not exist.
+
+   2. Launch the application.<br>
+      Expected: The application starts successfully with an empty list.
+   
+3. Dealing with corrupted data file
+
+   1. Prerequisites: The data file `[JAR file location]/data/addressbook.json` contains invalid JSON.
+
+   2. Launch the application.<br>
+      Expected: The application loads an empty list.
+

@@ -5,7 +5,7 @@
 
 ### Project: PTCoach
 
-PTcoach is designed to help coaches manage and track their client database efficiently. It enables them to store and update client contact details, injury status, availability, training goals, skill levels, and progress records in a structured and organized manner.
+PTcoach is designed to help coaches manage and track their client database efficiently. It enables them to store and update client contact details, injury status, training session, training goals, skill levels, and progress records in a structured and organized manner.
 
 * **New Feature**: 
   * What it does: 
