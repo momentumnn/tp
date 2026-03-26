@@ -1,0 +1,53 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+participant "MainApp" as MainApp MODEL_COLOR_T2
+participant "StorageManager" as StorageManager STORAGE_COLOR_T2
+participant "JsonAddressBookStorage" as JsonStorage STORAGE_COLOR_T3
+participant "JsonSerializableAddressBook" as JsonSerializable STORAGE_COLOR_T1
+participant "JsonAdaptedPerson" as JsonAdaptedPerson STORAGE_COLOR_T2
+participant "UiManager" as UiManager UI_COLOR_T3
+participant "MainWindow" as MainWindow UI_COLOR_T2
+participant "ResultDisplay" as ResultDisplay UI_COLOR_T1
+participant "StartupErrorMessage" as StartupErrorMessage STORAGE_COLOR_T1
+
+MainApp -> StorageManager : readAddressBook()
+activate StorageManager
+StorageManager -> JsonStorage : readAddressBook(filePath)
+activate JsonStorage
+JsonStorage -> JsonSerializable : toModelType()
+activate JsonSerializable
+JsonSerializable -> JsonAdaptedPerson : toModelType() (per entry)
+activate JsonAdaptedPerson
+JsonAdaptedPerson -> JsonAdaptedPerson : validate fields (constraints)
+note right of JsonAdaptedPerson: e.g. missing name, invalid phone, etc. triggers IllegalValueException
+JsonAdaptedPerson --> JsonSerializable : throws IllegalValueException
+deactivate JsonAdaptedPerson
+JsonSerializable --> JsonStorage : propagate IllegalValueException
+deactivate JsonSerializable
+JsonStorage --> StorageManager : wraps as DataLoadingException
+deactivate JsonStorage
+StorageManager --> MainApp : propagated exception
+deactivate StorageManager
+MainApp -> MainApp : catch DataLoadingException
+MainApp -> StartupErrorMessage : build(storage.getAddressBookFilePath(), exception)
+activate StartupErrorMessage
+StartupErrorMessage --> MainApp : userMessage
+deactivate StartupErrorMessage
+note right of MainApp MODEL_COLOR_T1: `logger.warning` records failure and startup continues with the empty model
+MainApp -> UiManager : start(primaryStage)
+activate UiManager
+UiManager -> MainWindow : start(primaryStage)
+activate MainWindow
+MainWindow -> MainWindow : show() / fillInnerParts()
+MainWindow --> UiManager : UI ready
+deactivate MainWindow
+MainApp -> UiManager : showStartupErrorMessage(startupErrorMessage)
+UiManager -> MainWindow : showStartupMessage(message)
+MainWindow -> ResultDisplay : setFeedbackToUser(message)
+deactivate UiManager
+
+note over JsonStorage,StorageManager STORAGE_COLOR_T1: Parsing produces IllegalValueException; wrapped as DataLoadingException for startup handling
+note over MainWindow UI_COLOR_T1: ResultDisplay shows the warning so the user sees the load failure reason
+@enduml
