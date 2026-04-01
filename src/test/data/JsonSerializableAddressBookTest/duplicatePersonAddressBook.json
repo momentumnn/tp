@@ -4,15 +4,14 @@
     "phone": "94351253",
     "email": "alice@example.com",
     "address": "123, Jurong West Ave 6, #08-111",
-    "trainingGoal": "67 pushups in 67 seconds",
-    "progressRecord": "100%"
+    "timeslots" : [ "MON:0900-1000" ],
+    "trainingGoal": "67 pushups in 67 seconds"
   }, {
     "name": "Alice Pauline",
     "phone": "94351253",
     "email": "pauline@example.com",
     "address": "4th street",
-    "trainingGoal": "24 pushups in 3 hours",
-    "address": "4th street",
-    "progressRecord": "100%"
+    "timeslots" : [ "MON:0900-1000" ],
+    "trainingGoal": "24 pushups in 3 hours"
   } ]
 }

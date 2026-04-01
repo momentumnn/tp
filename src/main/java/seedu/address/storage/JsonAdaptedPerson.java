@@ -35,7 +35,7 @@ class JsonAdaptedPerson {
     private final String injuryStatus;
     private final String skill;
     private final String trainingGoal;
-    private final List<JsonAdaptedTimeslot> timeslots = new ArrayList<>();
+    private final List<String> timeslots = new ArrayList<>();
     private String progressRecord;
 
     /**
@@ -46,7 +46,7 @@ class JsonAdaptedPerson {
             @JsonProperty("email") String email, @JsonProperty("address") String address,
             @JsonProperty("injuryStatus") String injuryStatus,
             @JsonProperty("trainingGoal") String trainingGoal,
-            @JsonProperty("timeslots") List<JsonAdaptedTimeslot> timeslots,
+            @JsonProperty("timeslots") List<String> timeslots,
             @JsonProperty("skill") String skill, @JsonProperty("progressRecord") String progressRecord) {
         this.name = name;
         this.phone = phone;
@@ -72,7 +72,7 @@ class JsonAdaptedPerson {
         injuryStatus = source.getInjuryStatus().value;
         trainingGoal = source.getTrainingGoal().value;
         timeslots.addAll(source.getTimeslots().stream()
-                .map(JsonAdaptedTimeslot::new)
+                .map(Timeslot::toStorageString)
                 .collect(Collectors.toList()));
         skill = source.getSkill().value;
         progressRecord = source.getProgressRecord().value;
@@ -84,82 +84,186 @@ class JsonAdaptedPerson {
      * @throws IllegalValueException if there were any data constraints violated in the adapted person.
      */
     public Person toModelType() throws IllegalValueException {
-        final List<Timeslot> personTimeslots = new ArrayList<>();
-        for (JsonAdaptedTimeslot timeslot : timeslots) {
-            personTimeslots.add(timeslot.toModelType());
-        }
+        Name modelName = toModelName();
+        Phone modelPhone = toModelPhone();
+        Email modelEmail = toModelEmail();
+        Address modelAddress = toModelAddress();
+        TrainingGoal modelTrainingGoal = toModelTrainingGoal();
+        ProgressRecord modelProgressRecord = toModelProgressRecord();
+        InjuryStatus modelInjuryStatus = toModelInjuryStatus();
+        Skill modelSkill = toModelSkill();
+        final Set<Timeslot> modelTimeslots = toModelTimeslotSet();
 
+        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelInjuryStatus, modelTrainingGoal,
+                modelTimeslots, modelProgressRecord, modelSkill);
+    }
+
+    /**
+     * Converts the stored name string to a model {@code Name} after validating format.
+     *
+     * @throws IllegalValueException if name is missing or invalid.
+     */
+    private Name toModelName() throws IllegalValueException {
         if (name == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Name.class.getSimpleName()));
         }
         if (!Name.isValidName(name)) {
-            throw new IllegalValueException(Name.MESSAGE_CONSTRAINTS);
+            throw new IllegalValueException(formatInvalidFieldMessage(Name.class.getSimpleName(),
+                    Name.MESSAGE_CONSTRAINTS, name));
         }
-        final Name modelName = new Name(name);
+        return new Name(name);
+    }
 
+    /**
+     * Converts the stored phone string to a model {@code Phone} after validating format.
+     *
+     * @throws IllegalValueException if phone is missing or invalid.
+     */
+    private Phone toModelPhone() throws IllegalValueException {
         if (phone == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Phone.class.getSimpleName()));
         }
         if (!Phone.isValidPhone(phone)) {
-            throw new IllegalValueException(Phone.MESSAGE_CONSTRAINTS);
+            throw new IllegalValueException(formatInvalidFieldMessage(Phone.class.getSimpleName(),
+                    Phone.MESSAGE_CONSTRAINTS, phone));
         }
-        final Phone modelPhone = new Phone(phone);
+        return new Phone(phone);
+    }
 
+    /**
+     * Converts the stored email string to a model {@code Email} after validating format.
+     *
+     * @throws IllegalValueException if email is missing or invalid.
+     */
+    private Email toModelEmail() throws IllegalValueException {
         if (email == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Email.class.getSimpleName()));
         }
         if (!Email.isValidEmail(email)) {
-            throw new IllegalValueException(Email.MESSAGE_CONSTRAINTS);
+            throw new IllegalValueException(formatInvalidFieldMessage(Email.class.getSimpleName(),
+                    Email.MESSAGE_CONSTRAINTS, email));
         }
-        final Email modelEmail = new Email(email);
+        return new Email(email);
+    }
 
+    /**
+     * Converts the stored address string to a model {@code Address} validating format.
+     *
+     * @throws IllegalValueException if address is missing or invalid.
+     */
+    private Address toModelAddress() throws IllegalValueException {
         if (address == null) {
             throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT, Address.class.getSimpleName()));
         }
         if (!Address.isValidAddress(address)) {
-            throw new IllegalValueException(Address.MESSAGE_CONSTRAINTS);
+            throw new IllegalValueException(formatInvalidFieldMessage(Address.class.getSimpleName(),
+                    Address.MESSAGE_CONSTRAINTS, address));
         }
-        final Address modelAddress = new Address(address);
+        return new Address(address);
+    }
 
-        final InjuryStatus modelInjuryStatus;
-
-        if (injuryStatus == null) {
-            modelInjuryStatus = new InjuryStatus(InjuryStatus.DEFAULT_INJURY_STATUS);
-        } else if (!InjuryStatus.isValidInjuryStatus(injuryStatus)) {
-            throw new IllegalValueException(InjuryStatus.MESSAGE_CONSTRAINTS);
-        } else {
-            modelInjuryStatus = new InjuryStatus(injuryStatus);
-        }
-
-        final TrainingGoal modelTrainingGoal;
+    /**
+     * Converts the stored training goal string to a model {@code TrainingGoal} validating format.
+     *
+     * @throws IllegalValueException if training goal is missing or invalid.
+     */
+    private TrainingGoal toModelTrainingGoal() throws IllegalValueException {
         if (trainingGoal == null) {
-            modelTrainingGoal = new TrainingGoal(TrainingGoal.DEFAULT_TRAINING_GOAL);
-        } else if (!TrainingGoal.isValidTrainingGoal(trainingGoal)) {
-            throw new IllegalValueException(TrainingGoal.MESSAGE_CONSTRAINTS);
-        } else {
-            modelTrainingGoal = new TrainingGoal(trainingGoal);
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                    TrainingGoal.class.getSimpleName()));
         }
+        if (!TrainingGoal.isValidTrainingGoal(trainingGoal)) {
+            throw new IllegalValueException(formatInvalidFieldMessage(TrainingGoal.class.getSimpleName(),
+                    TrainingGoal.MESSAGE_CONSTRAINTS, trainingGoal));
+        }
+        return new TrainingGoal(trainingGoal);
+    }
 
-        final Skill modelSkill;
+    /**
+     * Converts the stored progress record string to a model {@code ProgressRecord}, default if absent.
+     *
+     * @throws IllegalValueException if the derived progress value is invalid.
+     */
+    private ProgressRecord toModelProgressRecord() throws IllegalValueException {
+        String record = progressRecord == null ? ProgressRecord.DEFAULT_PROGRESS : progressRecord;
+        if (!ProgressRecord.isValidProgress(record)) {
+            throw new IllegalValueException(formatInvalidFieldMessage(ProgressRecord.class.getSimpleName(),
+                    ProgressRecord.MESSAGE_CONSTRAINTS, record));
+        }
+        return new ProgressRecord(record);
+    }
+
+    /**
+     * Converts the stored injury status string to a model {@code InjuryStatus}, default if absent.
+     *
+     * @throws IllegalValueException if the stored injury status is invalid.
+     */
+    private InjuryStatus toModelInjuryStatus() throws IllegalValueException {
+        if (injuryStatus == null) {
+            return new InjuryStatus(InjuryStatus.DEFAULT_INJURY_STATUS);
+        }
+        if (!InjuryStatus.isValidInjuryStatus(injuryStatus)) {
+            throw new IllegalValueException(formatInvalidFieldMessage(InjuryStatus.class.getSimpleName(),
+                    InjuryStatus.MESSAGE_CONSTRAINTS, injuryStatus));
+        }
+        return new InjuryStatus(injuryStatus);
+    }
+
+    /**
+     * Converts the stored skill string to a model {@code Skill}, default if absent.
+     *
+     * @throws IllegalValueException if the stored skill is invalid.
+     */
+    private Skill toModelSkill() throws IllegalValueException {
         if (skill == null) {
-            modelSkill = new Skill(Skill.SKILL_BEGINNER);
-        } else if (!Skill.isValidSkill(skill)) {
-            throw new IllegalValueException(Skill.MESSAGE_CONSTRAINTS);
-        } else {
-            modelSkill = new Skill(skill);
+            return new Skill(Skill.SKILL_BEGINNER);
         }
+        if (!Skill.isValidSkill(skill)) {
+            throw new IllegalValueException(formatInvalidFieldMessage(Skill.class.getSimpleName(),
+                    Skill.MESSAGE_CONSTRAINTS, skill));
+        }
+        return new Skill(skill);
+    }
 
-        if (progressRecord == null) {
-            progressRecord = "0%";
+    /**
+     * Converts the stored timeslot strings into a validated, sorted {@code Set<Timeslot>}.
+     *
+     * @throws IllegalValueException if any stored timeslot string is missing or invalid.
+     */
+    private Set<Timeslot> toModelTimeslotSet() throws IllegalValueException {
+        if (timeslots.isEmpty()) {
+            throw new IllegalValueException(String.format(MISSING_FIELD_MESSAGE_FORMAT,
+                    Timeslot.class.getSimpleName()));
         }
-        if (!ProgressRecord.isValidProgress(progressRecord)) {
-            throw new IllegalValueException(ProgressRecord.MESSAGE_CONSTRAINTS);
+        List<Timeslot> personTimeslots = new ArrayList<>();
+        for (String timeslot : timeslots) {
+            personTimeslots.add(toModelTimeslot(timeslot));
         }
-        final ProgressRecord modelProgressRecord = new ProgressRecord(progressRecord);
+        return new TreeSet<>(personTimeslots);
+    }
 
-        final Set<Timeslot> modelTimeslots = new TreeSet<>(personTimeslots);
-        return new Person(modelName, modelPhone, modelEmail, modelAddress, modelInjuryStatus, modelTrainingGoal,
-                modelTimeslots, modelProgressRecord, modelSkill);
+    /**
+     * Converts the stored timeslot string to a model {@code Timeslot}, default if absent.
+     *
+     * @throws IllegalValueException if the stored timeslot is invalid.
+     */
+    private Timeslot toModelTimeslot(String timeslot) throws IllegalValueException {
+        if (timeslot == null) {
+            throw new IllegalValueException(formatInvalidFieldMessage(Timeslot.class.getSimpleName(),
+                    Timeslot.MESSAGE_CONSTRAINTS, "null"));
+        }
+        if (!Timeslot.isValidTimeslot(timeslot)) {
+            throw new IllegalValueException(formatInvalidFieldMessage(Timeslot.class.getSimpleName(),
+                    Timeslot.MESSAGE_CONSTRAINTS, timeslot));
+        }
+        return new Timeslot(timeslot);
+    }
+
+    /**
+     * Formats a constraint failure message that includes the offending field and value.
+     */
+    private static String formatInvalidFieldMessage(String fieldName, String expected, String actualValue) {
+        return String.format("Invalid value for %s: \"%s\". %s", fieldName, actualValue, expected);
     }
 
 }
