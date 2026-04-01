@@ -89,8 +89,9 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS ts/TIMESLOT t/TRAINING_GOAL
 
 **Name (`n/`):**
 * Represents the full name of the client (e.g. `John Doe`)
-* Accepts alphabetical characters and spaces only — no numbers or symbols
-* Cannot be blank
+* Accepts alphabetical characters, spaces, hyphens (-), and apostrophes (') only — no numbers or symbols
+* Cannot be blank, and cannot start with a space, hyphen, or apostrophe
+* The max length is 100 characters; names longer than 50 characters will be truncated in the display
 * This field is mandatory
 
 **Phone Number (`p/`):**
@@ -184,9 +185,10 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [ts/TIMESLOT] [t/TR
 
 **Name (`n/`):**
 * Represents the full name of the client (e.g. `John Doe`)
-* Accepts alphabetical characters and spaces only — no numbers or symbols
-* Cannot be blank
-* Max length is 100 characters; names longer than 50 characters will be truncated in the display
+* Accepts alphabetical characters, spaces, hyphens (-), and apostrophes (') only — no numbers or symbols
+* Cannot be blank, and cannot start with a space, hyphen, or apostrophe
+* The max length is 100 characters; names longer than 50 characters will be truncated in the display
+* This field is mandatory
 
 **Phone Number (`p/`):**
 * Represents the contact number of the client (e.g. `98765432`)
