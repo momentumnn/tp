@@ -96,7 +96,7 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS ts/TIMESLOT t/TRAINING_GOAL
 **Phone Number (`p/`):**
 * Represents the contact number of the client (e.g. `98765432`)
 * Accepts numerals only — no spaces, dashes, or other characters
-* Must be at least 3 digits long
+* Must be between 3 and 15 digits long
 * This field is mandatory
 
 **Email (`e/`):**
@@ -190,7 +190,7 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [ts/TIMESLOT] [t/TR
 **Phone Number (`p/`):**
 * Represents the contact number of the client (e.g. `98765432`)
 * Accepts numerals only — no spaces, dashes, or other characters
-* Must be at least 3 digits long
+* Must be between 3 and 15 digits long
 
 **Email (`e/`):**
 * Represents the email address of the client (e.g. `johnd@example.com`)
