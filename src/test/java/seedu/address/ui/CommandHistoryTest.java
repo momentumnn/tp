@@ -59,8 +59,8 @@ public class CommandHistoryTest {
         // Navigate Down
         assertEquals(cmd2, commandHistory.navigateDown()); // add n/John
         assertEquals(cmd3, commandHistory.navigateDown()); // list
-        assertEquals("", commandHistory.navigateDown());   // boundary check: blank line
-        assertEquals("", commandHistory.navigateDown());   // stays at blank line
+        assertEquals("", commandHistory.navigateDown()); // boundary check: blank line
+        assertEquals("", commandHistory.navigateDown()); // stays at blank line
     }
 
     @Test
