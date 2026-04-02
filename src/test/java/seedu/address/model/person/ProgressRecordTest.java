@@ -25,11 +25,10 @@ public class ProgressRecordTest {
         assertThrows(NullPointerException.class, () -> ProgressRecord.isValidProgress(null));
 
         // invalid progress record
-        assertFalse(ProgressRecord.isValidProgress("")); // empty string
-        assertFalse(ProgressRecord.isValidProgress(" ")); // spaces only
-        assertFalse(ProgressRecord.isValidProgress("101%"));
-        assertFalse(ProgressRecord.isValidProgress("-1%"));
-        assertFalse(ProgressRecord.isValidProgress("-1%"));
+        assertFalse(ProgressRecord.isValidProgress(""));        // empty string
+        assertFalse(ProgressRecord.isValidProgress(" "));       // spaces only
+        assertFalse(ProgressRecord.isValidProgress("101%"));    // more than 100%
+        assertFalse(ProgressRecord.isValidProgress("-1%"));     //less than 0%
         assertFalse(ProgressRecord.isValidProgress("10/0"));
 
         // valid progress record
