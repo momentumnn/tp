@@ -29,7 +29,8 @@ public class ProgressRecordTest {
         assertFalse(ProgressRecord.isValidProgress(" ")); // spaces only
         assertFalse(ProgressRecord.isValidProgress("101%")); // more than 100%
         assertFalse(ProgressRecord.isValidProgress("-1%")); //less than 0%
-        assertFalse(ProgressRecord.isValidProgress("10/0"));
+        assertFalse(ProgressRecord.isValidProgress("10/0")); //fraction
+        assertFalse(ProgressRecord.isValidProgress("10.0%")); //decimal
 
         // valid progress record
         assertTrue(ProgressRecord.isValidProgress("100%"));
