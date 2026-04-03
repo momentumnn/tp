@@ -193,6 +193,7 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [ts/TIMESLOT] [t/TR
 
 **Email (`e/`):**
 * Represents the email address of the client (e.g. `johnd@example.com`)
+* Must not exceed 200 characters
 * Must follow the format `local-part@domain` (e.g. `john@example.com`)
 * Both the local-part and domain cannot be blank
 
