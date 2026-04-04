@@ -60,7 +60,7 @@ public class PersonCard extends UiPart<Region> {
         address.setText(person.getAddress().value);
         trainingGoal.setText("Goal: " + person.getTrainingGoal().value);
         email.setText(person.getEmail().value);
-        injuryStatus.setText(person.getInjuryStatus().value);
+        injuryStatus.setText("Injury Status: " + person.getInjuryStatus().value);
         progressRecord.setText("Progress: " + person.getProgressRecord().value);
         person.getTimeslots().stream().sorted()
                 .forEach(timeslot -> {
