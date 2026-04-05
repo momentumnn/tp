@@ -6,7 +6,7 @@ import static seedu.address.model.Model.PREDICATE_SHOW_ALL_PERSONS;
 import java.util.List;
 
 import seedu.address.model.Model;
-import seedu.address.model.person.FilteredSkill;
+import seedu.address.model.person.Skill;
 
 /**
  * Lists all persons in the address book to the user.
@@ -22,15 +22,15 @@ public class ListCommand extends Command {
 
     public static final String COMMAND_WORD = "list";
 
-    public static final String MESSAGE_SUCCESS = "Listed all persons";
-    public static final String MESSAGE_SUCCESS_FILTERED = "Listed all persons with skill level: %1$s";
+    public static final String MESSAGE_SUCCESS = "Listed all persons (%1$d entries)";
+    public static final String MESSAGE_SUCCESS_FILTERED = "Listed all persons with skill level: %1$s (%2$d entries)";
 
     public static final String MESSAGE_USAGE = COMMAND_WORD
             + ": Lists all persons or filters by skill level.\n"
             + "Parameters: [s/SKILL]\n"
             + "Example: " + COMMAND_WORD + " s/beginner";
 
-    private final List<FilteredSkill> skills;
+    private final List<Skill> skills;
 
     /**
      * Creates a {@code ListCommand} that lists all persons without any filter.
@@ -46,7 +46,7 @@ public class ListCommand extends Command {
      * @param skillLevels the skill levels to filter by; must not be null or empty
      * @throws NullPointerException if {@code skillLevels} is null
      */
-    public ListCommand(List<FilteredSkill> skillLevels) {
+    public ListCommand(List<Skill> skillLevels) {
         requireNonNull(skillLevels);
         this.skills = skillLevels;
     }
@@ -57,15 +57,19 @@ public class ListCommand extends Command {
 
         if (skills.isEmpty()) {
             model.updateFilteredPersonList(PREDICATE_SHOW_ALL_PERSONS);
-            return new CommandResult(MESSAGE_SUCCESS);
+            return new CommandResult(String.format(ListCommand.MESSAGE_SUCCESS,
+                    model.getFilteredPersonList().size()));
         } else {
             model.updateFilteredPersonList(person ->
                     skills.stream().anyMatch(skill ->
-                            person.getSkill().value.equalsIgnoreCase(skill.value)));
+                            person.getSkill().equals(skill)));
             String skillNames = skills.stream()
                     .map(s -> s.value)
-                    .collect(java.util.stream.Collectors.joining(", "));
-            return new CommandResult(String.format(MESSAGE_SUCCESS_FILTERED, skillNames));
+                    .reduce((x, y)-> x + ", " + y).get();
+            return new CommandResult(String.format(ListCommand.MESSAGE_SUCCESS_FILTERED,
+                    skillNames,
+                    model.getFilteredPersonList().size())
+            );
         }
     }
 

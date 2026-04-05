@@ -672,10 +672,7 @@ testers are expected to do more *exploratory* testing.
 4. Listing persons with invalid filter
 
    1. Test case: `list s/advanced`
-      Expected: The command is accepted but no client has the skill level `Advanced`. Hence, an empty list is shown.
-   
-   2. Test case: `list s/beginer`
-      Expected: The command is accepted but no client has the skill level `beginer`. Hence, an empty list is shown. (note the beginer here has a typo error)
+      Expected: The command doesn't execute and an error message is shown because the skill is invalid.
 
 5. Listing persons with missing filter parameter
 

@@ -165,11 +165,11 @@ Shows a list of all persons in the address book, with an optional skill filter.
 Format: `list [s/SKILL]`
 
 **Skill Filter (`s/`):**
-* Filters the list to show only clients with a matching skill level (e.g. `beginner`, `intermediate`, `expert`)
-* Accepts any non-blank alphanumeric value — not restricted to predefined skill levels
-* Multiple skill filters can be provided to match clients with any of the specified skill levels
-* If no skill filter is provided, all persons are listed
-* Note: Typos in the skill filter (e.g. `list s/begniner`) will not result in an error, but will return an empty list if no clients match the misspelled value
+* Filters the list to show only clients with a matching skill level: `Beginner`, `Intermediate`, or `Expert`
+* Skill level is case-insensitive (e.g. `s/expert`, `s/EXPERT`, and `s/Expert` all work)
+* Multiple skill filters can be provided to match clients with any of the specified skill levels (e.g. `s/beginner s/expert`)
+* If no skill filter is provided, all clients are listed
+* Invalid skill levels (e.g. `list s/advanced`) will result in an error
 
 Examples:
 * `list` — lists all persons

@@ -14,10 +14,11 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TRAINING_GOAL;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.parser.exceptions.ParseException;
-import seedu.address.model.person.FilteredSkill;
+import seedu.address.model.person.Skill;
 
 /**
  * Parses input arguments and creates a new {@code ListCommand} object.
@@ -26,13 +27,15 @@ import seedu.address.model.person.FilteredSkill;
  * with a matching skill level. If no prefix is provided, a {@code ListCommand}
  * that lists all persons is returned.
  *
- * <p>If multiple {@code s/} prefixes are provided, the last value is used.
+ * <p>If multiple {@code s/} prefixes are provided, all values are collected and
+ * a {@code ListCommand} that lists persons matching any of the specified skill
+ * levels is returned.
  *
  * <p>Examples:
  * <ul>
  *   <li>{@code list} — lists all persons</li>
  *   <li>{@code list s/beginner} — lists persons with beginner skill level</li>
- *   <li>{@code list s/beginner s/expert} — lists persons with expert skill level (last value)</li>
+ *   <li>{@code list s/beginner s/expert} — lists persons with beginner or expert skill level</li>
  * </ul>
  */
 public class ListCommandParser implements Parser<ListCommand> {
@@ -45,7 +48,7 @@ public class ListCommandParser implements Parser<ListCommand> {
      * {@code FilteredSkill} and a filtered {@code ListCommand} is returned.
      * Otherwise, an unfiltered {@code ListCommand} is returned.
      *
-     * <p>If multiple skill prefixes are provided, the last one is used.
+     * <p>If multiple skill prefixes are provided, it will list all persons with any of the mentioned skills.
      *
      * @param args the raw argument string provided by the user; must not be null
      * @return a {@code ListCommand} with or without a skill filter
@@ -78,14 +81,10 @@ public class ListCommandParser implements Parser<ListCommand> {
 
         List<String> skillValues = argMultimap.getAllValues(PREFIX_SKILL);
 
-        if (!skillValues.isEmpty()) {
-            List<FilteredSkill> skills = new ArrayList<>();
-            for (String skillValue : skillValues) {
-                skills.add(ParserUtil.parseFilteredSkill(skillValue));
-            }
-            return new ListCommand(skills);
-        } else {
-            return new ListCommand();
+        List<Skill> skills = new ArrayList<>();
+        for (String skillValue : skillValues) {
+            skills.add(ParserUtil.parseSkill(Optional.of(skillValue)));
         }
+        return new ListCommand(skills);
     }
 }

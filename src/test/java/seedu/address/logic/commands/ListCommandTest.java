@@ -1,6 +1,5 @@
 package seedu.address.logic.commands;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.logic.commands.CommandTestUtil.assertCommandSuccess;
@@ -12,11 +11,13 @@ import java.util.List;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.ValueSource;
 
 import seedu.address.model.Model;
 import seedu.address.model.ModelManager;
 import seedu.address.model.UserPrefs;
-import seedu.address.model.person.FilteredSkill;
+import seedu.address.model.person.Skill;
 import seedu.address.testutil.PersonBuilder;
 
 /**
@@ -31,170 +32,96 @@ public class ListCommandTest {
     public void setUp() {
         model = new ModelManager(getTypicalAddressBook(), new UserPrefs());
         expectedModel = new ModelManager(model.getAddressBook(), new UserPrefs());
+
+        // shared persons used across filter tests
+        model.addPerson(new PersonBuilder().withName("Beginner Bob")
+                .withPhone("81234567").withSkill("Beginner").build());
+        model.addPerson(new PersonBuilder().withName("Expert Eve")
+                .withPhone("81234568").withSkill("Expert").build());
+        model.addPerson(new PersonBuilder().withName("Intermediate Ian")
+                .withPhone("81234569").withSkill("Intermediate").build());
+
+        expectedModel.addPerson(new PersonBuilder().withName("Beginner Bob")
+                .withPhone("81234567").withSkill("Beginner").build());
+        expectedModel.addPerson(new PersonBuilder().withName("Expert Eve")
+                .withPhone("81234568").withSkill("Expert").build());
+        expectedModel.addPerson(new PersonBuilder().withName("Intermediate Ian")
+                .withPhone("81234569").withSkill("Intermediate").build());
     }
 
     @Test
     public void execute_listIsNotFiltered_showsSameList() {
-        assertCommandSuccess(new ListCommand(), model, ListCommand.MESSAGE_SUCCESS, expectedModel);
+        assertCommandSuccess(new ListCommand(), model,
+                String.format(ListCommand.MESSAGE_SUCCESS, expectedModel.getFilteredPersonList().size()),
+                expectedModel);
     }
 
     @Test
     public void execute_listIsFiltered_showsEverything() {
         showPersonAtIndex(model, INDEX_FIRST_PERSON);
-        assertCommandSuccess(new ListCommand(), model, ListCommand.MESSAGE_SUCCESS, expectedModel);
+        assertCommandSuccess(new ListCommand(), model,
+                String.format(ListCommand.MESSAGE_SUCCESS, expectedModel.getFilteredPersonList().size()),
+                expectedModel);
     }
 
     @Test
     public void execute_listWithSkillFilterBeginner_showsFilteredList() {
-        model.addPerson(new PersonBuilder().withName("Beginner Bob")
-                .withPhone("81234567").withSkill("Beginner").build());
-        model.addPerson(new PersonBuilder().withName("Expert Eve")
-                .withPhone("81234568").withSkill("Expert").build());
-        model.addPerson(new PersonBuilder().withName("Intermediate Ian")
-                .withPhone("81234569").withSkill("Intermediate").build());
-
-        expectedModel.addPerson(new PersonBuilder().withName("Beginner Bob")
-                .withPhone("81234567").withSkill("Beginner").build());
-        expectedModel.addPerson(new PersonBuilder().withName("Expert Eve")
-                .withPhone("81234568").withSkill("Expert").build());
-        expectedModel.addPerson(new PersonBuilder().withName("Intermediate Ian")
-                .withPhone("81234569").withSkill("Intermediate").build());
-
-        ListCommand listCommand = new ListCommand(List.of(new FilteredSkill("Beginner")));
-
+        ListCommand listCommand = new ListCommand(List.of(new Skill("Beginner")));
         expectedModel.updateFilteredPersonList(person ->
                 person.getSkill().value.equalsIgnoreCase("Beginner"));
-
-        String expectedMessage = String.format(ListCommand.MESSAGE_SUCCESS_FILTERED, "Beginner");
-        assertCommandSuccess(listCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(listCommand, model,
+                String.format(ListCommand.MESSAGE_SUCCESS_FILTERED, "Beginner",
+                        expectedModel.getFilteredPersonList().size()),
+                expectedModel);
     }
 
     @Test
     public void execute_listWithSkillFilterIntermediate_showsFilteredList() {
-        model.addPerson(new PersonBuilder().withName("Beginner Bob")
-                .withPhone("81234567").withSkill("Beginner").build());
-        model.addPerson(new PersonBuilder().withName("Expert Eve")
-                .withPhone("81234568").withSkill("Expert").build());
-        model.addPerson(new PersonBuilder().withName("Intermediate Ian")
-                .withPhone("81234569").withSkill("Intermediate").build());
-
-        expectedModel.addPerson(new PersonBuilder().withName("Beginner Bob")
-                .withPhone("81234567").withSkill("Beginner").build());
-        expectedModel.addPerson(new PersonBuilder().withName("Expert Eve")
-                .withPhone("81234568").withSkill("Expert").build());
-        expectedModel.addPerson(new PersonBuilder().withName("Intermediate Ian")
-                .withPhone("81234569").withSkill("Intermediate").build());
-
-        ListCommand listCommand = new ListCommand(List.of(new FilteredSkill("Intermediate")));
-
+        ListCommand listCommand = new ListCommand(List.of(new Skill("Intermediate")));
         expectedModel.updateFilteredPersonList(person ->
                 person.getSkill().value.equalsIgnoreCase("Intermediate"));
-
-        String expectedMessage = String.format(ListCommand.MESSAGE_SUCCESS_FILTERED, "Intermediate");
-        assertCommandSuccess(listCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(listCommand, model,
+                String.format(ListCommand.MESSAGE_SUCCESS_FILTERED, "Intermediate",
+                        expectedModel.getFilteredPersonList().size()),
+                expectedModel);
     }
 
-    @Test
-    public void execute_listWithSkillFilterCaseInsensitive_showsFilteredList() {
-        model.addPerson(new PersonBuilder().withName("Expert Eve").withSkill("Expert").build());
-        expectedModel.addPerson(new PersonBuilder().withName("Expert Eve").withSkill("Expert").build());
-
-        ListCommand listCommand = new ListCommand(List.of(new FilteredSkill("eXpErT")));
-
+    @ParameterizedTest
+    @ValueSource(strings = {"expert", "EXPERT", "eXpErT"})
+    public void execute_listWithSkillFilterCaseInsensitive_showsFilteredList(String input) {
+        ListCommand listCommand = new ListCommand(List.of(new Skill(input)));
         expectedModel.updateFilteredPersonList(person ->
                 person.getSkill().value.equalsIgnoreCase("Expert"));
-
-        String expectedMessage = String.format(ListCommand.MESSAGE_SUCCESS_FILTERED, "Expert");
-        assertCommandSuccess(listCommand, model, expectedMessage, expectedModel);
-    }
-
-    @Test
-    public void execute_listWithSkillFilterNoMatches_showsEmptyList() {
-        ListCommand listCommand = new ListCommand(List.of(new FilteredSkill("Advanced")));
-
-        expectedModel.updateFilteredPersonList(person ->
-                person.getSkill().value.equalsIgnoreCase("Advanced"));
-
-        String expectedMessage = String.format(ListCommand.MESSAGE_SUCCESS_FILTERED, "Advanced");
-        assertCommandSuccess(listCommand, model, expectedMessage, expectedModel);
+        assertCommandSuccess(listCommand, model,
+                String.format(ListCommand.MESSAGE_SUCCESS_FILTERED, "Expert",
+                        expectedModel.getFilteredPersonList().size()),
+                expectedModel);
     }
 
     @Test
     public void execute_listWithMultipleSkillFilters_showsFilteredList() {
-        model.addPerson(new PersonBuilder().withName("Beginner Bob")
-                .withPhone("81234567").withSkill("Beginner").build());
-        model.addPerson(new PersonBuilder().withName("Expert Eve")
-                .withPhone("81234568").withSkill("Expert").build());
-        model.addPerson(new PersonBuilder().withName("Intermediate Ian")
-                .withPhone("81234569").withSkill("Intermediate").build());
-
-        expectedModel.addPerson(new PersonBuilder().withName("Beginner Bob")
-                .withPhone("81234567").withSkill("Beginner").build());
-        expectedModel.addPerson(new PersonBuilder().withName("Expert Eve")
-                .withPhone("81234568").withSkill("Expert").build());
-        expectedModel.addPerson(new PersonBuilder().withName("Intermediate Ian")
-                .withPhone("81234569").withSkill("Intermediate").build());
-
         ListCommand listCommand = new ListCommand(List.of(
-                new FilteredSkill("Beginner"), new FilteredSkill("Expert")));
-
+                new Skill("Beginner"), new Skill("Expert")));
         expectedModel.updateFilteredPersonList(person ->
                 person.getSkill().value.equalsIgnoreCase("Beginner")
                         || person.getSkill().value.equalsIgnoreCase("Expert"));
-
-        String expectedMessage = String.format(ListCommand.MESSAGE_SUCCESS_FILTERED, "Beginner, Expert");
-        assertCommandSuccess(listCommand, model, expectedMessage, expectedModel);
-    }
-
-    @Test
-    public void execute_multipleSkillFiltersNoMatches_showsEmptyList() {
-        ListCommand listCommand = new ListCommand(List.of(
-                new FilteredSkill("Advanced"), new FilteredSkill("Rookie")));
-
-        expectedModel.updateFilteredPersonList(person ->
-                person.getSkill().value.equalsIgnoreCase("Advanced")
-                        || person.getSkill().value.equalsIgnoreCase("Rookie"));
-
-        String expectedMessage = String.format(ListCommand.MESSAGE_SUCCESS_FILTERED, "Advanced, Rookie");
-        assertCommandSuccess(listCommand, model, expectedMessage, expectedModel);
-    }
-
-    @Test
-    public void execute_unfilteredList_correctMessageReturned() throws Exception {
-        ListCommand command = new ListCommand();
-        CommandResult result = command.execute(model);
-        assertEquals(ListCommand.MESSAGE_SUCCESS, result.getFeedbackToUser());
-    }
-
-    @Test
-    public void execute_filteredList_correctMessageReturned() throws Exception {
-        ListCommand command = new ListCommand(List.of(new FilteredSkill("Beginner")));
-        CommandResult result = command.execute(model);
-        assertEquals(String.format(ListCommand.MESSAGE_SUCCESS_FILTERED, "Beginner"),
-                result.getFeedbackToUser());
-    }
-
-    @Test
-    public void execute_multipleSkillFilters_correctMessageReturned() throws Exception {
-        ListCommand command = new ListCommand(List.of(
-                new FilteredSkill("Beginner"), new FilteredSkill("Expert")));
-        CommandResult result = command.execute(model);
-        assertEquals(String.format(ListCommand.MESSAGE_SUCCESS_FILTERED, "Beginner, Expert"),
-                result.getFeedbackToUser());
+        assertCommandSuccess(listCommand, model,
+                String.format(ListCommand.MESSAGE_SUCCESS_FILTERED, "Beginner, Expert",
+                        expectedModel.getFilteredPersonList().size()),
+                expectedModel);
     }
 
     @Test
     public void equals() {
-        ListCommand listBeginnerCommand = new ListCommand(List.of(new FilteredSkill("Beginner")));
-        ListCommand listExpertCommand = new ListCommand(List.of(new FilteredSkill("Expert")));
+        ListCommand listBeginnerCommand = new ListCommand(List.of(new Skill("Beginner")));
+        ListCommand listExpertCommand = new ListCommand(List.of(new Skill("Expert")));
         ListCommand listAllCommand = new ListCommand();
 
         // same object -> returns true
         assertTrue(listBeginnerCommand.equals(listBeginnerCommand));
 
         // same values -> returns true
-        ListCommand listBeginnerCommandCopy = new ListCommand(List.of(new FilteredSkill("Beginner")));
-        assertTrue(listBeginnerCommand.equals(listBeginnerCommandCopy));
+        assertTrue(listBeginnerCommand.equals(new ListCommand(List.of(new Skill("Beginner")))));
 
         // different types -> returns false
         assertFalse(listBeginnerCommand.equals(1));
@@ -202,29 +129,25 @@ public class ListCommandTest {
         // null -> returns false
         assertFalse(listBeginnerCommand.equals(null));
 
-        // different skill filter -> returns false
+        // different skill -> returns false
         assertFalse(listBeginnerCommand.equals(listExpertCommand));
 
         // filtered vs unfiltered -> returns false
         assertFalse(listBeginnerCommand.equals(listAllCommand));
 
-        // two unfiltered commands -> returns true
-        ListCommand anotherListAllCommand = new ListCommand();
-        assertTrue(listAllCommand.equals(anotherListAllCommand));
+        // two unfiltered -> returns true
+        assertTrue(listAllCommand.equals(new ListCommand()));
 
         // multiple skills same values -> returns true
-        ListCommand listMultiCommand1 = new ListCommand(List.of(
-                new FilteredSkill("Beginner"), new FilteredSkill("Expert")));
-        ListCommand listMultiCommand2 = new ListCommand(List.of(
-                new FilteredSkill("Beginner"), new FilteredSkill("Expert")));
+        ListCommand listMultiCommand1 = new ListCommand(List.of(new Skill("Beginner"), new Skill("Expert")));
+        ListCommand listMultiCommand2 = new ListCommand(List.of(new Skill("Beginner"), new Skill("Expert")));
         assertTrue(listMultiCommand1.equals(listMultiCommand2));
 
         // multiple skills different values -> returns false
-        ListCommand listMultiCommand3 = new ListCommand(List.of(
-                new FilteredSkill("Beginner"), new FilteredSkill("Intermediate")));
-        assertFalse(listMultiCommand1.equals(listMultiCommand3));
+        assertFalse(listMultiCommand1.equals(new ListCommand(List.of(
+                new Skill("Beginner"), new Skill("Intermediate")))));
 
-        // single vs multiple skills -> returns false
+        // single vs multiple -> returns false
         assertFalse(listBeginnerCommand.equals(listMultiCommand1));
     }
 }
