@@ -78,6 +78,18 @@ public class JsonAddressBookStorageTest {
     }
 
     @Test
+    public void readAddressBookWithResult_missingFile_returnsMissingResult() throws Exception {
+        Path missingFile = addToTestDataPathIfNotNull("NonExistentFile.json");
+        JsonAddressBookStorage storage = new JsonAddressBookStorage(missingFile);
+        AddressBookLoadResult result = storage.readAddressBookWithResult(missingFile);
+        assertFalse(result.hasDataFile());
+        assertFalse(result.hasInvalidEntries());
+        assertTrue(result.getAddressBook().isEmpty());
+        assertFalse(result.getInvalidEntriesFilePath().isPresent());
+        assertFalse(result.getInvalidEntriesSaveFailureMessage().isPresent());
+    }
+
+    @Test
     public void read_notJsonFormat_exceptionThrown() {
         assertThrows(DataLoadingException.class, () -> readAddressBook("notJsonFormatAddressBook.json"));
     }
