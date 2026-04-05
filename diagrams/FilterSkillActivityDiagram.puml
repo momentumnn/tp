@@ -1,0 +1,33 @@
+@startuml
+skin rose
+skinparam ActivityFontSize 15
+skinparam ArrowFontSize 12
+
+start
+
+:User executes list command;
+:Parse list command;
+
+if () then ([s/ prefix provided])
+  if () then ([All skill values are valid])
+    :Build list of Skill objects;
+    :Create ListCommand;
+    repeat
+        if () then ([Persons's skill is in the list of skills])
+        :Add to filtered persons;
+        else ([else])
+        :Do not add to filtered persons;
+        endif
+    repeat while () is ([else]) not ([Scanned all clients])
+    :Show all filtered persons with entry count;
+  else ([else])
+    :Throw ParseException;
+    :Show error message;
+  endif
+else ([else])
+  :Create ListCommand;
+  :Show all persons with entry count;
+endif
+
+stop
+@enduml

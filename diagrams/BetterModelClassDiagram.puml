@@ -15,6 +15,5 @@ Person *--> Skill
 Person *--> Timeslot
 Person *--> TrainingGoal
 Person *--> InjuryStatus
-Person *--> "0..1" FilteredSkill
 Person *--> "1" ProgressRecord
 @enduml

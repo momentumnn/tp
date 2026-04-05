@@ -1,0 +1,79 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+box Logic LOGIC_COLOR_T1
+Participant ":LogicManager" as LogicManager LOGIC_COLOR
+Participant ":AddressBookParser" as AddressBookParser LOGIC_COLOR
+Participant ":ListCommandParser" as ListCommandParser LOGIC_COLOR
+Participant "<<class>>\n:ParserUtil" as ParserUtil LOGIC_COLOR
+Participant "s:Skill" as Skill LOGIC_COLOR
+Participant "lc:ListCommand" as ListCommand LOGIC_COLOR
+Participant "r:CommandResult" as CommandResult LOGIC_COLOR
+end box
+
+box Model MODEL_COLOR_T1
+Participant "model:Model" as Model MODEL_COLOR
+end box
+
+[-> LogicManager : execute("list s/expert")
+activate LogicManager
+
+LogicManager -> AddressBookParser : parseCommand("list s/expert")
+activate AddressBookParser
+
+create ListCommandParser
+AddressBookParser -> ListCommandParser
+activate ListCommandParser
+AddressBookParser -> ListCommandParser : parse("s/expert")
+
+group loop     [For every skill found]
+ListCommandParser -> ParserUtil : parseFilteredSkill(skill)
+activate ParserUtil
+create Skill
+ParserUtil -> Skill : new Skill(skill)
+activate Skill
+
+Skill --> ParserUtil : s
+deactivate Skill
+
+ParserUtil --> ListCommandParser : s
+deactivate ParserUtil
+end
+
+create ListCommand
+ListCommandParser -> ListCommand : new ListCommand([Expert])
+activate ListCommand
+ListCommand --> ListCommandParser : lc
+deactivate ListCommand
+
+ListCommandParser --> AddressBookParser : lc
+deactivate ListCommandParser
+'Hidden arrow to position the destroy marker below the end of the activation bar.
+ListCommandParser -[hidden]-> AddressBookParser
+destroy ListCommandParser
+
+AddressBookParser --> LogicManager : lc
+deactivate AddressBookParser
+
+LogicManager -> ListCommand : execute(model)
+activate ListCommand
+
+note right : Predicate that is used to filter\nfor the wanted skill(s)
+ListCommand -> Model : updateFilteredPersonList(predicate)
+activate Model
+Model --> ListCommand
+deactivate Model
+
+create CommandResult
+ListCommand -> CommandResult
+activate CommandResult
+CommandResult --> ListCommand : r
+deactivate CommandResult
+
+ListCommand --> LogicManager : r
+deactivate ListCommand
+
+[<-- LogicManager : r
+deactivate LogicManager
+@enduml

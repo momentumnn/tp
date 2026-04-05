@@ -18,12 +18,10 @@ Class Address
 Class Email
 Class Name
 Class Phone
-Class Tag
 Class Skill
 Class Timeslot
 Class TrainingGoal
 Class InjuryStatus
-Class FilteredSkill
 Class ProgressRecord
 
 Class I #FFFFFF
@@ -47,12 +45,10 @@ Person *--> Name
 Person *--> Phone
 Person *--> Email
 Person *--> Address
-Person *--> "*" Tag
 Person *--> Skill
 Person *--> "*" Timeslot
 Person *--> TrainingGoal
 Person *--> InjuryStatus
-Person *--> "0..1" FilteredSkill
 Person *--> ProgressRecord
 
 Person -[hidden]up--> I
