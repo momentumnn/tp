@@ -1,0 +1,24 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+
+Participant ":ListCommand" as ListCommand LOGIC_COLOR
+
+box Model MODEL_COLOR_T1
+Participant ":ModelManager" as ModelManager MODEL_COLOR
+Participant ":FilteredList" as FilteredList MODEL_COLOR
+end box
+
+activate ListCommand
+ListCommand -> ModelManager : updateFilteredPersonList(predicate)
+activate ModelManager
+
+ModelManager -> FilteredList : setPredicate(predicate)
+activate FilteredList
+FilteredList --> ModelManager
+deactivate FilteredList
+
+ModelManager --> ListCommand
+deactivate ModelManager
+deactivate ListCommand
+@enduml

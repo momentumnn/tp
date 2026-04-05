@@ -112,7 +112,10 @@ public class ParserUtil {
         final Set<Timeslot> timeslotSet = new TreeSet<>();
         for (String timeslot : timeslots) {
             for (String dayTimeslot : timeslot.split(";")) {
-                timeslotSet.add(parseTimeslot(dayTimeslot));
+                boolean isSuccessful = timeslotSet.add(parseTimeslot(dayTimeslot));
+                if (!isSuccessful) {
+                    throw new ParseException(Timeslot.MESSAGE_CONSTRAINTS);
+                }
             }
         }
         return timeslotSet;

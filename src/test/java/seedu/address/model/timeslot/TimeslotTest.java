@@ -38,6 +38,7 @@ public class TimeslotTest {
         assertFalse(Timeslot.isValidTimeslot("mon:13")); // invalid slot
         assertFalse(Timeslot.isValidTimeslot("mon:2,2;tue:4,4")); // duplicate slots
         assertFalse(Timeslot.isValidTimeslot("sun:")); // no slot chosen
+        assertFalse(Timeslot.isValidTimeslot("sun:1;sun:2")); // duplicate days
         // overlapping times
         assertFalse(Timeslot.isValidTimeslot("mon:2100-2200,2030-2130"));
         assertFalse(Timeslot.isValidTimeslot("-")); // one character

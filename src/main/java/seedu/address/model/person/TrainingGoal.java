@@ -10,17 +10,10 @@ import static seedu.address.commons.util.AppUtil.checkArgument;
 public class TrainingGoal {
 
     public static final String MESSAGE_CONSTRAINTS =
-            "Training Goal should not be blank and should not contain flag-like patterns (e.g. 'x/', 'ab/').";
+            "Training Goal should not be blank, should not contain flag-like patterns (e.g. 'x/', 'ab/'), "
+                    + "and should be at most 200 characters long.";
 
-    /*
-     * The first character of the trainingGoal must not be a whitespace,
-     * otherwise " " (a blank string) becomes a valid input.
-     * Additionally, patterns of 1-2 letters followed by '/' (e.g. 'x/', 'ab/')
-     * are not allowed as they resemble flags.
-     */
-    public static final String VALIDATION_REGEX = "(?!.*\\b[a-zA-Z]{1,2}/)[^\\s].*";
-
-    public static final String DEFAULT_TRAINING_GOAL = "Get a 6 pack";
+    public static final String VALIDATION_REGEX = "(?!.*\\b[a-zA-Z]{1,2}/)[^\\s].{0,199}";
 
     public final String value;
 

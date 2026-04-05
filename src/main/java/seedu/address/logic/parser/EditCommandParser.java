@@ -13,7 +13,6 @@ import static seedu.address.logic.parser.CliSyntax.PREFIX_TIMESLOT;
 import static seedu.address.logic.parser.CliSyntax.PREFIX_TRAINING_GOAL;
 
 import java.util.Collection;
-import java.util.Collections;
 import java.util.Optional;
 import java.util.Set;
 
@@ -92,8 +91,6 @@ public class EditCommandParser implements Parser<EditCommand> {
 
     /**
      * Parses {@code Collection<String> timeslots} into a {@code Set<Timeslot>} if {@code timeslots} is non-empty.
-     * If {@code timeslots} contain only one element which is an empty string, it will be parsed into a
-     * {@code Set<Timeslot>} containing zero timeslots.
      */
     private Optional<Set<Timeslot>> parseTimeslotsForEdit(Collection<String> timeslots) throws ParseException {
         assert timeslots != null;
@@ -101,9 +98,10 @@ public class EditCommandParser implements Parser<EditCommand> {
         if (timeslots.isEmpty()) {
             return Optional.empty();
         }
-        Collection<String> timeslotSet = timeslots.size() == 1 && timeslots.contains("")
-                ? Collections.emptySet() : timeslots;
-        return Optional.of(ParserUtil.parseTimeslots(timeslotSet));
+        if (timeslots.contains("")) {
+            throw new ParseException(Timeslot.MESSAGE_CONSTRAINTS);
+        }
+        return Optional.of(ParserUtil.parseTimeslots(timeslots));
     }
 
 }

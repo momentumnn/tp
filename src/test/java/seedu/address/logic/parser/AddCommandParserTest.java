@@ -13,7 +13,8 @@ import static seedu.address.logic.commands.CommandTestUtil.INVALID_INJURY_STATUS
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_NAME_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_PHONE_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_SKILL_DESC;
-import static seedu.address.logic.commands.CommandTestUtil.INVALID_TIMESLOT_DESC;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_TIMESLOT_DESC_1;
+import static seedu.address.logic.commands.CommandTestUtil.INVALID_TIMESLOT_DESC_2;
 import static seedu.address.logic.commands.CommandTestUtil.INVALID_TRAINING_GOAL_DESC;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_AMY;
 import static seedu.address.logic.commands.CommandTestUtil.NAME_DESC_BOB;
@@ -134,7 +135,7 @@ public class AddCommandParserTest {
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ADDRESS));
 
         // invalid timeslot
-        assertParseFailure(parser, INVALID_TIMESLOT_DESC + validExpectedPersonString,
+        assertParseFailure(parser, INVALID_TIMESLOT_DESC_1 + validExpectedPersonString,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_TIMESLOT));
 
         // invalid injury status
@@ -161,7 +162,7 @@ public class AddCommandParserTest {
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_ADDRESS));
 
         // invalid timeslot
-        assertParseFailure(parser, validExpectedPersonString + INVALID_TIMESLOT_DESC,
+        assertParseFailure(parser, validExpectedPersonString + INVALID_TIMESLOT_DESC_1,
                 Messages.getErrorMessageForDuplicatePrefixes(PREFIX_TIMESLOT));
 
         // invalid injury status
@@ -257,7 +258,10 @@ public class AddCommandParserTest {
 
         // invalid timeslot
         assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
-                + INJURY_STATUS_DESC_BOB + TRAINING_GOAL_DESC_BOB + INVALID_TIMESLOT_DESC
+                + INJURY_STATUS_DESC_BOB + TRAINING_GOAL_DESC_BOB + INVALID_TIMESLOT_DESC_1
+                + SKILL_DESC_BOB, Timeslot.MESSAGE_CONSTRAINTS);
+        assertParseFailure(parser, NAME_DESC_BOB + PHONE_DESC_BOB + EMAIL_DESC_BOB + ADDRESS_DESC_BOB
+                + INJURY_STATUS_DESC_BOB + TRAINING_GOAL_DESC_BOB + INVALID_TIMESLOT_DESC_2
                 + SKILL_DESC_BOB, Timeslot.MESSAGE_CONSTRAINTS);
 
         // two invalid values, only first invalid value reported

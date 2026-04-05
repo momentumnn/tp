@@ -72,7 +72,9 @@ public class CommandTestUtil {
     public static final String INVALID_INJURY_STATUS_DESC = " " + PREFIX_INJURY_STATUS + " ";
     public static final String INVALID_TRAINING_GOAL_DESC = " "
             + PREFIX_TRAINING_GOAL; // empty string not allowed for trainingGoals
-    public static final String INVALID_TIMESLOT_DESC = " " + PREFIX_TIMESLOT + "sun: 9"; // space not allowed
+    public static final String INVALID_TIMESLOT_DESC_1 = " " + PREFIX_TIMESLOT + "sun: 9"; // space not allowed
+    public static final String INVALID_TIMESLOT_DESC_2 = " " + PREFIX_TIMESLOT
+            + "mon:1;mon:2"; // duplicate days not allowed
     public static final String INVALID_PROGRESS_RECORD = "123";
 
     public static final String PREAMBLE_WHITESPACE = "\t  \r  \n";

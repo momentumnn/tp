@@ -1,0 +1,23 @@
+@startuml
+!include style.puml
+skinparam arrowThickness 1.1
+skinparam arrowColor #000000
+skinparam ObjectFontColor #000000
+skinparam ObjectBorderColor #000000
+skinparam ObjectBackgroundColor #FFFFAA
+show member
+hide empty member
+
+title "    After command "list s/expert""
+
+Object "<u>m:ModelManager</u>" as modelManager
+Object "<u>filteredList:FilteredList</u>" as filteredList
+
+Object "<u>charlie:Person</u>" as charlie {
+    skill = "Expert"
+}
+
+charlie -up- filteredList
+filteredList -up- modelManager
+
+@enduml

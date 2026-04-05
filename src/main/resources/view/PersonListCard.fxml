@@ -49,7 +49,7 @@
       <FlowPane fx:id="timeslots" hgap="5" vgap="5" />
 
       <VBox spacing="4">
-        <Label fx:id="trainingGoal" styleClass="trainingGoal_label" text="\$trainingGoal" />
+        <Label fx:id="trainingGoal" styleClass="trainingGoal_label" text="\$trainingGoal" wrapText="true" />
         <Label fx:id="progressRecord" styleClass="progress_label" text="\$progressRecord" />
         <Label fx:id="injuryStatus" styleClass="injury_label" text="\$injuryStatus" />
       </VBox>
