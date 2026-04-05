@@ -23,6 +23,7 @@ import seedu.address.model.ReadOnlyAddressBook;
 import seedu.address.model.ReadOnlyUserPrefs;
 import seedu.address.model.UserPrefs;
 import seedu.address.model.util.SampleDataUtil;
+import seedu.address.storage.AddressBookLoadResult;
 import seedu.address.storage.AddressBookStorage;
 import seedu.address.storage.JsonAddressBookStorage;
 import seedu.address.storage.JsonUserPrefsStorage;
@@ -77,20 +78,25 @@ public class MainApp extends Application {
     private Model initModelManager(Storage storage, ReadOnlyUserPrefs userPrefs) {
         logger.info("Using data file : " + storage.getAddressBookFilePath());
 
-        Optional<ReadOnlyAddressBook> addressBookOptional;
+        AddressBookLoadResult loadResult;
         ReadOnlyAddressBook initialData;
         try {
-            addressBookOptional = storage.readAddressBook();
-            if (!addressBookOptional.isPresent()) {
+            loadResult = storage.readAddressBookWithResult();
+            if (!loadResult.hasDataFile()) {
                 logger.info("Creating a new data file " + storage.getAddressBookFilePath()
                         + " populated with a sample AddressBook.");
             }
-            initialData = addressBookOptional.orElseGet(SampleDataUtil::getSampleAddressBook);
+            initialData = loadResult.getAddressBook().orElseGet(SampleDataUtil::getSampleAddressBook);
+            if (loadResult.hasInvalidEntries()) {
+                startupErrorMessage = StartupErrorMessage.buildInvalidEntriesWarning(
+                        storage.getAddressBookFilePath(),
+                        loadResult.getInvalidEntriesFilePath(),
+                        loadResult.getInvalidEntriesSaveFailureMessage());
+            }
         } catch (DataLoadingException e) {
-            String userMessage = StartupErrorMessage.build(storage.getAddressBookFilePath(), e);
+            startupErrorMessage = StartupErrorMessage.buildDataLoadFailureMessage(storage.getAddressBookFilePath());
             logger.warning("Data file at " + storage.getAddressBookFilePath() + " could not be loaded."
-                    + " Will be starting with an empty AddressBook.");
-            startupErrorMessage = userMessage;
+                    + " Will be starting with an empty AddressBook. \nCheck the logs for more information");
             initialData = new AddressBook();
         }
 

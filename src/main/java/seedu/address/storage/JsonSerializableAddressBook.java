@@ -22,13 +22,16 @@ class JsonSerializableAddressBook {
     public static final String MESSAGE_DUPLICATE_PERSON = "Persons list contains duplicate person(s).";
 
     private final List<JsonAdaptedPerson> persons = new ArrayList<>();
+    private final List<InvalidPersonRecord> invalidPersonRecords = new ArrayList<>();
 
     /**
      * Constructs a {@code JsonSerializableAddressBook} with the given persons.
      */
     @JsonCreator
     public JsonSerializableAddressBook(@JsonProperty("persons") List<JsonAdaptedPerson> persons) {
-        this.persons.addAll(persons);
+        if (persons != null) {
+            this.persons.addAll(persons);
+        }
     }
 
     /**
@@ -42,19 +45,31 @@ class JsonSerializableAddressBook {
 
     /**
      * Converts this address book into the model's {@code AddressBook} object.
-     *
-     * @throws IllegalValueException if there were any data constraints violated.
      */
-    public AddressBook toModelType() throws IllegalValueException {
+    public AddressBook toModelType() {
+        invalidPersonRecords.clear();
         AddressBook addressBook = new AddressBook();
         for (JsonAdaptedPerson jsonAdaptedPerson : persons) {
-            Person person = jsonAdaptedPerson.toModelType();
-            if (addressBook.hasPerson(person)) {
-                throw new IllegalValueException(MESSAGE_DUPLICATE_PERSON);
+            try {
+                Person person = jsonAdaptedPerson.toModelType();
+                if (addressBook.hasPerson(person)) {
+                    invalidPersonRecords.add(new InvalidPersonRecord(jsonAdaptedPerson,
+                            MESSAGE_DUPLICATE_PERSON + " " + person.getName().fullName));
+                    continue;
+                }
+                addressBook.addPerson(person);
+            } catch (IllegalValueException ive) {
+                invalidPersonRecords.add(new InvalidPersonRecord(jsonAdaptedPerson, ive.getMessage()));
             }
-            addressBook.addPerson(person);
         }
         return addressBook;
     }
 
+    public boolean hasInvalidEntries() {
+        return !invalidPersonRecords.isEmpty();
+    }
+
+    public List<InvalidPersonRecord> getInvalidPersonRecords() {
+        return new ArrayList<>(invalidPersonRecords);
+    }
 }

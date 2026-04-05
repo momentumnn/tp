@@ -2,6 +2,7 @@ package seedu.address.storage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.Assert.assertThrows;
 import static seedu.address.testutil.TypicalPersons.ALICE;
 import static seedu.address.testutil.TypicalPersons.HOON;
@@ -9,8 +10,10 @@ import static seedu.address.testutil.TypicalPersons.IDA;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.io.IOException;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.StandardCopyOption;
 
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -31,7 +34,22 @@ public class JsonAddressBookStorageTest {
     }
 
     private java.util.Optional<ReadOnlyAddressBook> readAddressBook(String filePath) throws Exception {
-        return new JsonAddressBookStorage(Paths.get(filePath)).readAddressBook(addToTestDataPathIfNotNull(filePath));
+        Path sourcePath = addToTestDataPathIfNotNull(filePath);
+        if (sourcePath == null) {
+            return new JsonAddressBookStorage(Paths.get(filePath)).readAddressBook(null);
+        }
+        JsonAddressBookStorage storage;
+        Path fileToRead;
+        if (Files.exists(sourcePath)) {
+            Path tempFile = testFolder.resolve(sourcePath.getFileName());
+            Files.copy(sourcePath, tempFile, StandardCopyOption.REPLACE_EXISTING);
+            storage = new JsonAddressBookStorage(tempFile);
+            fileToRead = tempFile;
+        } else {
+            storage = new JsonAddressBookStorage(sourcePath);
+            fileToRead = sourcePath;
+        }
+        return storage.readAddressBook(fileToRead);
     }
 
     private Path addToTestDataPathIfNotNull(String prefsFileInTestDataFolder) {
@@ -40,9 +58,35 @@ public class JsonAddressBookStorageTest {
                 : null;
     }
 
+    private Path copyToTemp(String fileName) throws IOException {
+        Path source = addToTestDataPathIfNotNull(fileName);
+        Path destination = testFolder.resolve(fileName);
+        Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
+        return destination;
+    }
+
+    private Path copyFromSerializableTestData(String fileName) throws IOException {
+        Path source = Paths.get("src", "test", "data", "JsonSerializableAddressBookTest", fileName);
+        Path destination = testFolder.resolve(fileName);
+        Files.copy(source, destination, StandardCopyOption.REPLACE_EXISTING);
+        return destination;
+    }
+
     @Test
     public void read_missingFile_emptyResult() throws Exception {
         assertFalse(readAddressBook("NonExistentFile.json").isPresent());
+    }
+
+    @Test
+    public void readAddressBookWithResult_missingFile_returnsMissingResult() throws Exception {
+        Path missingFile = addToTestDataPathIfNotNull("NonExistentFile.json");
+        JsonAddressBookStorage storage = new JsonAddressBookStorage(missingFile);
+        AddressBookLoadResult result = storage.readAddressBookWithResult(missingFile);
+        assertFalse(result.hasDataFile());
+        assertFalse(result.hasInvalidEntries());
+        assertTrue(result.getAddressBook().isEmpty());
+        assertFalse(result.getInvalidEntriesFilePath().isPresent());
+        assertFalse(result.getInvalidEntriesSaveFailureMessage().isPresent());
     }
 
     @Test
@@ -51,13 +95,41 @@ public class JsonAddressBookStorageTest {
     }
 
     @Test
-    public void readAddressBook_invalidPersonAddressBook_throwDataLoadingException() {
-        assertThrows(DataLoadingException.class, () -> readAddressBook("invalidPersonAddressBook.json"));
+    public void readAddressBook_invalidPersonAddressBook_skipsInvalidEntries() throws Exception {
+        Path tempInvalidFile = copyToTemp("invalidPersonAddressBook.json");
+        JsonAddressBookStorage storage = new JsonAddressBookStorage(tempInvalidFile);
+
+        AddressBookLoadResult result = storage.readAddressBookWithResult(tempInvalidFile);
+        ReadOnlyAddressBook readOnlyAddressBook = result.getAddressBook().get();
+        assertTrue(readOnlyAddressBook.getPersonList().isEmpty());
+        assertTrue(result.hasInvalidEntries());
+        Path invalidPath = result.getInvalidEntriesFilePath().orElseThrow();
+        String contents = Files.readString(invalidPath);
+        assertTrue(contents.contains("Reason:"));
+        assertTrue(contents.contains("\"name\""));
     }
 
     @Test
-    public void readAddressBook_invalidAndValidPersonAddressBook_throwDataLoadingException() {
-        assertThrows(DataLoadingException.class, () -> readAddressBook("invalidAndValidPersonAddressBook.json"));
+    public void readAddressBook_invalidAndValidPersonAddressBook_skipsInvalidAndKeepsValid() throws Exception {
+        Path tempFile = copyToTemp("invalidAndValidPersonAddressBook.json");
+        JsonAddressBookStorage storage = new JsonAddressBookStorage(tempFile);
+
+        AddressBookLoadResult result = storage.readAddressBookWithResult(tempFile);
+        ReadOnlyAddressBook readOnlyAddressBook = result.getAddressBook().get();
+        assertEquals(1, readOnlyAddressBook.getPersonList().size());
+        assertEquals("Valid Person", readOnlyAddressBook.getPersonList().get(0).getName().fullName);
+        assertTrue(result.hasInvalidEntries());
+    }
+
+    @Test
+    public void readAddressBook_allValid_noInvalidFileGenerated() throws Exception {
+        Path tempFile = copyFromSerializableTestData("typicalPersonsAddressBook.json");
+        JsonAddressBookStorage storage = new JsonAddressBookStorage(tempFile);
+
+        AddressBookLoadResult result = storage.readAddressBookWithResult(tempFile);
+        ReadOnlyAddressBook readOnlyAddressBook = result.getAddressBook().get();
+        assertFalse(result.hasInvalidEntries());
+        assertEquals(getTypicalAddressBook(), new AddressBook(readOnlyAddressBook));
     }
 
     @Test
@@ -107,4 +179,5 @@ public class JsonAddressBookStorageTest {
     public void saveAddressBook_nullFilePath_throwsNullPointerException() {
         assertThrows(NullPointerException.class, () -> saveAddressBook(new AddressBook(), null));
     }
+
 }

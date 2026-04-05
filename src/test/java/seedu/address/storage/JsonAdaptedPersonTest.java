@@ -142,6 +142,17 @@ public class JsonAdaptedPersonTest {
     }
 
     @Test
+    public void toModelType_nullTimeslot_throwsIllegalValueException() {
+        List<String> invalidTimeslots = new ArrayList<>(VALID_TIMESLOTS);
+        invalidTimeslots.add(null);
+        JsonAdaptedPerson person =
+                new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS, VALID_INJURY_STATUS,
+                        VALID_TRAINING_GOAL, invalidTimeslots, VALID_SKILL, VALID_PROGRESS_RECORD);
+        String expectedMessage = "Invalid value for Timeslot: \"null\". " + Timeslot.MESSAGE_CONSTRAINTS;
+        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+    }
+
+    @Test
     public void toModelType_nullTimeslots_throwsIllegalValueException() {
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS, VALID_INJURY_STATUS,

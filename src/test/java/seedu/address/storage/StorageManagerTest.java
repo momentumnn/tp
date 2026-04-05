@@ -1,7 +1,9 @@
 package seedu.address.storage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 import static seedu.address.testutil.TypicalPersons.getTypicalAddressBook;
 
 import java.nio.file.Path;
@@ -63,6 +65,54 @@ public class StorageManagerTest {
     @Test
     public void getAddressBookFilePath() {
         assertNotNull(storageManager.getAddressBookFilePath());
+    }
+
+    @Test
+    public void saveAddressBook_withFilePath_success() throws Exception {
+        Path explicitPath = getTempFilePath("explicitAddressBook.json");
+        AddressBook original = getTypicalAddressBook();
+        storageManager.saveAddressBook(original, explicitPath);
+        ReadOnlyAddressBook saved = new JsonAddressBookStorage(explicitPath).readAddressBook(explicitPath).get();
+        assertEquals(original, new AddressBook(saved));
+    }
+
+    @Test
+    public void readAddressBook_withFilePath_success() throws Exception {
+        Path explicitPath = getTempFilePath("explicitReadAddressBook.json");
+        AddressBook original = getTypicalAddressBook();
+        new JsonAddressBookStorage(explicitPath).saveAddressBook(original, explicitPath);
+        ReadOnlyAddressBook retrieved = storageManager.readAddressBook(explicitPath).get();
+        assertEquals(original, new AddressBook(retrieved));
+    }
+
+    @Test
+    public void readAddressBookWithResult_missingFile_returnsMissingResult() throws Exception {
+        Path missingPath = getTempFilePath("missingAddressBook.json");
+        AddressBookLoadResult result = storageManager.readAddressBookWithResult(missingPath);
+        assertFalse(result.hasDataFile());
+        assertFalse(result.hasInvalidEntries());
+        assertTrue(result.getAddressBook().isEmpty());
+    }
+
+    @Test
+    public void readAddressBookWithResult_defaultPath_success() throws Exception {
+        AddressBook original = getTypicalAddressBook();
+        storageManager.saveAddressBook(original);
+        AddressBookLoadResult result = storageManager.readAddressBookWithResult();
+        assertTrue(result.hasDataFile());
+        assertFalse(result.hasInvalidEntries());
+        assertEquals(original, new AddressBook(result.getAddressBook().get()));
+    }
+
+    @Test
+    public void readAddressBookWithResult_withFilePath_success() throws Exception {
+        Path explicitPath = getTempFilePath("explicitResultAddressBook.json");
+        AddressBook original = getTypicalAddressBook();
+        new JsonAddressBookStorage(explicitPath).saveAddressBook(original, explicitPath);
+        AddressBookLoadResult result = storageManager.readAddressBookWithResult(explicitPath);
+        assertTrue(result.hasDataFile());
+        assertFalse(result.hasInvalidEntries());
+        assertEquals(original, new AddressBook(result.getAddressBook().get()));
     }
 
 }

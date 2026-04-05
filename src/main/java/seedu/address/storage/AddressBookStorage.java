@@ -23,12 +23,16 @@ public interface AddressBookStorage {
      *
      * @throws DataLoadingException if loading the data from storage failed.
      */
-    Optional<ReadOnlyAddressBook> readAddressBook() throws DataLoadingException;
+    default Optional<ReadOnlyAddressBook> readAddressBook() throws DataLoadingException {
+        return readAddressBookWithResult().getAddressBook();
+    }
 
     /**
      * @see #getAddressBookFilePath()
      */
-    Optional<ReadOnlyAddressBook> readAddressBook(Path filePath) throws DataLoadingException;
+    default Optional<ReadOnlyAddressBook> readAddressBook(Path filePath) throws DataLoadingException {
+        return readAddressBookWithResult(filePath).getAddressBook();
+    }
 
     /**
      * Saves the given {@link ReadOnlyAddressBook} to the storage.
@@ -41,5 +45,11 @@ public interface AddressBookStorage {
      * @see #saveAddressBook(ReadOnlyAddressBook)
      */
     void saveAddressBook(ReadOnlyAddressBook addressBook, Path filePath) throws IOException;
+
+    AddressBookLoadResult readAddressBookWithResult(Path filePath) throws DataLoadingException;
+
+    default AddressBookLoadResult readAddressBookWithResult() throws DataLoadingException {
+        return readAddressBookWithResult(getAddressBookFilePath());
+    }
 
 }

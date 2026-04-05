@@ -1,62 +1,45 @@
 package seedu.address.commons.util;
 
 import java.nio.file.Path;
-
-import seedu.address.commons.exceptions.DataLoadingException;
+import java.util.Optional;
 
 /**
- * Utility used to build user-friendly error messages for data loading failures.
+ * Utility class for building user-friendly startup warnings related to data loading.
  */
 public final class StartupErrorMessage {
-
-    static final String FALLBACK_REASON = "An unknown error occurred while loading the data file.";
-    static final String WARNING_MESSAGE_FORMAT =
+    static final String FILE_LOAD_FAILURE_MESSAGE_FORMAT =
             "WARNING: Data file at %s could not be loaded. Starting with an empty AddressBook.\n"
-                    + "Reason: %s";
+                    + "Check the addressbook.log file in the same folder as the app for more information.";
+
+    private static final String SAVED_INVALID_ENTRIES_MESSAGE =
+            "Invalid entries were found in %s.\n"
+                    + "Wrong entries saved to %s";
+    private static final String UNSAVED_INVALID_ENTRIES_MESSAGE =
+            "Invalid entries were found in %s but saving them failed.\n"
+                    + "Check the addressbook.log file in the same folder as the app for more information.";
+    private static final String DEFAULT_INVALID_ENTRIES_MESSAGE =
+            "Invalid entries were found in %s";
+
+    private StartupErrorMessage() {}
 
     /**
-     * Builds the startup error message that explains which data file failed to load
-     * and shows the human-readable cause.
+     * Returns the startup warning shown when the data file cannot be loaded.
      */
-    public static String build(Path dataFilePath, DataLoadingException exception) {
-        String reason = getUserFacingErrorMessage(exception);
-        return String.format(WARNING_MESSAGE_FORMAT, dataFilePath, reason);
+    public static String buildDataLoadFailureMessage(Path dataFilePath) {
+        return String.format(FILE_LOAD_FAILURE_MESSAGE_FORMAT, dataFilePath);
     }
 
     /**
-     * Extracts a user-facing error message from {@code DataLoadingException}.
-     * Returns the root cause message if available, else falls back to the exception's
-     * own message or a default fallback reason if no usable message is found.
-     *
-     * @param exception The exception to extract the message from.
-     * @return A user-friendly error message.
+     * Returns the startup warning shown when some invalid entries were skipped.
      */
-    static String getUserFacingErrorMessage(DataLoadingException exception) {
-        if (exception == null) {
-            return FALLBACK_REASON;
+    public static String buildInvalidEntriesWarning(Path dataFilePath, Optional<Path> invalidFilePath,
+                                                    Optional<String> saveFailureMessage) {
+        if (saveFailureMessage.isPresent()) {
+            return String.format(UNSAVED_INVALID_ENTRIES_MESSAGE, dataFilePath);
         }
-        Throwable cause = exception.getCause();
-        if (cause != null) {
-            String message = trimIfPresent(cause.getMessage());
-            if (message != null) {
-                return message;
-            }
+        if (invalidFilePath.isPresent()) {
+            return String.format(SAVED_INVALID_ENTRIES_MESSAGE, dataFilePath, invalidFilePath.get());
         }
-        return trimIfPresent(exception.getMessage());
-    }
-
-    /**
-     * Returns {@code message} trimmed of whitespace if it contains text, or {@link #FALLBACK_REASON}
-     * when the message is null or blank.
-     */
-    private static String trimIfPresent(String message) {
-        if (message == null) {
-            return FALLBACK_REASON;
-        }
-        String trimmed = message.trim();
-        if (trimmed.isEmpty()) {
-            return FALLBACK_REASON;
-        }
-        return trimmed;
+        return String.format(DEFAULT_INVALID_ENTRIES_MESSAGE, dataFilePath);
     }
 }

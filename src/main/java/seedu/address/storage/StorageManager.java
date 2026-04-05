@@ -75,4 +75,14 @@ public class StorageManager implements Storage {
         addressBookStorage.saveAddressBook(addressBook, filePath);
     }
 
+    @Override
+    public AddressBookLoadResult readAddressBookWithResult() throws DataLoadingException {
+        return addressBookStorage.readAddressBookWithResult();
+    }
+
+    @Override
+    public AddressBookLoadResult readAddressBookWithResult(Path filePath) throws DataLoadingException {
+        logger.fine("Attempting to read data from file: " + filePath);
+        return addressBookStorage.readAddressBookWithResult(filePath);
+    }
 }
