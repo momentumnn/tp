@@ -43,7 +43,7 @@ public class AddCommand extends Command {
             + PREFIX_TRAINING_GOAL + "Get a 6 pack in 2 minutes "
             + PREFIX_TIMESLOT + "mon:2;tue:3;wed:4 "
             + PREFIX_INJURY_STATUS + "Injured "
-            + PREFIX_SKILL + "pro "
+            + PREFIX_SKILL + "beginner "
             + PREFIX_PROGRESS_RECORD + "100%";
 
     public static final String MESSAGE_SUCCESS = "New person added: %1$s";
