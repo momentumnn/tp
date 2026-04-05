@@ -42,11 +42,11 @@ public class NameTest {
         assertFalse(Name.isValidName(" John")); // starts with space
 
         // EP: Max length
-        assertFalse(Name.isValidName("a" + "A".repeat(100))); // 101 characters (too long)
+        assertFalse(Name.isValidName("A".repeat(101))); // 101 characters (too long)
 
         // EP: Valid length
-        assertTrue(Name.isValidName("a" + "A".repeat(99))); // exactly 100 characters (boundary)
-        assertTrue(Name.isValidName("a"));
+        assertTrue(Name.isValidName("a".repeat(100))); // exactly 100 characters (boundary)
+        assertTrue(Name.isValidName("a")); // exactly 1 character (boundary)
 
         // EP: Valid names
         assertTrue(Name.isValidName("peter jack")); // alphabets only
