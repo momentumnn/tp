@@ -41,7 +41,7 @@ public class NameTest {
         assertFalse(Name.isValidName("'John")); // starts with apostrophe
         assertFalse(Name.isValidName(" John")); // starts with space
 
-        // BVA: MAx length of name
+        // BVA: Max length of name
         assertFalse(Name.isValidName("a" + "A".repeat(100))); // 101 characters (too long)
         assertTrue(Name.isValidName("a" + "A".repeat(99))); // exactly 100 characters (boundary)
 
