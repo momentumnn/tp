@@ -294,22 +294,22 @@ Format: `exit`
 
 ### Saving the data
 
-PTcoach data are saved in the hard disk automatically after any command that changes the data. There is no need to save manually.
+PTcoach saves to disk automatically every time a command runs. There is no need to save manually. 
+
+The live data reside in `[JAR file location]/data/addressbook.json`.
 
 ### Editing the data file
 
-PTcoach data are saved automatically as a JSON file `[JAR file location]/data/addressbook.json`. Advanced users are welcome to update data directly by editing that data file.
+Advanced users are welcome to update data directly by editing `[JAR file location]/data/addressbook.json`.
 
 <box type="warning" seamless>
-
 **Caution:**
-If your changes to the data file makes its format invalid, PTcoach will discard all data and start with an empty data file at the next run.  Hence, it is recommended to take a backup of the file before editing it.<br>
-Furthermore, certain edits can cause the PTcoach to behave in unexpected ways (e.g., if a value entered is outside the acceptable range). Therefore, edit the data file only if you are confident that you can update it correctly.
+If the data file contains invalid entries, PTcoach will ignore those invalid entries during startup and continue loading the valid ones.
+
+- PTcoach will try to save the invalid entries to a separate file for reference. Hence, it is still recommended to make a backup of the data file before editing it manually.<br>
+- Edits that do not follow the required format or valid value range may cause PTcoach to behave in unexpected ways. Edit the data file only if you are confident that you can update it correctly.<br>
+- If you edit the data file while PTcoach is **running**, your changes will not appear in the app immediately and may not be preserved, because the app can overwrite the file when it saves data. Always close PTcoach before editing the data file manually.
 </box>
-
-### Archiving data files `[coming in v2.0]`
-
-_Details coming soon ..._
 
 --------------------------------------------------------------------------------------------------------------------
 
