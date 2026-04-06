@@ -71,7 +71,10 @@ public class Timeslot implements Comparable<Timeslot> {
         Set<Slot> slots = new TreeSet<>();
 
         for (String slot : slotParts) {
-            if (!isValidAndUniqueSlot(slot, slots)) {
+            if (!isValidSlot(slot)) {
+                return false;
+            }
+            if (!isUniqueSlot(slot, slots)) {
                 return false;
             }
         }
@@ -79,13 +82,11 @@ public class Timeslot implements Comparable<Timeslot> {
     }
 
     /**
-     * Returns true if a given string is a valid slot and is unique in {@code existingSlots}.
+     * Returns true if a given string is a valid slot.
      *
      * @param slot String.
-     * @param existingSlots Set of slots to be tested against for uniqueness.
      */
-    public static boolean isValidAndUniqueSlot(String slot, Set<Slot> existingSlots) {
-        // slot is in HHMM format
+    public static boolean isValidSlot(String slot) {
         if (slot.contains("-")) {
             String[] times = slot.split("-");
             int startTime = Integer.parseInt(times[0]);
@@ -95,8 +96,16 @@ public class Timeslot implements Comparable<Timeslot> {
                 return false;
             }
         }
+        return true;
+    }
 
-        // convert slot to Enum Slot and check uniqueness
+    /**
+     * Returns true if a given string is unique in {@code existingSlots}.
+     *
+     * @param slot String.
+     * @param existingSlots Set of slots to be tested against for uniqueness.
+     */
+    public static boolean isUniqueSlot(String slot, Set<Slot> existingSlots) {
         try {
             Slot newSlot = Slot.toSlot(slot);
             if (!existingSlots.add(newSlot)) {
