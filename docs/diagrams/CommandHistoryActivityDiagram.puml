@@ -11,7 +11,7 @@ start
 if () then ([KeyCode is UP or DOWN])
     if () then ([KeyCode is UP])
         if () then ([history is empty])
-            :Return "";
+            :Return empty string;
         else ([else])
             if () then ([at the first command])
                 :Return first command;

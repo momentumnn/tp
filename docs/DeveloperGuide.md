@@ -177,7 +177,7 @@ Step 2. The user enters 3 commands in order: `add n/John Doe p/98765432 e/johnd@
 
 <puml src="diagrams/CommandHistoryState1.puml" alt="CommandHistoryState1" />
 
-Step 3. The user presses `Up` key, to retrieve back the past submitted command.
+Step 3. The user presses `Up` key, to retrieve back the past submitted command (`edit n\Bob`).
 
 <puml src="diagrams/CommandHistoryState2.puml" alt="CommandHistoryState2" />
 
