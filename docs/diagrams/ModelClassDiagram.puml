@@ -23,6 +23,8 @@ Class Timeslot
 Class TrainingGoal
 Class InjuryStatus
 Class ProgressRecord
+Class "<<enumeration>>\nDay" as Day
+Class "<<enumeration>>\nSlot" as Slot
 
 Class I #FFFFFF
 }
@@ -47,6 +49,8 @@ Person *--> Email
 Person *--> Address
 Person *--> Skill
 Person *--> "*" Timeslot
+Timeslot --> Day
+Timeslot --> "*" Slot
 Person *--> TrainingGoal
 Person *--> InjuryStatus
 Person *--> ProgressRecord
