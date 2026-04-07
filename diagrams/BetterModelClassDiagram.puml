@@ -7,13 +7,15 @@ skinparam classBackgroundColor MODEL_COLOR
 AddressBook *-right-> "1" UniquePersonList
 UniquePersonList -right-> Person
 
-Person *--> Name
-Person *--> Phone
-Person *--> Email
-Person *--> Address
-Person *--> Skill
-Person *--> Timeslot
-Person *--> TrainingGoal
-Person *--> InjuryStatus
+Person *--> "1" Name
+Person *--> "1" Phone
+Person *--> "1" Email
+Person *--> "1" Address
+Person *--> "1" Skill
+Person *--> "1..7" Timeslot
+Timeslot --> "1" Day
+Timeslot --> "1..12" Slot
+Person *--> "1" TrainingGoal
+Person *--> "1" InjuryStatus
 Person *--> "1" ProgressRecord
 @enduml

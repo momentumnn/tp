@@ -1,0 +1,16 @@
+@startuml
+!include style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+skinparam ClassBackgroundColor #FFFFAA
+
+show member
+hide empty member
+title "After multiple Up key press"
+Class "<u>:CommandBox" as CommandBox
+Class "<u>:CommandHistory" as CommandHistory {
+    commandHistory = [\n\t"<b>help</b>",\n\t"list", \n\t"list s/advancd",\n\t"list s/advanced"]
+    current = 0
+}
+CommandBox -- CommandHistory
+@enduml

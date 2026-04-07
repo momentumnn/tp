@@ -1,0 +1,34 @@
+@startuml
+skin rose
+skinparam ActivityFontSize 15
+skinparam ArrowFontSize 12
+
+title Activity Diagram: Command History Navigation (Up/Down)
+
+start
+:User presses a key in TextField;
+
+if () then ([KeyCode is UP or DOWN])
+    if () then ([KeyCode is UP])
+        if () then ([history is empty])
+            :Return empty string;
+        else ([else])
+            if () then ([at the first command])
+                :Return first command;
+            else ([else])
+                :Return previous command;
+            endif
+        endif
+    else ([KeyCode is DOWN])
+        if () then ([at the latest executed command])
+            :Return empty string;
+        else ([else])
+            :Return next command;
+        endif
+    endif
+else ([else])
+    :Ignore key for navigation;
+endif
+
+stop
+@enduml

@@ -1,0 +1,32 @@
+@startuml
+skinparam shadowing false
+
+hide footbox
+
+title Sequence Diagram: Navigate Up Arrow
+
+actor User
+participant ":CommandBox" as CommandBox
+participant ":CommandHistory" as CommandHistory
+
+User -> CommandBox : Presses "UP" key
+activate CommandBox
+
+CommandBox -> CommandBox : handleNavigate(KeyEvent)
+activate CommandBox
+
+CommandBox -> CommandHistory : navigateUp()
+activate CommandHistory
+
+alt history is empty
+    CommandHistory --> CommandBox : ""
+else \t\t\t [current index <= 0
+    CommandHistory --> CommandBox : first command entered
+else \t\t\t [normal navigation
+    CommandHistory --> CommandBox : previous command entered
+deactivate CommandHistory
+end
+CommandBox --> CommandBox
+deactivate CommandBox
+
+@enduml

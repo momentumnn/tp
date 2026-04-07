@@ -1,0 +1,18 @@
+@startuml
+!include style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+skinparam ClassBackgroundColor #FFFFAA
+show member
+hide empty member
+title "After 3 commands"
+
+Class "<u>:CommandBox" as CommandBox
+Class "<u>:CommandHistory" as CommandHistory {
+    commandHistory = [\n\t"help",\n\t"list", \n\t"list s/advancd"]
+    current = 3
+}
+
+CommandBox -- CommandHistory
+
+@enduml

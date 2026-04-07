@@ -1,0 +1,16 @@
+@startuml
+!include style.puml
+skinparam ClassFontColor #000000
+skinparam ClassBorderColor #000000
+skinparam ClassBackgroundColor #FFFFAA
+
+show member
+hide empty member
+title "Going back 1 command"
+Class "<u>:CommandBox" as CommandBox
+Class "<u>:CommandHistory" as CommandHistory {
+    commandHistory = [\n\t"help",\n\t"list", \n\t"<b>list s/advancd</b>"]
+    current = 2
+}
+CommandBox -- CommandHistory
+@enduml
