@@ -42,6 +42,8 @@ PTcoach is a **desktop app for managing client contacts, optimized for use via a
 
 6. Refer to the [Features](#features) below for details of each command.
 
+**Note:** To start using PTcoach use the `clear` command to delete all contacts
+
 --------------------------------------------------------------------------------------------------------------------
 
 ## Features
