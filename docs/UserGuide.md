@@ -85,18 +85,21 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS ts/TIMESLOT t/TRAINING_GOAL
 **Name (`n/`):**
 * Represents the full name of the client (e.g. `John Doe`)
 * Accepts alphabetical characters, spaces, hyphens (-), and apostrophes (') only — no numbers or symbols
-* Cannot be blank, and cannot start with a space, hyphen, or apostrophe
-* The max length is 100 characters; names longer than 50 characters will be truncated in the display
+* Must not exceed 100 characters; names longer than 50 characters will be truncated in the display
+* Cannot start with a space, hyphen, or apostrophe
+* Cannot be blank
 * This field is mandatory
 
 **Phone Number (`p/`):**
 * Represents the contact number of the client (e.g. `98765432`)
 * Accepts numerals only — no spaces, dashes, or other characters
 * Must be between 3 and 15 digits long
+* Cannot be blank
 * This field is mandatory
 
 **Email (`e/`):**
 * Represents the email address of the client (e.g. `johnd@example.com`)
+* Must not exceed 200 characters
 * Must follow the format `local-part@domain` (e.g. `john@example.com`)
 * Both the local-part and domain cannot be blank
 * This field is mandatory
@@ -104,6 +107,7 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS ts/TIMESLOT t/TRAINING_GOAL
 **Address (`a/`):**
 * Represents the home or mailing address of the client (e.g. `John street, block 123, #01-01`)
 * Accepts any non-blank characters
+* Must not contain substrings that resemble command prefixes (e.g. `a/`, `p/`, `i/`, `t/`, `ts/`, `s/`, `pr/`)
 * Cannot be blank
 * This field is mandatory
 
@@ -117,15 +121,15 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS ts/TIMESLOT t/TRAINING_GOAL
 * Multiple days are separated by semicolons
 * No duplicate slots allowed for the same day
 * Cannot be blank
-* This field is mandatory - every client must have a timeslot.
+* This field is mandatory
 
 **Training Goal (`t/`):**
 * Represents the fitness or performance goal of the client (e.g. `run 50km`, `lift 100kg`)
-* Accepts any alphanumeric characters and spaces
+* Accepts any non-blank characters
 * Must not contain substrings that resemble command prefixes (e.g. `a/`, `p/`, `i/`, `t/`, `ts/`, `s/`, `pr/`)
+* Must no exceed 200 characters
 * Cannot be blank
-* The max length for the training goal is 200 characters
-* This field is mandatory — every client must have a training goal specified
+* This field is mandatory
 
 **Progress Record (`pr/`):**
 * Represents the client’s training progress as a percentage (e.g. `50%`, `100%`)
@@ -166,6 +170,8 @@ Format: `list [s/SKILL]`
 * Multiple skill filters can be provided to match clients with any of the specified skill levels (e.g. `s/beginner s/expert`)
 * If no skill filter is provided, all clients are listed
 * Invalid skill levels (e.g. `list s/advanced`) will result in an error
+* Cannot be blank if provided
+* This field is optional
 
 Examples:
 * `list` — lists all persons
@@ -185,25 +191,31 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [ts/TIMESLOT] [t/TR
 **Name (`n/`):**
 * Represents the full name of the client (e.g. `John Doe`)
 * Accepts alphabetical characters, spaces, hyphens (-), and apostrophes (') only — no numbers or symbols
-* Cannot be blank, and cannot start with a space, hyphen, or apostrophe
-* The max length is 100 characters; names longer than 50 characters will be truncated in the display
-* This field is mandatory
+* Must not exceed 100 characters; names longer than 50 characters will be truncated in the display
+* Cannot start with a space, hyphen, or apostrophe
+* Cannot be blank if provided
+* This field is optional
 
 **Phone Number (`p/`):**
 * Represents the contact number of the client (e.g. `98765432`)
 * Accepts numerals only — no spaces, dashes, or other characters
 * Must be between 3 and 15 digits long
+* Cannot be blank if provided
+* This field is optional
 
 **Email (`e/`):**
 * Represents the email address of the client (e.g. `johnd@example.com`)
 * Must not exceed 200 characters
 * Must follow the format `local-part@domain` (e.g. `john@example.com`)
 * Both the local-part and domain cannot be blank
+* This field is optional
 
 **Address (`a/`):**
 * Represents the home or mailing address of the client (e.g. `John street, block 123, #01-01`)
+* Must not contain substrings that resemble command prefixes (e.g. `a/`, `p/`, `i/`, `t/`, `ts/`, `s/`, `pr/`)
 * Accepts any non-blank characters
-* Cannot be blank
+* Cannot be blank if provided
+* This field is optional
 
 **Timeslot (`ts/`):**
 * Represents the weekly training schedule of the client (e.g. `mon:1,3,5;tue:7`)
@@ -214,20 +226,23 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [ts/TIMESLOT] [t/TR
 * Multiple slots for the same day are separated by commas
 * Multiple days are separated by semicolons
 * No duplicate slots allowed for the same day
-* Cannot be blank
+* Cannot be blank if provided
+* This field is optional
 
 **Training Goal (`t/`):**
 * Represents the fitness or performance goal of the client (e.g. `run 50km`, `lift 100kg`)
 * Accepts any alphanumeric characters and spaces
 * Must not contain substrings that resemble command prefixes (e.g. `a/`, `p/`, `i/`, `t/`, `ts/`, `s/`, `pr/`)
-* Cannot be blank
-* The max length for the training goal is 200 characters
+* Must not exceed 200 characters
+* Cannot be blank if provided
+* This field is optional
 
 **Progress Record (`pr/`):**
 * Represents the client’s training progress as a percentage (e.g. `50%`, `100%`)
 * Accepts integers from `0 to 100`
 * Must be a whole number with `%` appended to the end
 * Cannot be blank if provided
+* This field is optional
 
 **Injury Status (`i/`):**
 * Represents any injury or physical limitation of the client (e.g. `L4/L5 disc herniation`, `ACL tore`)
@@ -235,6 +250,7 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [ts/TIMESLOT] [t/TR
 * Must not contain substrings that resemble command prefixes (e.g. `a/`, `p/`, `i/`, `t/`, `ts/`, `s/`, `pr/`)
 * Must not exceed 300 characters
 * Cannot be blank if provided
+* This field is optional
 
 **Skill Level (`s/`):**
 * Represents the client’s current fitness or skill level (e.g. `Beginner`)
@@ -242,6 +258,7 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [ts/TIMESLOT] [t/TR
 * Input is case-insensitive (e.g. `Beginner`, `BEGINNER` are accepted)
 * Will be stored in capitalized form (e.g. `Beginner`)
 * Cannot be blank if provided
+* This field is optional
 
 Examples:
 *  `edit 1 p/91234567 e/johndoe@example.com` Edits the phone number and email address of the 1st person to be `91234567` and `johndoe@example.com` respectively.
@@ -320,13 +337,13 @@ PTCoach supports command history navigation similar to Unix command-line systems
 **Q**: How do I transfer my data to another Computer?<br>
 **A**: Copy `addressbook.json` into the folder you want to move to. (e.g `/path/to/PTcoach/data/addressbook.json`). PTcoach will automatically load the data.
 
-**Q**: Why does PTcoach only show one error at a time even if I have multiple invalid parameters?
+**Q**: Why does PTcoach only show one error at a time even if I have multiple invalid parameters?<br>
 **A**: PTcoach validates your command and stops at the first error it finds. Fix that error and rerun the command — if there are further issues, the next error will then be shown.
 
-**Q**: Can PTcoach show all my errors at once?
+**Q**: Can PTcoach show all my errors at once?<br>
 **A**: No - PTcoach detects errors one at a time. Once the first invalid parameter is found, it stops and displays that error. You'll need to correct it before PTcoach will check the rest of the command.
 
-**Q**: I fixed one error but now I'm seeing a new one — did PTcoach introduce a new error?
+**Q**: I fixed one error but now I'm seeing a new one — did PTcoach introduce a new error?<br>
 **A**: Not at all! PTcoach stops at the first error it encounters, so earlier errors can hide ones further along. Each fix simply reveals the next issue in the command.
 
 --------------------------------------------------------------------------------------------------------------------
