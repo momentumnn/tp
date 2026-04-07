@@ -320,6 +320,14 @@ PTCoach supports command history navigation similar to Unix command-line systems
 **Q**: How do I transfer my data to another Computer?<br>
 **A**: Copy `addressbook.json` into the folder you want to move to. (e.g `/path/to/PTcoach/data/addressbook.json`). PTcoach will automatically load the data.
 
+**Q**: Why does PTcoach only show one error at a time even if I have multiple invalid parameters?
+**A**: PTcoach validates your command and stops at the first error it finds. Fix that error and rerun the command — if there are further issues, the next error will then be shown.
+
+**Q**: Can PTcoach show all my errors at once?
+**A**: No - PTcoach detects errors one at a time. Once the first invalid parameter is found, it stops and displays that error. You'll need to correct it before PTcoach will check the rest of the command.
+
+**Q**: I fixed one error but now I'm seeing a new one — did PTcoach introduce a new error?
+**A**: Not at all! PTcoach stops at the first error it encounters, so earlier errors can hide ones further along. Each fix simply reveals the next issue in the command.
 
 --------------------------------------------------------------------------------------------------------------------
 
