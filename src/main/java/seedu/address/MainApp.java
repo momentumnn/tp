@@ -108,7 +108,7 @@ public class MainApp extends Application {
             startupErrorMessage = StartupErrorMessage.buildInvalidEntriesWarning(
                     storage.getAddressBookFilePath(),
                     loadResult.getInvalidEntriesFilePath(),
-                    loadResult.getInvalidEntriesSaveFailureMessage());
+                    loadResult.getInvalidEntriesSaveFailureMessage().isPresent());
         }
         return loadResult.getAddressBook().orElseGet(SampleDataUtil::getSampleAddressBook);
     }

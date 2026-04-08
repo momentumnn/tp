@@ -33,8 +33,8 @@ public final class StartupErrorMessage {
      * Returns the startup warning shown when some invalid entries were skipped.
      */
     public static String buildInvalidEntriesWarning(Path dataFilePath, Optional<Path> invalidFilePath,
-                                                    Optional<String> saveFailureMessage) {
-        if (saveFailureMessage.isPresent()) {
+                                                    boolean hasSaveFailure) {
+        if (hasSaveFailure) {
             return String.format(UNSAVED_INVALID_ENTRIES_MESSAGE, dataFilePath);
         }
         if (invalidFilePath.isPresent()) {

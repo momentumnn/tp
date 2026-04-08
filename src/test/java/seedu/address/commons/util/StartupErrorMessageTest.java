@@ -26,7 +26,7 @@ class StartupErrorMessageTest {
     void buildInvalidEntriesWarning_invalidEntriesSaved_returnsSavedFileMessage() {
         // EP: invalid entries found and successfully saved to a separate file
         String actual = StartupErrorMessage.buildInvalidEntriesWarning(
-                DATA_FILE_PATH, Optional.of(INVALID_FILE_PATH), Optional.empty());
+                DATA_FILE_PATH, Optional.of(INVALID_FILE_PATH), false);
 
         String expected = String.format(
                 "Invalid entries were found in %s.\nWrong entries saved to %s",
@@ -38,9 +38,8 @@ class StartupErrorMessageTest {
     @Test
     void buildInvalidEntriesWarning_saveFails_returnsSaveFailureMessage() {
         // EP: invalid entries found but saving them failed
-        // Keep other input valid/neutral so this test isolates the save-failure path
         String actual = StartupErrorMessage.buildInvalidEntriesWarning(
-                DATA_FILE_PATH, Optional.empty(), Optional.of("Permission denied"));
+                DATA_FILE_PATH, Optional.empty(), true);
 
         String expected = String.format(
                 "Invalid entries were found in %s but saving them failed.\n"
@@ -54,7 +53,7 @@ class StartupErrorMessageTest {
     void buildInvalidEntriesWarning_noSavedFileAndNoFailure_returnsDefaultMessage() {
         // EP: invalid entries found, but neither saved-file path nor save-failure message is available
         String actual = StartupErrorMessage.buildInvalidEntriesWarning(
-                DATA_FILE_PATH, Optional.empty(), Optional.empty());
+                DATA_FILE_PATH, Optional.empty(), false);
 
         String expected = String.format(
                 "Invalid entries were found in %s",
@@ -66,9 +65,9 @@ class StartupErrorMessageTest {
     @Test
     void buildInvalidEntriesWarning_bothPathAndFailurePresent_prioritizesFailureMessage() {
         // Boundary / precedence case:
-        // both optionals are present, so verify the higher-priority branch is used
+        // both optionals are present, verify that save failure branch is give priority
         String actual = StartupErrorMessage.buildInvalidEntriesWarning(
-                DATA_FILE_PATH, Optional.of(INVALID_FILE_PATH), Optional.of("Permission denied"));
+                DATA_FILE_PATH, Optional.of(INVALID_FILE_PATH), true);
 
         String expected = String.format(
                 "Invalid entries were found in %s but saving them failed.\n"
