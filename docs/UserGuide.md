@@ -143,7 +143,7 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS ts/TIMESLOT t/TRAINING_GOAL
 * Accepts integers from `0 to 100`
 * Must be a whole number with % appended at the end (e.g. 0%, 50%)
 * Cannot be blank if provided
-* This field is optional
+* This field is optional; Will be set to 0% if not provided
 
 **Injury Status (`i/`):**
 * Represents any injury or physical limitation of the client (e.g. `L4/L5 disc herniation`, `ACL tore`)
@@ -151,7 +151,7 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS ts/TIMESLOT t/TRAINING_GOAL
 * Must not contain substrings that resemble command prefixes (e.g. `a/`, `p/`, `i/`, `t/`, `ts/`, `s/`, `pr/`)
 * Must not exceed 300 characters
 * Cannot be blank if provided
-* This field is optional
+* This field is optional; Will be set to "Healthy" if not provided
 
 **Skill Level (`s/`):**
 * Represents the client’s current fitness or skill level
@@ -159,7 +159,7 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS ts/TIMESLOT t/TRAINING_GOAL
 * Input is case-insensitive (e.g. `Beginner`, `BEGINNER` are accepted)
 * Will be stored in capitalized form (e.g. `Beginner`)
 * Cannot be blank if provided
-* This field is optional
+* This field is optional; Will be set to "Beginner" if not provided
 
 Examples:
 * `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 t/Run 50km ts/mon:1,2 i/Shoulder dislocation pr/100%`
