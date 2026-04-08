@@ -40,6 +40,24 @@ public class JsonAddressBookStorage implements AddressBookStorage {
     }
 
     @Override
+    public void saveAddressBook(ReadOnlyAddressBook addressBook) throws IOException {
+        saveAddressBook(addressBook, filePath);
+    }
+
+    /**
+     * Similar to {@link #saveAddressBook(ReadOnlyAddressBook)}.
+     *
+     * @param filePath location of the data. Cannot be null.
+     */
+    public void saveAddressBook(ReadOnlyAddressBook addressBook, Path filePath) throws IOException {
+        requireNonNull(addressBook);
+        requireNonNull(filePath);
+
+        FileUtil.createIfMissing(filePath);
+        JsonUtil.saveJsonFile(new JsonSerializableAddressBook(addressBook), filePath);
+    }
+
+    @Override
     public AddressBookLoadResult readAddressBookWithResult() throws DataLoadingException {
         return readAddressBookWithResult(filePath);
     }
@@ -58,8 +76,17 @@ public class JsonAddressBookStorage implements AddressBookStorage {
         ReadOnlyAddressBook addressBook = serializableAddressBook.toModelType();
         List<InvalidPersonRecord> invalidRecords = serializableAddressBook.getInvalidPersonRecords();
 
-        logInvalidRecords(filePath, invalidRecords);
+        invalidRecords.forEach(record ->
+                logger.warning("Skipped invalid entry in " + filePath + ": " + record.getReason()));
+        return buildLoadResult(filePath, addressBook, invalidRecords);
+    }
 
+    /**
+     * Returns an {@code AddressBookLoadResult} for the given address book and invalid records.
+     * Saves invalid records when possible and captures any save failure.
+     */
+    private AddressBookLoadResult buildLoadResult(Path filePath, ReadOnlyAddressBook addressBook,
+                                                  List<InvalidPersonRecord> invalidRecords) {
         Optional<Path> invalidEntriesFilePath = Optional.empty();
         Optional<String> invalidEntriesSaveFailureMessage = Optional.empty();
 
@@ -80,26 +107,8 @@ public class JsonAddressBookStorage implements AddressBookStorage {
                 invalidEntriesSaveFailureMessage);
     }
 
-    @Override
-    public void saveAddressBook(ReadOnlyAddressBook addressBook) throws IOException {
-        saveAddressBook(addressBook, filePath);
-    }
-
     /**
-     * Similar to {@link #saveAddressBook(ReadOnlyAddressBook)}.
-     *
-     * @param filePath location of the data. Cannot be null.
-     */
-    public void saveAddressBook(ReadOnlyAddressBook addressBook, Path filePath) throws IOException {
-        requireNonNull(addressBook);
-        requireNonNull(filePath);
-
-        FileUtil.createIfMissing(filePath);
-        JsonUtil.saveJsonFile(new JsonSerializableAddressBook(addressBook), filePath);
-    }
-
-    /**
-     * Saves invalid records to a side file and returns its path.
+     * Saves invalid records to a new file and returns its path.
      */
     private Optional<Path> saveInvalidEntries(List<InvalidPersonRecord> invalidRecords, Path originalFilePath)
             throws IOException {
@@ -107,19 +116,11 @@ public class JsonAddressBookStorage implements AddressBookStorage {
             return Optional.empty();
         }
 
-        Path invalidFilePath = buildInvalidEntriesPath(originalFilePath);
+        Path invalidFilePath = buildInvalidEntriesFilePath(originalFilePath);
         FileUtil.createIfMissing(invalidFilePath);
         FileUtil.writeToFile(invalidFilePath, buildInvalidEntriesContent(invalidRecords));
         logger.info("Invalid entries saved to " + invalidFilePath);
         return Optional.of(invalidFilePath);
-    }
-
-    /**
-     * Logs each invalid record skipped during loading.
-     */
-    private void logInvalidRecords(Path filePath, List<InvalidPersonRecord> invalidRecords) {
-        invalidRecords.forEach(record ->
-                logger.warning("Skipped invalid entry in " + filePath + ": " + record.getReason()));
     }
 
     /**
@@ -140,9 +141,9 @@ public class JsonAddressBookStorage implements AddressBookStorage {
     }
 
     /**
-     * Returns the path for the invalid-entries side file.
+     * Returns the path for the invalid-entries storage file.
      */
-    private Path buildInvalidEntriesPath(Path originalPath) {
+    private Path buildInvalidEntriesFilePath(Path originalPath) {
         String invalidFileName = buildInvalidEntriesFileName(originalPath.getFileName().toString());
         return originalPath.resolveSibling(invalidFileName);
     }
