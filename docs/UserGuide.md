@@ -329,6 +329,14 @@ Advanced users are welcome to update data directly by editing `[JAR file locatio
 
 </box>
 
+### Logging
+
+PTcoach keeps logs to help diagnose startup, command, and data-loading issues.
+
+* Log messages are written to the console and to log files named `addressbook.log` in the folder where PTcoach is run.
+* PTcoach may create rotated log files such as `addressbook.log.0` automatically when the current log file grows large.
+* If PTcoach shows a message telling you to check the logs, open the latest `addressbook.log` file to inspect the detailed error information.
+
 ### Command History Navigation
 
 PTcoach supports command history navigation similar to Unix command-line systems.
