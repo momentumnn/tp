@@ -587,9 +587,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
   
   Use case ends.
 
-
-*{More to be added}*
-
 ### Non-Functional Requirements
 
 1.  Should work on any mainstream OS (Windows, macOS and Linux) as long as it has Java 17 installed.
@@ -602,8 +599,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 8.  Command input should not exceed 500 words.
 9.  Should only be opened through the command line.
 10. The command history will only be saved per session and reset after the session ends.
-
-*{More to be added}*
 
 ### Glossary
 
@@ -636,8 +631,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
   - Each timeslot can be concatenated in this format: `day:start-end` OR `day:slotNumber`, where multiple slots in a day can be comma separated.
 
 * **Session**: Period between opening PTcoach and closing it
-
-*{More to be added}*
 
 --------------------------------------------------------------------------------------------------------------------
 
