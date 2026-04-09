@@ -79,7 +79,7 @@ The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `Re
 The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/AY2526S2-CS2103-F11-3/tp/blob/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/AY2526S2-CS2103-F11-3/tp/blob/master/src/main/resources/view/MainWindow.fxml)
 
 The `UI` component,
-
+                                                            
 * executes user commands using the `Logic` component.
 * holds a list of past commands executed using the `CommmandHistory` component within CommandBox. (e.g 1:`add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 t/Run 50km ts/mon:1,2 i/Shoulder dislocation`, 2:`list`.
 * listens for changes to `Model` data so that the UI can be updated with the modified data.
@@ -596,9 +596,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 5.  Should be able to return search results in under 3s.
 6.  Should store data locally only.
 7.  Should only be closed using the “exit” command or window close button or by killing the process.
-8.  Command input should not exceed 500 words.
-9.  Should only be opened through the command line.
-10. The command history will only be saved per session and reset after the session ends.
+8.  Should only be opened through the command line. 
+9.  The command history will only be saved per session and reset after the session ends.
 
 ### Glossary
 
