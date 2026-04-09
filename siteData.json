@@ -126,6 +126,7 @@
         "exiting-the-program-exit": "Exiting the program : exit",
         "saving-the-data": "Saving the data",
         "editing-the-data-file": "Editing the data file",
+        "logging": "Logging",
         "command-history-navigation": "Command History Navigation",
         "faq": "FAQ",
         "known-issues": "Known issues",
