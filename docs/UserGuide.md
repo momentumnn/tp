@@ -374,7 +374,7 @@ PTcoach supports command history navigation similar to Unix command-line systems
 **A**: PTcoach validates your command and stops at the first error it finds. Fix that error and rerun the command — if there are further issues, the next error will then be shown.
 
 **Q**: Can PTcoach show all my errors at once?<br>
-**A**: No - PTcoach detects errors one at a time. Once the first invalid parameter is found, it stops and displays that error. You'll need to correct it before PTcoach will check the rest of the command.
+**A**: No - PTcoach detects errors one at a time. Once the first invalid parameter is found, it stops and displays that error. You will need to correct it before PTcoach checks the rest of the command.
 
 **Q**: I fixed one error but now I'm seeing a new one — did PTcoach introduce a new error?<br>
 **A**: Not at all! PTcoach stops at the first error it encounters, so earlier errors can hide ones further along. Each fix simply reveals the next issue in the command.
