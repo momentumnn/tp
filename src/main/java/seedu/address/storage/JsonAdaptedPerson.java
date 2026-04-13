@@ -27,7 +27,7 @@ import seedu.address.model.timeslot.Timeslot;
 class JsonAdaptedPerson {
 
     public static final String MISSING_FIELD_MESSAGE_FORMAT = "Person's %s field is missing!";
-
+    private static final String DUPLICATE_DAY_MESSAGE = "Timeslot should have only one entry per day.";
     private final String name;
     private final String phone;
     private final String email;
@@ -236,8 +236,15 @@ class JsonAdaptedPerson {
                     Timeslot.class.getSimpleName()));
         }
         List<Timeslot> personTimeslots = new ArrayList<>();
+        Set<String> seenDays = new TreeSet<>();
         for (String timeslot : timeslots) {
-            personTimeslots.add(toModelTimeslot(timeslot));
+            Timeslot modelTimeslot = toModelTimeslot(timeslot);
+            String day = timeslot.split(":")[0].toLowerCase();
+            if (!seenDays.add(day)) {
+                throw new IllegalValueException(formatInvalidFieldMessage(
+                        Timeslot.class.getSimpleName(), DUPLICATE_DAY_MESSAGE, timeslot));
+            }
+            personTimeslots.add(modelTimeslot);
         }
         return new TreeSet<>(personTimeslots);
     }
