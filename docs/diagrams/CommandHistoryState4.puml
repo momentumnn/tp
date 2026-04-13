@@ -9,7 +9,7 @@ hide empty member
 title "After multiple Up key press"
 Class "<u>:CommandBox" as CommandBox
 Class "<u>:CommandHistory" as CommandHistory {
-    commandHistory = [\n\t"<b>help</b>",\n\t"list", \n\t"list s/advancd",\n\t"list s/advanced"]
+    commandHistory = [\n\t"<b>help</b>",\n\t"list", \n\t"list s/beginnerr",\n\t"list s/beginner"]
     current = 0
 }
 CommandBox -- CommandHistory

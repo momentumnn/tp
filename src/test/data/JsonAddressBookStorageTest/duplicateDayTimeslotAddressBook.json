@@ -1,0 +1,12 @@
+{
+  "persons": [ {
+    "name": "Duplicate Day Timeslot Person",
+    "phone": "9482425",
+    "email": "duplicateday@example.com",
+    "address": "5th street",
+    "trainingGoal": "Stay fit for summer",
+    "timeslots": [ "mon:0800-0900", "mon:0900-1000" ],
+    "skill": "beginner",
+    "progressRecord": "0%"
+  } ]
+}

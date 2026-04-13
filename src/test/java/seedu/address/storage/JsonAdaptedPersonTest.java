@@ -30,10 +30,13 @@ public class JsonAdaptedPersonTest {
     private static final String INVALID_PHONE = "+651234";
     private static final String INVALID_ADDRESS = " ";
     private static final String INVALID_TIMESLOT = "MON:13";
+    private static final String DUPLICATE_DAY_TIMESLOTS_MESSAGE =
+            "Invalid value for Timeslot: \"mon:0900-1000\". Timeslot should have only one entry per day.";
     private static final String INVALID_EMAIL = "example.com";
     private static final String INVALID_TRAINING_GOAL = " ";
     private static final String INVALID_SKILL = "master";
     private static final String INVALID_PROGRESS_RECORD = "123";
+    private static final String VALID_MULTI_SLOT_TIMESLOT = "mon:0800-0900,0900-1000";
 
     private static final String VALID_NAME = BENSON.getName().toString();
     private static final String VALID_PHONE = BENSON.getPhone().toString();
@@ -49,12 +52,14 @@ public class JsonAdaptedPersonTest {
 
     @Test
     public void toModelType_validPersonDetails_returnsPerson() throws Exception {
+        // EP: all fields valid
         JsonAdaptedPerson person = new JsonAdaptedPerson(BENSON);
         assertEquals(BENSON, person.toModelType());
     }
 
     @Test
     public void toModelType_invalidName_throwsIllegalValueException() {
+        // EP: name invalid format
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(INVALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS, VALID_INJURY_STATUS,
                         VALID_TRAINING_GOAL, VALID_TIMESLOTS, VALID_SKILL, VALID_PROGRESS_RECORD);
@@ -65,6 +70,7 @@ public class JsonAdaptedPersonTest {
 
     @Test
     public void toModelType_nullName_throwsIllegalValueException() {
+        // EP: name missing
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(null, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS, VALID_INJURY_STATUS,
                         VALID_TRAINING_GOAL, VALID_TIMESLOTS, VALID_SKILL, VALID_PROGRESS_RECORD);
@@ -74,6 +80,7 @@ public class JsonAdaptedPersonTest {
 
     @Test
     public void toModelType_invalidPhone_throwsIllegalValueException() {
+        // EP: phone invalid format
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(VALID_NAME, INVALID_PHONE, VALID_EMAIL, VALID_ADDRESS, VALID_INJURY_STATUS,
                         VALID_TRAINING_GOAL, VALID_TIMESLOTS, VALID_SKILL, VALID_PROGRESS_RECORD);
@@ -84,6 +91,7 @@ public class JsonAdaptedPersonTest {
 
     @Test
     public void toModelType_nullPhone_throwsIllegalValueException() {
+        // EP: phone missing
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(VALID_NAME, null, VALID_EMAIL, VALID_ADDRESS, VALID_INJURY_STATUS,
                         VALID_TRAINING_GOAL, VALID_TIMESLOTS, VALID_SKILL, VALID_PROGRESS_RECORD);
@@ -93,6 +101,7 @@ public class JsonAdaptedPersonTest {
 
     @Test
     public void toModelType_invalidEmail_throwsIllegalValueException() {
+        // EP: email invalid format
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, INVALID_EMAIL, VALID_ADDRESS, VALID_INJURY_STATUS,
                         VALID_TRAINING_GOAL, VALID_TIMESLOTS, VALID_SKILL, VALID_PROGRESS_RECORD);
@@ -103,6 +112,7 @@ public class JsonAdaptedPersonTest {
 
     @Test
     public void toModelType_nullEmail_throwsIllegalValueException() {
+        // EP: email missing
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, null, VALID_ADDRESS, VALID_INJURY_STATUS,
                         VALID_TRAINING_GOAL, VALID_TIMESLOTS, VALID_SKILL, VALID_PROGRESS_RECORD);
@@ -112,6 +122,7 @@ public class JsonAdaptedPersonTest {
 
     @Test
     public void toModelType_invalidAddress_throwsIllegalValueException() {
+        // EP: address invalid format
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, INVALID_ADDRESS, VALID_INJURY_STATUS,
                         VALID_TRAINING_GOAL, VALID_TIMESLOTS, VALID_SKILL, VALID_PROGRESS_RECORD);
@@ -122,6 +133,7 @@ public class JsonAdaptedPersonTest {
 
     @Test
     public void toModelType_nullAddress_throwsIllegalValueException() {
+        // EP: address missing
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, null, VALID_INJURY_STATUS,
                         VALID_TRAINING_GOAL, VALID_TIMESLOTS, VALID_SKILL, VALID_PROGRESS_RECORD);
@@ -130,7 +142,29 @@ public class JsonAdaptedPersonTest {
     }
 
     @Test
+    public void toModelType_emptyTimeslots_throwsIllegalValueException() {
+        // EP: timeslots empty
+        // Boundary value: zero entries
+        JsonAdaptedPerson person =
+                new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS, VALID_INJURY_STATUS,
+                        VALID_TRAINING_GOAL, new ArrayList<>(), VALID_SKILL, VALID_PROGRESS_RECORD);
+        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Timeslot.class.getSimpleName());
+        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+    }
+
+    @Test
+    public void toModelType_nullTimeslots_throwsIllegalValueException() {
+        // EP: timeslots missing
+        JsonAdaptedPerson person =
+                new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS, VALID_INJURY_STATUS,
+                        VALID_TRAINING_GOAL, null, VALID_SKILL, VALID_PROGRESS_RECORD);
+        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Timeslot.class.getSimpleName());
+        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+    }
+
+    @Test
     public void toModelType_invalidTimeslots_throwsIllegalValueException() {
+        // EP: timeslots contain invalid entry
         List<String> invalidTimeslots = new ArrayList<>(VALID_TIMESLOTS);
         invalidTimeslots.add(INVALID_TIMESLOT);
         JsonAdaptedPerson person =
@@ -143,6 +177,7 @@ public class JsonAdaptedPersonTest {
 
     @Test
     public void toModelType_nullTimeslot_throwsIllegalValueException() {
+        // EP: timeslots contain null entry
         List<String> invalidTimeslots = new ArrayList<>(VALID_TIMESLOTS);
         invalidTimeslots.add(null);
         JsonAdaptedPerson person =
@@ -153,16 +188,65 @@ public class JsonAdaptedPersonTest {
     }
 
     @Test
-    public void toModelType_nullTimeslots_throwsIllegalValueException() {
+    public void toModelType_validMultiSlotTimeslot_returnsPerson() throws Exception {
+        // EP: valid multi-slot timeslot in one entry
+        List<String> timeslots = new ArrayList<>();
+        timeslots.add(VALID_MULTI_SLOT_TIMESLOT);
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS, VALID_INJURY_STATUS,
-                        VALID_TRAINING_GOAL, null, VALID_SKILL, VALID_PROGRESS_RECORD);
-        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, Timeslot.class.getSimpleName());
-        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+                        VALID_TRAINING_GOAL, timeslots, VALID_SKILL, VALID_PROGRESS_RECORD);
+        Person expectedPerson = new PersonBuilder(BENSON)
+                .withTimeslots(VALID_MULTI_SLOT_TIMESLOT)
+                .build();
+        assertEquals(expectedPerson, person.toModelType());
+    }
+
+    @Test
+    public void toModelType_lowerCaseTimeslot_returnsPerson() throws Exception {
+        // EP: valid timeslot with lowercase day
+        List<String> timeslots = new ArrayList<>();
+        timeslots.add("mon:0800-0900");
+
+        JsonAdaptedPerson person =
+                new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS, VALID_INJURY_STATUS,
+                        VALID_TRAINING_GOAL, timeslots, VALID_SKILL, VALID_PROGRESS_RECORD);
+
+        Person expectedPerson = new PersonBuilder(BENSON)
+                .withTimeslots("mon:0800-0900")
+                .build();
+
+        assertEquals(expectedPerson, person.toModelType());
+    }
+
+    @Test
+    public void toModelType_duplicateDayTimeslots_throwsIllegalValueException() {
+        // EP: timeslots contain duplicate day
+        List<String> invalidTimeslots = new ArrayList<>();
+        invalidTimeslots.add("mon:0800-0900");
+        invalidTimeslots.add("mon:0900-1000");
+        JsonAdaptedPerson person =
+                new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS, VALID_INJURY_STATUS,
+                        VALID_TRAINING_GOAL, invalidTimeslots, VALID_SKILL, VALID_PROGRESS_RECORD);
+        assertThrows(IllegalValueException.class, DUPLICATE_DAY_TIMESLOTS_MESSAGE, person::toModelType);
+    }
+
+    @Test
+    public void toModelType_duplicateDayTimeslotsDifferentCase_throwsIllegalValueException() {
+        // EP: timeslots contain duplicate day with different casing
+        List<String> invalidTimeslots = new ArrayList<>();
+        invalidTimeslots.add("MON:0800-0900");
+        invalidTimeslots.add("mon:0900-1000");
+
+        JsonAdaptedPerson person =
+                new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS, VALID_INJURY_STATUS,
+                        VALID_TRAINING_GOAL, invalidTimeslots, VALID_SKILL, VALID_PROGRESS_RECORD);
+
+        assertThrows(IllegalValueException.class, DUPLICATE_DAY_TIMESLOTS_MESSAGE, person::toModelType);
     }
 
     @Test
     public void toModelType_invalidTrainingGoal_throwsIllegalValueException() {
+        // EP: training goal invalid format
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS, VALID_INJURY_STATUS,
                         INVALID_TRAINING_GOAL, VALID_TIMESLOTS, VALID_SKILL, VALID_PROGRESS_RECORD);
@@ -172,7 +256,18 @@ public class JsonAdaptedPersonTest {
     }
 
     @Test
+    public void toModelType_nullTrainingGoal_throwsIllegalValueException() {
+        // EP: training goal missing
+        JsonAdaptedPerson person =
+                new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS, VALID_INJURY_STATUS,
+                        null, VALID_TIMESLOTS, VALID_SKILL, VALID_PROGRESS_RECORD);
+        String expectedMessage = String.format(MISSING_FIELD_MESSAGE_FORMAT, TrainingGoal.class.getSimpleName());
+        assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
+    }
+
+    @Test
     public void toModelType_invalidProgress_throwsIllegalValueException() {
+        // EP: progress record invalid format
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS, VALID_INJURY_STATUS,
                         VALID_TRAINING_GOAL, VALID_TIMESLOTS, VALID_SKILL, INVALID_PROGRESS_RECORD);
@@ -183,6 +278,8 @@ public class JsonAdaptedPersonTest {
 
     @Test
     public void toModelType_nullProgress_setsDefaultProgress() throws Exception {
+        // EP: progress record missing
+        // Expected behavior: default applied
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS, VALID_INJURY_STATUS,
                         VALID_TRAINING_GOAL, VALID_TIMESLOTS, VALID_SKILL, null);
@@ -194,6 +291,7 @@ public class JsonAdaptedPersonTest {
 
     @Test
     public void toModelType_invalidInjuryStatus_throwsIllegalValueException() {
+        // EP: injury status invalid format
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS, INVALID_INJURY_STATUS,
                         VALID_TRAINING_GOAL, VALID_TIMESLOTS, VALID_SKILL, VALID_PROGRESS_RECORD);
@@ -204,6 +302,8 @@ public class JsonAdaptedPersonTest {
 
     @Test
     public void toModelType_nullInjuryStatus_setsDefaultInjuryStatus() throws Exception {
+        // EP: injury status missing
+        // Expected behavior: default applied
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS, null,
                         VALID_TRAINING_GOAL, VALID_TIMESLOTS, VALID_SKILL, VALID_PROGRESS_RECORD);
@@ -215,15 +315,18 @@ public class JsonAdaptedPersonTest {
 
     @Test
     public void toModelType_nullSkill_setsDefaultSkill() throws Exception {
+        // EP: skill missing
+        // Expected behavior: default applied
         JsonAdaptedPerson person =
-            new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS, VALID_INJURY_STATUS,
-                    VALID_TRAINING_GOAL, VALID_TIMESLOTS, null, VALID_PROGRESS_RECORD);
+                new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS, VALID_INJURY_STATUS,
+                        VALID_TRAINING_GOAL, VALID_TIMESLOTS, null, VALID_PROGRESS_RECORD);
         Person modelPerson = person.toModelType();
         assertEquals(new Skill(Skill.SKILL_BEGINNER), modelPerson.getSkill());
     }
 
     @Test
     public void toModelType_invalidSkill_throwsIllegalValueException() {
+        // EP: skill invalid value
         JsonAdaptedPerson person =
                 new JsonAdaptedPerson(VALID_NAME, VALID_PHONE, VALID_EMAIL, VALID_ADDRESS, VALID_INJURY_STATUS,
                         VALID_TRAINING_GOAL, VALID_TIMESLOTS, INVALID_SKILL, VALID_PROGRESS_RECORD);
@@ -231,5 +334,4 @@ public class JsonAdaptedPersonTest {
                 + "\". " + Skill.MESSAGE_CONSTRAINTS;
         assertThrows(IllegalValueException.class, expectedMessage, person::toModelType);
     }
-
 }

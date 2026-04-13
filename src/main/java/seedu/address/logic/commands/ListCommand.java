@@ -61,10 +61,11 @@ public class ListCommand extends Command {
                     model.getFilteredPersonList().size()));
         } else {
             model.updateFilteredPersonList(person ->
-                    skills.stream().anyMatch(skill ->
+                    skills.stream().distinct().anyMatch(skill ->
                             person.getSkill().equals(skill)));
             String skillNames = skills.stream()
                     .map(s -> s.value)
+                    .distinct()
                     .reduce((x, y)-> x + ", " + y).get();
             return new CommandResult(String.format(ListCommand.MESSAGE_SUCCESS_FILTERED,
                     skillNames,

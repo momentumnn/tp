@@ -10,6 +10,9 @@ import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
 import seedu.address.logic.commands.Command;
 import seedu.address.logic.commands.CommandResult;
+import seedu.address.logic.commands.FindCommand;
+import seedu.address.logic.commands.HelpCommand;
+import seedu.address.logic.commands.ListCommand;
 import seedu.address.logic.commands.exceptions.CommandException;
 import seedu.address.logic.parser.AddressBookParser;
 import seedu.address.logic.parser.exceptions.ParseException;
@@ -51,7 +54,9 @@ public class LogicManager implements Logic {
         commandResult = command.execute(model);
 
         try {
-            storage.saveAddressBook(model.getAddressBook());
+            if (shouldSave(command)) {
+                storage.saveAddressBook(model.getAddressBook());
+            }
         } catch (AccessDeniedException e) {
             throw new CommandException(String.format(FILE_OPS_PERMISSION_ERROR_FORMAT, e.getMessage()), e);
         } catch (IOException ioe) {
@@ -59,6 +64,17 @@ public class LogicManager implements Logic {
         }
 
         return commandResult;
+    }
+
+    /**
+     * Returns true if executing the given {@code command} should persist the address book to storage.
+     * Read-only commands such as {@code list}, {@code find}, and {@code help} do not modify the address
+     * book and therefore do not need to be saved.
+     */
+    private boolean shouldSave(Command command) {
+        return !(command instanceof ListCommand
+                || command instanceof FindCommand
+                || command instanceof HelpCommand);
     }
 
     @Override

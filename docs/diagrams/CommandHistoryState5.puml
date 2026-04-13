@@ -9,7 +9,7 @@ hide empty member
 title "Going forward 1 command"
 Class "<u>:CommandBox" as CommandBox
 Class "<u>:CommandHistory" as CommandHistory {
-    commandHistory = [\n\t"help",\n\t"<b>list</b>", \n\t"list s/advancd",\n\t"list s/advanced"]
+    commandHistory = [\n\t"help",\n\t"<b>list</b>", \n\t"list s/beginnerr",\n\t"list s/beginner"]
     current = 1
 }
 CommandBox -- CommandHistory

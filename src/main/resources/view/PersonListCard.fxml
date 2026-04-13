@@ -20,23 +20,35 @@
       </padding>
 
       <HBox alignment="CENTER_LEFT" spacing="10">
-        <HBox alignment="CENTER_LEFT" spacing="5">
+        <HBox alignment="TOP_LEFT" spacing="5" HBox.hgrow="ALWAYS">
+          <HBox.margin>
+            <Insets top="12" />
+          </HBox.margin>
           <Label fx:id="id" styleClass="cell_big_label">
             <minWidth>
-              <!-- Ensures that the label text is never truncated -->
               <Region fx:constant="USE_PREF_SIZE" />
             </minWidth>
           </Label>
-          <Label fx:id="name" text="\$first" styleClass="cell_big_label" />
+          <ScrollPane vbarPolicy="NEVER" hbarPolicy="AS_NEEDED" fitToHeight="true" styleClass="hover-scroll"
+                      style="-fx-background-color: transparent; -fx-background: transparent; -fx-padding: 0;"
+                      maxWidth="1000" HBox.hgrow="ALWAYS">
+            <Label fx:id="name" text="\$first" styleClass="cell_big_label" />
+          </ScrollPane>
         </HBox>
-        <Region HBox.hgrow="ALWAYS" />
-        <Label fx:id="skill" styleClass="skill_tag_label" text="\$skill" />
+        <Label fx:id="skill" styleClass="skill_tag_label" text="\$skill">
+          <minWidth>
+            <Region fx:constant="USE_PREF_SIZE" />
+          </minWidth>
+        </Label>
       </HBox>
 
       <VBox spacing="4">
         <Label fx:id="phone" styleClass="cell_small_label" text="\$phone" />
         <Label fx:id="address" styleClass="cell_small_label" text="\$address" wrapText="true" />
-        <Label fx:id="email" styleClass="cell_small_label" text="\$email" />
+        <ScrollPane vbarPolicy="NEVER" hbarPolicy="AS_NEEDED" fitToHeight="true" styleClass="hover-scroll"
+                    style="-fx-background-color: transparent; -fx-background: transparent;">
+            <Label fx:id="email" styleClass="cell_small_label" text="\$email" />
+        </ScrollPane>
       </VBox>
 
       <Region styleClass="divider" prefHeight="1" minHeight="1" maxHeight="1">

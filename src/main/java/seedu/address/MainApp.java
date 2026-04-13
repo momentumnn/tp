@@ -77,30 +77,51 @@ public class MainApp extends Application {
      */
     private Model initModelManager(Storage storage, ReadOnlyUserPrefs userPrefs) {
         logger.info("Using data file : " + storage.getAddressBookFilePath());
-
-        AddressBookLoadResult loadResult;
-        ReadOnlyAddressBook initialData;
-        try {
-            loadResult = storage.readAddressBookWithResult();
-            if (!loadResult.hasDataFile()) {
-                logger.info("Creating a new data file " + storage.getAddressBookFilePath()
-                        + " populated with a sample AddressBook.");
-            }
-            initialData = loadResult.getAddressBook().orElseGet(SampleDataUtil::getSampleAddressBook);
-            if (loadResult.hasInvalidEntries()) {
-                startupErrorMessage = StartupErrorMessage.buildInvalidEntriesWarning(
-                        storage.getAddressBookFilePath(),
-                        loadResult.getInvalidEntriesFilePath(),
-                        loadResult.getInvalidEntriesSaveFailureMessage());
-            }
-        } catch (DataLoadingException e) {
-            startupErrorMessage = StartupErrorMessage.buildDataLoadFailureMessage(storage.getAddressBookFilePath());
-            logger.warning("Data file at " + storage.getAddressBookFilePath() + " could not be loaded."
-                    + " Will be starting with an empty AddressBook. \nCheck the logs for more information");
-            initialData = new AddressBook();
-        }
-
+        ReadOnlyAddressBook initialData = loadInitialAddressBook(storage);
         return new ModelManager(initialData, userPrefs);
+    }
+
+    /**
+     * Returns the initial address book data to use for the model.
+     * Delegates handling of successful and failed address book loads.
+     */
+    private ReadOnlyAddressBook loadInitialAddressBook(Storage storage) {
+        try {
+            AddressBookLoadResult loadResult = storage.readAddressBookWithResult();
+            return handleAddressBookLoadResult(storage, loadResult);
+        } catch (DataLoadingException e) {
+            return handleAddressBookLoadFailure(storage);
+        }
+    }
+
+    /**
+     * Returns the initial address book data from a successful load result.
+     * Logs when sample data will be used and prepares a startup warning if
+     * invalid entries were skipped.
+     */
+    private ReadOnlyAddressBook handleAddressBookLoadResult(Storage storage, AddressBookLoadResult loadResult) {
+        if (!loadResult.hasDataFile()) {
+            logger.info("Creating a new data file " + storage.getAddressBookFilePath()
+                    + " populated with a sample AddressBook.");
+        }
+        if (loadResult.hasInvalidEntries()) {
+            startupErrorMessage = StartupErrorMessage.buildInvalidEntriesWarning(
+                    storage.getAddressBookFilePath(),
+                    loadResult.getInvalidEntriesFilePath(),
+                    loadResult.getInvalidEntriesSaveFailureMessage().isPresent());
+        }
+        return loadResult.getAddressBook().orElseGet(SampleDataUtil::getSampleAddressBook);
+    }
+
+    /**
+     * Returns an empty address book after an address book load failure.
+     * Also prepares the startup warning message shown to the user.
+     */
+    private ReadOnlyAddressBook handleAddressBookLoadFailure(Storage storage) {
+        startupErrorMessage = StartupErrorMessage.buildDataLoadFailureMessage(storage.getAddressBookFilePath());
+        logger.warning("Data file at " + storage.getAddressBookFilePath() + " could not be loaded."
+                + " Will be starting with an empty AddressBook. \nCheck the logs for more information");
+        return new AddressBook();
     }
 
     private void initLogging(Config config) {

@@ -80,12 +80,12 @@ The **API** of this component is specified in [`Ui.java`](https://github.com/AY2
 
 The UI consists of a `MainWindow` that is made up of parts e.g.`CommandBox`, `ResultDisplay`, `PersonListPanel`, `StatusBarFooter` etc. All these, including the `MainWindow`, inherit from the abstract `UiPart` class which captures the commonalities between classes that represent parts of the visible GUI.
 
-The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`]https://github.com/AY2526S2-CS2103-F11-3/tp/blob/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/AY2526S2-CS2103-F11-3/tp/blob/master/src/main/resources/view/MainWindow.fxml)
+The `UI` component uses the JavaFx UI framework. The layout of these UI parts are defined in matching `.fxml` files that are in the `src/main/resources/view` folder. For example, the layout of the [`MainWindow`](https://github.com/AY2526S2-CS2103-F11-3/tp/blob/master/src/main/java/seedu/address/ui/MainWindow.java) is specified in [`MainWindow.fxml`](https://github.com/AY2526S2-CS2103-F11-3/tp/blob/master/src/main/resources/view/MainWindow.fxml)
 
 The `UI` component,
-
+                                                            
 * executes user commands using the `Logic` component.
-* holds a list of past commands executed using the `CommmandHistory` component within CommandBox. (e.g 1:`add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 t/Run 50km ts/mon:1,2 i/Shoulder dislocation`, 2:`list`.
+* holds a list of past commands executed using the `CommandHistory` component within CommandBox. (e.g 1:`add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 t/Run 50km ts/mon:1,2 i/Shoulder dislocation`, 2:`list`.
 * listens for changes to `Model` data so that the UI can be updated with the modified data.
 * keeps a reference to the `Logic` component, because the `UI` relies on the `Logic` to execute commands.
 * depends on some classes in the `Model` component, as it displays `Person` object residing in the `Model`.
@@ -189,15 +189,15 @@ Step 1. The user launches the application. For the purpose of this example, assu
 
 <puml src="diagrams/CommandHistoryState0.puml" alt="CommandHistoryState0" />
 
-Step 2. The user enters 3 commands in order: `help`, `list`, `list s/advancd`,
+Step 2. The user enters 3 commands in order: `help`, `list`, `list s/beginnerr`,
 <puml src="diagrams/CommandHistoryState1.puml" alt="CommandHistoryState1" />
 <div style="page-break-after: always;"></div>
 
-Step 3. The user presses `Up` key, to retrieve back the past submitted command (`list s/advancd`).
+Step 3. The user realises he made a typo, and presses `Up` key to retrieve back the past submitted command (`list s/beginnerr`).
 
 <puml src="diagrams/CommandHistoryState2.puml" alt="CommandHistoryState2" />
 
-Step 4. The user resubmits a new command (`list s/advanced`).
+Step 4. The user resubmits a new command (`list s/beginner`).
 
 <puml src="diagrams/CommandHistoryState3.puml" alt="CommandHistoryState3" />
 
@@ -224,7 +224,7 @@ Step 6. The user presses `Down` key once, and `list` is shown in the Command tex
 
 <puml src="diagrams/CommandHistoryState5.puml" alt="CommandHistoryState5" />
 
-Step 7. After executing the command, `list` is appended to the command history and current is updated to the size of `Command History`
+Step 7. After executing the command, `list` is appended to the command history and current is updated to the size of `commandHistory`
 <puml src="diagrams/CommandHistoryState6.puml" alt="CommandHistoryState6" />
 <div style="page-break-after: always;"></div>
 
@@ -483,6 +483,11 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
     Use case ends.
 
+* 1e. Value(s) for the field(s) to be edited is the same as the original values for the same field(s).
+    * 1e1. PTcoach shows an error message.
+
+      Use case ends.
+
 **Use case: UC4 - Delete a client**
 
 **MSS**
@@ -530,9 +535,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 **MSS**
 
-1. Trainer requests to view clients (optionally filtered by skill).
+1. Trainer requests to view clients.
 2. PTcoach shows a list of all clients.
-3. PTcoach shows a list of clients matching the request.
 
    Use case ends.
 
@@ -548,17 +552,38 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
    
     Use case ends.
 
-* 3a. No clients match the filter. 
-  * 3a1. PTcoach shows an empty list. 
-  
+**Use case: UC7 - Filter clients by skill level**
+
+**MSS**
+
+1. Trainer requests to view clients filtered by skill level.
+2. PTcoach shows a list of clients filtered by skill level.
+
+   Use case ends.
+
+**Extensions**
+
+* 1a. Missing filter parameter.
+  * 1a1. PTcoach shows a message indicating that the parameter is empty.
+
+  Use case ends.
+
+* 1b. Invalid filter parameter.
+  * 1b1. PTcoach shows an error message.
+
     Use case ends.
-  
-* 3b. Missing filter parameter
-  * 3b1. PTcoach shows a message indicating that the parameter is empty.
+
+* 1c. Duplicate filter parameters.
+  * 1c1. PTcoach shows a list of clients filtered by skill level.
+
+    Use case ends.
+
+* 2a. No clients match the filter. 
+  * 2a1. PTcoach shows an empty list. 
   
     Use case ends.
 
-**Use case: UC7 - Read client details**
+**Use case: UC8 - Read client details**
 
 **MSS**
 
@@ -585,7 +610,7 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
     Use case ends.
 <div style="page-break-after: always;"></div>
 
-**Use case: UC8 - Navigate command history**
+**Use case: UC9 - Navigate command history**
 
 **MSS**
 
@@ -611,9 +636,6 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
   
   Use case ends.
 
-
-*{More to be added}*
-
 ### Non-Functional Requirements
 
 1.  Should work on any mainstream OS (Windows, macOS and Linux) as long as it has Java 17 installed.
@@ -623,11 +645,8 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 5.  Should be able to return search results in under 3s.
 6.  Should store data locally only.
 7.  Should only be closed using the “exit” command or window close button or by killing the process.
-8.  Command input should not exceed 500 words.
-9.  Should only be opened through the command line.
-10. The command history will only be saved per session and reset after the session ends.
-
-*{More to be added}*
+8.  Should only be opened through the command line. 
+9.  The command history will only be saved per session and reset after the session ends.
 <div style="page-break-after: always;"></div>
 
 ### Glossary
@@ -662,7 +681,13 @@ Priorities: High (must have) - `* * *`, Medium (nice to have) - `* *`, Low (unli
 
 * **Session**: Period between opening PTcoach and closing it
 
-*{More to be added}*
+* **Default Skill Level**: The default skill level for a client is set to `Beginner`
+
+* **Default Injury Status**: The default injury status for a client is set to `Healthy`
+
+* **Default Progress Record**: The default progress record for a client is set to `0%`
+
+* **Flag-like prefixes**: Matches strings that start with one or two alphabetic characters (A–Z, case-insensitive), followed by a forward slash `/` (i.e. `x/`, `xx/`,)
 
 --------------------------------------------------------------------------------------------------------------------
 <div style="page-break-after: always;"></div>
@@ -711,7 +736,7 @@ testers are expected to do more *exploratory* testing.
 
 2. Adding a person with all fields
 
-   1. Test case: `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 t/Run 50km ts/mon:1,2 i/Shoulder dislocation s/beginner pr/50`<br>
+   1. Test case: `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 t/Run 50km ts/mon:1,2 i/Shoulder dislocation s/beginner pr/50%`<br>
       Expected: A new person is added to the list with all provided details. A success message is shown.
 
 3. Adding a duplicate person
@@ -793,7 +818,7 @@ testers are expected to do more *exploratory* testing.
 
 2. Editing a person with multiple fields
 
-   1. Test case: `edit 1 e/johndoe@example.com t/Lift 100kg ts/fri:2,3 pr/70 s/intermediate`<br>
+   1. Test case: `edit 1 e/johndoe@example.com t/Lift 100kg ts/fri:2,3 pr/70% s/intermediate`<br>
       Expected: The specified fields of the 1st person are updated. A success message is shown.
 
 &nbsp;
@@ -834,10 +859,10 @@ testers are expected to do more *exploratory* testing.
    1. Prerequisites: List all persons using the `list` command. Multiple persons in the list.
 
    2. Test case: `delete 1`<br>
-      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message. Timestamp in the status bar is updated.
+      Expected: First contact is deleted from the list. Details of the deleted contact shown in the status message.
 
    3. Test case: `delete 0`<br>
-      Expected: No person is deleted. Error details shown in the status message. Status bar remains the same.
+      Expected: No person is deleted. Error details shown in the status message.
 
    4. Other incorrect delete commands to try: `delete`, `delete x`, `...` (where x is larger than the list size)<br>
       Expected: Similar to previous.

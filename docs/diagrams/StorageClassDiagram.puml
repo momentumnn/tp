@@ -3,10 +3,21 @@
 skinparam arrowThickness 1.1
 skinparam arrowColor STORAGE_COLOR
 skinparam classBackgroundColor STORAGE_COLOR
+skinparam ranksep 35
+skinparam nodesep 35
+top to bottom direction
+
+skinparam class<<spacer>> {
+BorderColor transparent
+BackgroundColor transparent
+FontColor transparent
+StereotypeFontColor transparent
+}
 
 package Storage as StoragePackage {
 
 package "UserPrefs Storage" #F4F6F6{
+Class UserPrefsSpacer <<spacer>>
 Class "<<interface>>\nUserPrefsStorage" as UserPrefsStorage
 Class JsonUserPrefsStorage
 }
@@ -19,7 +30,8 @@ Class "<<interface>>\nAddressBookStorage" as AddressBookStorage
 Class JsonAddressBookStorage
 Class JsonSerializableAddressBook
 Class JsonAdaptedPerson
-Class JsonAdaptedTag
+Class AddressBookLoadResult
+Class InvalidPersonRecord
 }
 
 }
@@ -28,16 +40,21 @@ Class HiddenOutside #FFFFFF
 HiddenOutside ..> Storage
 
 StorageManager .up.|> Storage
-StorageManager -up-> "1" UserPrefsStorage
-StorageManager -up-> "1" AddressBookStorage
+StorageManager --> "1" UserPrefsStorage
+StorageManager --> "1" AddressBookStorage
 
-Storage -left-|> UserPrefsStorage
-Storage -right-|> AddressBookStorage
+Storage --|> UserPrefsStorage
+Storage -left-|> AddressBookStorage
 
 JsonUserPrefsStorage .up.|> UserPrefsStorage
 JsonAddressBookStorage .up.|> AddressBookStorage
 JsonAddressBookStorage ..> JsonSerializableAddressBook
+JsonAddressBookStorage ..> AddressBookLoadResult
 JsonSerializableAddressBook --> "*" JsonAdaptedPerson
-JsonAdaptedPerson --> "*" JsonAdaptedTag
+JsonSerializableAddressBook --> "*" InvalidPersonRecord
+InvalidPersonRecord --> "1" JsonAdaptedPerson
+
+StorageManager -[hidden]down-> UserPrefsSpacer
+UserPrefsSpacer -[hidden]down-> UserPrefsStorage
 
 @enduml

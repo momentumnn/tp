@@ -55,7 +55,7 @@ public class PersonCard extends UiPart<Region> {
         this.person = person;
         id.setText(displayedIndex + ". ");
         String fullName = person.getName().fullName;
-        name.setText(fullName.length() > 50 ? fullName.substring(0, 50) + "..." : fullName);
+        name.setText(fullName);
         phone.setText(person.getPhone().value);
         address.setText(person.getAddress().value);
         trainingGoal.setText("Goal: " + person.getTrainingGoal().value);
