@@ -967,10 +967,10 @@ testers are expected to do more *exploratory* testing.
 
 3. Dealing with corrupted data file
 
-    1. Prerequisites: The data file `[JAR file location]/data/addressbook.json` contains invalid JSON.
+   1. Prerequisites: The data file `[JAR file location]/data/addressbook.json` contains both valid and invalid entries.
 
-    2. Launch the application.<br>
-       Expected: The application starts successfully with an empty address book, and a warning is shown.
+   2. Launch the application.<br>
+      Expected: The application starts successfully, filled with valid entries, and a warning is shown. Invalid entries are saved to a timestamped file
 
 --------------------------------------------------------------------------------------------------------------------
 
