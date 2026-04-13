@@ -18,8 +18,10 @@ public class HelpWindow extends UiPart<Stage> {
     public static final String USERGUIDE_URL = "https://ay2526s2-cs2103-f11-3.github.io/tp/UserGuide.html";
     public static final String HELP_MESSAGE = String.join("\n",
             "Available commands:",
-            "add: add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS ts/TIMESLOT t/TRAINING_GOAL [pr/PROGRESS_RECORD] [i/INJURY_STATUS] [s/SKILL]",
-            "edit: edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [ts/TIMESLOT] [t/TRAINING GOAL] [pr/PROGRESS_RECORD] [i/INJURY_STATUS] [s/SKILL]",
+            "add: add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS ts/TIMESLOT t/TRAINING_GOAL [pr/PROGRESS_RECORD] "
+                    + "[i/INJURY_STATUS] [s/SKILL]",
+            "edit: edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [ts/TIMESLOT] [t/TRAINING GOAL] "
+                    + "[pr/PROGRESS_RECORD] [i/INJURY_STATUS] [s/SKILL]",
             "delete: delete INDEX",
             "list: list [s/SKILL]",
             "find: find KEYWORD [MORE_KEYWORDS]",
