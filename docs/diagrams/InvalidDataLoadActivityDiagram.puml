@@ -1,0 +1,31 @@
+@startuml
+skin rose
+skinparam ActivityFontSize 15
+skinparam ArrowFontSize 12
+
+title Activity Diagram: Invalid Data Handling During Startup
+
+start
+
+:MainApp requests address book data;
+:StorageManager delegates to JsonAddressBookStorage;
+:JsonAddressBookStorage reads JSON into JsonSerializableAddressBook;
+:Convert entries into the model;
+:Collect invalid person records;
+
+if () then ([invalid entries found])
+  :Save invalid entries to a timestamped file;
+
+  if () then ([save succeeded])
+    :Store invalid entries file path metadata;
+  else ([save failed])
+    :Store invalid entries save failure metadata;
+  endif
+else ([no invalid entries])
+  :Prepare load result with loaded address book;
+endif
+
+:JsonAddressBookStorage returns AddressBookLoadResult;
+:MainApp checks load result and prepares startup warning if needed;
+stop
+@enduml

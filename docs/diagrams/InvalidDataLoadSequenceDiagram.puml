@@ -1,0 +1,33 @@
+@startuml
+!include style.puml
+skinparam ArrowFontStyle plain
+skinparam SequenceMessageAlign center
+
+participant "MainApp" as MainApp MODEL_COLOR_T2
+participant "StorageManager" as StorageManager STORAGE_COLOR_T2
+participant "JsonAddressBookStorage" as JsonStorage STORAGE_COLOR_T3
+participant "JsonSerializableAddressBook" as JsonSerializable STORAGE_COLOR_T1
+participant "StartupErrorMessage" as StartupErrorMessage MODEL_COLOR_T1
+
+MainApp -> StorageManager : readAddressBookWithResult()
+
+StorageManager -> JsonStorage : readAddressBookWithResult()
+
+JsonStorage -> JsonSerializable : toModelType()
+JsonSerializable --> JsonStorage : AddressBook
+
+JsonStorage -> JsonSerializable : getInvalidPersonRecords()
+JsonSerializable --> JsonStorage : List<InvalidPersonRecord>
+
+opt invalid records exist
+  JsonStorage -> JsonStorage : saveInvalidEntries(...)
+end
+JsonStorage --> StorageManager : AddressBookLoadResult
+StorageManager --> MainApp : AddressBookLoadResult
+opt invalid entries found
+  MainApp -> StartupErrorMessage : build warning message
+  StartupErrorMessage --> MainApp : warning message
+end
+note right of JsonStorage: Startup still continues with valid data\nwhen invalid entries exist.
+
+@enduml
