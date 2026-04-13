@@ -22,7 +22,11 @@ PTcoach is a **desktop app for managing client contacts, optimized for use via a
 
 3. Copy the file to the folder you want to use as the _home folder_ for your PTcoach.
 
-4. Open a command terminal, `cd` into the folder you put the jar file in, and use the `java -jar PTcoach.jar` command to run the application.<br>
+4. Open a command terminal, `cd` into the folder you put the jar file in, and use the`java -jar PTcoach-vX.Y.Z.jar` command to run the application
+
+   * Replace `X.Y.Z` with the version number (e.g., `PTcoach-v1.5.1.jar`)<br>
+
+   * The version can be found in[`MainApp.java`](https://github.com/AY2526S2-CS2103-F11-3/tp/blob/master/src/main/java/seedu/address/MainApp.java)<br>
 
    A GUI similar to the below should appear in a few seconds. Note how the app contains some sample data.<br>
    ![Ui](images/Ui.png)
