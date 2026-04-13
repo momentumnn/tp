@@ -180,14 +180,14 @@ Step 1. The user launches the application. For the purpose of this example, assu
 
 <puml src="diagrams/CommandHistoryState0.puml" alt="CommandHistoryState0" />
 
-Step 2. The user enters 3 commands in order: `help`, `list`, `list s/pr`,
+Step 2. The user enters 3 commands in order: `help`, `list`, `list s/beginnerr`,
 <puml src="diagrams/CommandHistoryState1.puml" alt="CommandHistoryState1" />
 
-Step 3. The user realises he made a typo, and presses `Up` key to retrieve back the past submitted command (`list s/pr`).
+Step 3. The user realises he made a typo, and presses `Up` key to retrieve back the past submitted command (`list s/beginnerr`).
 
 <puml src="diagrams/CommandHistoryState2.puml" alt="CommandHistoryState2" />
 
-Step 4. The user resubmits a new command (`list s/pro`).
+Step 4. The user resubmits a new command (`list s/beginner`).
 
 <puml src="diagrams/CommandHistoryState3.puml" alt="CommandHistoryState3" />
 
