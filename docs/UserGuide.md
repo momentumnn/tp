@@ -121,12 +121,18 @@ Format: `add n/NAME p/PHONE_NUMBER e/EMAIL a/ADDRESS ts/TIMESLOT t/TRAINING_GOAL
 **Timeslot (`ts/`):**
 * Represents the weekly training schedule of the client (e.g. `mon:1,3,5;tue:7`)
 * Must follow the format: 'day:slot[,slot...];day:slot'
-* Days must be a 3-letter abbreviations (`mon`, `tue`, `wed`, `thu`, `fri`, `sat`, `sun`)
-* Slots are integers from **1 to 12**, each representing a fixed 1-hour time period.
-    * eg. Slot 1 -> 0800 - 0900 and Slot 12 -> 1900 - 2000
-* Multiple slots for the same day are separated by commas
-* Multiple days are separated by semicolons
+  * Multiple slots for the same day are separated by commas
+  * Multiple days are separated by semicolons (without space in between)
+* Days must be 3-letter abbreviations (`mon`, `tue`, `wed`, `thu`, `fri`, `sat`, `sun`)
+* Slots can be entered in two ways:
+  * Integers from **1 to 12**, each representing a fixed 1-hour time period.
+      * e.g. Slot 1 -> `0800-0900` and Slot 12 -> `1900-2000`
+  * 24-hour format `HHMM-HHMM`, where times must start and end exactly on the hour (i.e. the minutes (MM) field must be `00`)
+      * e.g. `0800-0900` or `1900-2000`
+      * only valid 1-hour ranges are allowed
 * No duplicate slots allowed for the same day
+* No duplicate days allowed in the same command
+    * e.g. `mon:1;mon:2` should be `mon:1,2` instead
 * Cannot be blank
 * This field is mandatory
 
@@ -228,12 +234,18 @@ Format: `edit INDEX [n/NAME] [p/PHONE] [e/EMAIL] [a/ADDRESS] [ts/TIMESLOT] [t/TR
 **Timeslot (`ts/`):**
 * Represents the weekly training schedule of the client (e.g. `mon:1,3,5;tue:7`)
 * Must follow the format: 'day:slot[,slot...];day:slot'
-* Days must be a 3-letter abbreviations (`mon`, `tue`, `wed`, `thu`, `fri`, `sat`, `sun`)
-* Slots are integers from **1 to 12**, each representing a fixed 1-hour time period.
-    * eg. Slot 1 -> 0800 - 0900 and Slot 12 -> 1900 - 2000
+* Days must be 3-letter abbreviations (`mon`, `tue`, `wed`, `thu`, `fri`, `sat`, `sun`)
+* Slots can be entered in two ways:
+    * Integers from **1 to 12**, each representing a fixed 1-hour time period.
+        * e.g. Slot 1 -> `0800-0900` and Slot 12 -> `1900-2000`
+    * 24-hour format `HHMM-HHMM`, where times must start and end exactly on the hour (i.e. the minutes (MM) field must be `00`)
+        * e.g. `0800-0900` or `1900-2000`
+        * only valid 1-hour ranges are allowed
 * Multiple slots for the same day are separated by commas
 * Multiple days are separated by semicolons
 * No duplicate slots allowed for the same day
+* No duplicate days allowed in the same command
+    * e.g. `mon:1;mon:2` should be `mon:1,2` instead
 * Cannot be blank if provided
 * This field is optional
 
