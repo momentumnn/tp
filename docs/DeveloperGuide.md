@@ -710,7 +710,7 @@ testers are expected to do more *exploratory* testing.
 
 2. Adding a person with all fields
 
-   1. Test case: `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 t/Run 50km ts/mon:1,2 i/Shoulder dislocation s/beginner pr/50`<br>
+   1. Test case: `add n/John Doe p/98765432 e/johnd@example.com a/John street, block 123, #01-01 t/Run 50km ts/mon:1,2 i/Shoulder dislocation s/beginner pr/50%`<br>
       Expected: A new person is added to the list with all provided details. A success message is shown.
 
 3. Adding a duplicate person
@@ -791,7 +791,7 @@ testers are expected to do more *exploratory* testing.
 
 2. Editing a person with multiple fields
 
-   1. Test case: `edit 1 e/johndoe@example.com t/Lift 100kg ts/fri:2,3 pr/70 s/intermediate`<br>
+   1. Test case: `edit 1 e/johndoe@example.com t/Lift 100kg ts/fri:2,3 pr/70% s/intermediate`<br>
       Expected: The specified fields of the 1st person are updated. A success message is shown.
 
 &nbsp;
