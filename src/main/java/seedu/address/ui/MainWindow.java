@@ -4,8 +4,10 @@ import static java.util.Objects.requireNonNull;
 
 import java.util.logging.Logger;
 
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.layout.StackPane;
+import javafx.stage.Screen;
 import javafx.stage.Stage;
 import seedu.address.commons.core.GuiSettings;
 import seedu.address.commons.core.LogsCenter;
@@ -88,8 +90,17 @@ public class MainWindow extends UiPart<Stage> {
         primaryStage.setHeight(guiSettings.getWindowHeight());
         primaryStage.setWidth(guiSettings.getWindowWidth());
         if (guiSettings.getWindowCoordinates() != null) {
-            primaryStage.setX(guiSettings.getWindowCoordinates().getX());
-            primaryStage.setY(guiSettings.getWindowCoordinates().getY());
+            double x = guiSettings.getWindowCoordinates().getX();
+            double y = guiSettings.getWindowCoordinates().getY();
+            double width = guiSettings.getWindowWidth();
+            double height = guiSettings.getWindowHeight();
+            ObservableList<Screen> visibleScreens = Screen.getScreensForRectangle(x, y, width, height);
+            if (!visibleScreens.isEmpty()) {
+                primaryStage.setX(x);
+                primaryStage.setY(y);
+            } else {
+                primaryStage.centerOnScreen();
+            }
         }
     }
 
